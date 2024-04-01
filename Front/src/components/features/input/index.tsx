@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { Image } from "../image";
 import { IInputProps } from "./types";
 
 import styles from "./styles.module.scss";
@@ -13,7 +14,7 @@ export const Input = ({
 }: IInputProps): JSX.Element => {
   return (
     <div className={styles.continer}>
-      <img className={styles.icon} src={icon} />
+      {icon && <Image alt="input_icon" src={icon} className={styles.icon} />}
       <input
         type={type}
         style={css}
