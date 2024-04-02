@@ -1,4 +1,4 @@
-<img src="https://www.svgrepo.com/show/252165/screwdriver-construction-and-tools.svg" width="40" height="40"/><h1 align="center">NPUA Grades</h1><img src="https://www.svgrepo.com/show/252168/screwdriver-construction-and-tools.svg" alt="bootstrap" width="40" height="40"/>
+<h1 align="center">🪛NPUA Grades🪛</h1>
 
 # Set Up and Get Started
 - Clone the repository `git clone https://github.com/razachikyan/NPUA-Grades.git`
