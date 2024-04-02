@@ -31,6 +31,6 @@
 - Build the project `npm run build`
 - Run in production mode `npm start` (after build)
 
-# Used Tools and Frameworks
+<h1 align="center">Used Tools and Frameworks</h1>
 
 [Figma](https://www.figma.com/file/vGOP0ne2AezZBReroXWNK7/Untitled?type=design&mode=design)
