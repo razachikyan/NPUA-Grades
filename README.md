@@ -1,4 +1,4 @@
-<h1 text-align="center">NPUA Grades</h1>
+<h1 align="center">NPUA Grades</h1>
 
 # Set Up and Get Started
 - Clone the repository `git clone https://github.com/razachikyan/NPUA-Grades.git`
