@@ -8,16 +8,13 @@
 ### Set Up
 
 - Enter the folder with client code. `cd ./Front`
-
 - Install necessary dependencies `npm install`
   (node verion `20.12.0`)
 
 ### Get started
 
 - Run in developmen mode `npm run dev`
-
 - Build the project `npm run build`
-
 - Run in production mode `npm start` (after build)
 
 ## Backend
@@ -25,16 +22,13 @@
 ### Set Up
 
 - Enter the folder with server code. `cd ./Back`
-
 - Install necessary dependencies `npm install`
   (node verion `20.12.0`)
 
 ### Get started
 
 - Run in developmen mode `npm run dev`
-
 - Build the project `npm run build`
-
 - Run in production mode `npm start` (after build)
 
 # Used Tools and Frameworks
