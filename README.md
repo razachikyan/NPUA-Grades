@@ -1,4 +1,4 @@
-<h1 align="center">🪛NPUA Grades🪛</h1>
+<h1 align="center">NPUA Grades</h1>
 
 # Set Up and Get Started
 - Clone the repository `git clone https://github.com/razachikyan/NPUA-Grades.git`
@@ -31,7 +31,7 @@
 - Build the project `npm run build`
 - Run in production mode `npm start` (after build)
 
-<h1 align="center">Used Tools and Frameworks</h1>
+<h1 align="center">🪛Used Tools and Frameworks🪛</h1>
 
 <a href="https://getbootstrap.com" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/353498/bootstrap.svg" alt="bootstrap" width="40" height="40"/> </a>
 
