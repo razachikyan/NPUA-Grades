@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "normalize.css";
+import "./fonts.scss";
 import "./globals.scss";
 
 export const metadata: Metadata = {

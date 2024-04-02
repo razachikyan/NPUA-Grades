@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+
+    .left, .right {
+        width: 50%;
+        min-height: 100vh;
+    }
+
+    .left {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 64px;
+
+        .title {
+            font-size: 32px;
+            color: #001C3A;
+        }
+    }
+
+    .right {
+        display: flex;
+        gap: 27px;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: #ffffff;
+        background-color: #001C3A;
+
+        .image {
+            width: 247px;
+            height: 77px;
+        }
+    }
+}

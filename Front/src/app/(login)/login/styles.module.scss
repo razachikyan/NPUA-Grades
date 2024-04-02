@@ -1,0 +1,17 @@
+.container {
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    .title {
+        font-size: 32px;
+        color: #001C3A;
+    }
+
+    .descr {
+        color: #6E7175;
+        font-size: 18px;
+    }
+}
