@@ -4,6 +4,6 @@ export interface IInputProps {
   placeholder?: string;
   value?: number | string;
   css?: React.CSSProperties;
-  handleChange?: (ev: React.ChangeEvent) => void;
+  handleChange?: React.Dispatch<React.SetStateAction<string>>;
   type?: "number" | "text" | "email" | "password";
 }

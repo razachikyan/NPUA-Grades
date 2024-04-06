@@ -11,8 +11,10 @@ export default function Layout({
   return (
     <div className={styles.container}>
       <div className={styles.left}>
-        <h2 className={styles.title}>NPUA Grades</h2>
-        {children}
+        <div className={styles.box}>
+          <h2 className={styles.title}>NPUA Grades</h2>
+          {children}
+        </div>
       </div>
       <div className={styles.right}>
         <Image
@@ -20,7 +22,9 @@ export default function Layout({
           className={styles.image}
           alt="polytechnic"
         />
-        <h1>National Polytechnic University of Armenia</h1>
+        <h1 className={styles.title2}>
+          National Polytechnic University of Armenia
+        </h1>
       </div>
     </div>
   );

@@ -4,10 +4,36 @@
     align-items: center;
     gap: 36px;
 
+    .input, .input::placeholder {
+        line-height: 24px;
+        font-size: 14px;
+        font-family: "Alata";
+    }
+
     .input {
         width: 100%;
         padding: 8px 12px;
+        color: #010919;
+
+        &::placeholder {
+            color: #B3B6BD;
+        }
+    }
+
+    .button {
+        padding: 10px;
+    }
+
+    .redirect {
+        font-family: "Alata";
+        font-weight: 400;
         font-size: 14px;
-        color: #B3B6BD;
+        line-height: 143%;
+        text-align: center;
+        color: #6e7175;
+
+        .link {
+            color: #1261FF;
+        }
     }
 }

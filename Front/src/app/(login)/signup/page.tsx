@@ -4,9 +4,9 @@ import styles from "./styles.module.scss";
 
 export default function Signup(): JSX.Element {
   return (
-    <div className={styles.continer}>
+    <div className={styles.container}>
       <h2 className={styles.title}>Sign up to Subliminator</h2>
-      <Form type="signup" />
+      <Form type="signup" submitText="Create account" />
     </div>
   );
 }

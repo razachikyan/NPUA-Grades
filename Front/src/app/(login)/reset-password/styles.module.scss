@@ -1,17 +1,24 @@
 .container {
-    max-width: 400px;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
 
     .title {
         font-size: 32px;
         color: #001C3A;
+        font-family: "Alata";
+        font-weight: 400;
+        margin-bottom: 5px;
     }
 
     .descr {
-        color: #6E7175;
-        font-size: 18px;
+        font-family: "Alata";
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 150%;
+        color: #6e7175;
+        margin-bottom: 40px;
+
+        .link {
+            color: #1261ff;
+        }
     }
 }

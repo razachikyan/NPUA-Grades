@@ -14,15 +14,15 @@ export const Input = ({
   placeholder,
 }: IInputProps): JSX.Element => {
   return (
-    <div className={classNames(styles.container, className)}>
+    <div className={styles.container}>
       {icon && <Image alt="input_icon" src={icon} className={styles.icon} />}
       <input
         type={type}
         style={css}
         value={value}
-        onChange={handleChange}
+        onChange={(ev) => handleChange?.(ev.target.value)}
         placeholder={placeholder}
-        className={styles.input}
+        className={classNames(styles.input, className)}
       />
     </div>
   );

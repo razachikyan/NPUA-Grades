@@ -11,7 +11,7 @@ export default function Login(): JSX.Element {
           Enter your credentials to access your account
         </p>
       </div>
-      <Form type="signup" />
+      <Form type="login" submitText="Login" />
     </div>
   );
 }
