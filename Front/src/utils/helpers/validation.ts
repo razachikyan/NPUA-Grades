@@ -32,6 +32,15 @@ export const validatePassword = (
   return { success: false, message: MESSAGES.SHORT };
 };
 
+export const validateConfirm = (
+  pass1: string,
+  pass2: string
+): { success: boolean; message?: MESSAGES } => {
+  return pass1 === pass2
+    ? { success: true }
+    : { success: false, message: MESSAGES.INCORRECT };
+};
+
 export enum MESSAGES {
   SHORT = "short",
   EMPTY = "empty",
