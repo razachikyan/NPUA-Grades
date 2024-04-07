@@ -10,12 +10,23 @@ export const Input = ({
   type = "text",
   value,
   className,
-  handleChange,
   placeholder,
+  onIconClick,
+  handleChange,
 }: IInputProps): JSX.Element => {
   return (
     <div className={styles.container}>
-      {icon && <Image alt="input_icon" src={icon} className={styles.icon} />}
+      {icon && (
+        <Image
+          alt="input_icon"
+          src={icon}
+          onClick={(ev) => {
+            ev.stopPropagation();
+            onIconClick?.()
+          }}
+          className={styles.icon}
+        />
+      )}
       <input
         type={type}
         style={css}

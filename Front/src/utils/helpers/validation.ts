@@ -26,7 +26,7 @@ export const validateEmail = (
 export const validatePassword = (
   password: string
 ): { success: boolean; message?: MESSAGES } => {
-  if (password.length > 6) {
+  if (password.length > 10) {
     return { success: true };
   }
   return { success: false, message: MESSAGES.SHORT };

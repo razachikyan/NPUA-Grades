@@ -4,22 +4,6 @@
     align-items: center;
     gap: 36px;
 
-    .input, .input::placeholder {
-        line-height: 24px;
-        font-size: 14px;
-        font-family: "Alata";
-    }
-
-    .input {
-        width: 100%;
-        padding: 8px 12px;
-        color: #010919;
-
-        &::placeholder {
-            color: #B3B6BD;
-        }
-    }
-
     .button {
         padding: 10px;
     }
