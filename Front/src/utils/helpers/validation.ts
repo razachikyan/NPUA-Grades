@@ -68,7 +68,7 @@ export class FormValidation {
   }
 
   private validatePassword(password: string): TValidateResult {
-    if (password.length > 10) {
+    if (password.length >= 10) {
       return { success: true };
     }
     return { success: false, message: MESSAGES.SHORT };

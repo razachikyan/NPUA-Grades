@@ -5,17 +5,23 @@
 
     .button {
         padding: 10px;
-        margin-top: 8px;
+        margin-top: 8px 0 40px;
         background: #1261ff;
         border-radius: 6px;
-        font-family: var(--font-family);
         font-weight: 400;
         font-size: 14px;
         line-height: 171%;
         color: #fff;
         font-family: "Alata";
         width: 100%;
-        margin-bottom: 40px;
+        margin-bottom: 8px;
+    }
+
+    .back {
+        border: 1px solid #e8eaed;
+        background: #fff;
+        color: #010919;
+        text-align: center;
     }
 
     .redirect {

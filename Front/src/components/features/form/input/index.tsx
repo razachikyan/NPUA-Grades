@@ -17,22 +17,23 @@ export const Input = ({
   handleChange,
 }: IInputProps): JSX.Element => {
   const [inputType, setInputType] = useState<TInputTypes>("text");
-  const [icon, setIcon] = useState<string>(Hide);
-  const isPassType =
-    type === INPUT_TYPES.PASSWORD || type === INPUT_TYPES.CONFIRM;
-  useEffect(() => {
-    setInputType(() => {
-      if (isPassType) return INPUT_TYPES.PASSWORD;
-      if (type === INPUT_TYPES.EMAIL) return INPUT_TYPES.EMAIL;
-      return "text";
-    });
-  }, [type, isPassType]);
+  const [icon, setIcon] = useState<string | null>(null);
 
   useEffect(() => {
     setInputType(() => {
-      return icon === Hide ? INPUT_TYPES.PASSWORD : "text";
+      const isPass = [INPUT_TYPES.PASSWORD, INPUT_TYPES.CONFIRM].includes(type);
+      const isEmail = type === INPUT_TYPES.EMAIL;
+      return isPass ? "password" : isEmail ? "email" : "text";
     });
-  }, [icon]);
+  }, [type]);
+
+  useEffect(() => {
+    setIcon((prev) => {
+      const isPass = [INPUT_TYPES.PASSWORD, INPUT_TYPES.CONFIRM].includes(type);
+      if (!isPass) return null;
+      return prev === Hide ? Show : Hide;
+    });
+  }, [inputType]);
 
   return (
     <div className={styles.container}>
@@ -43,11 +44,9 @@ export const Input = ({
         className={styles.input}
         placeholder={inputData[type].placeholder}
         type={inputType}
-        icon={isPassType ? icon : undefined}
+        icon={icon}
         onIconClick={() =>
-          setIcon((prev) => {
-            return prev === Hide ? Show : Hide;
-          })
+          setInputType((prev) => (prev === "text" ? "password" : "text"))
         }
       />
       {error && <p className={styles.error}>{error}</p>}
