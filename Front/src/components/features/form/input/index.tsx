@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { Input as CustomInput } from "@/components/shared/input";
 import Hide from "@public/icons/hide-password.svg";
 import Show from "@public/icons/show-password.svg";
-import { IInputProps, INPUT_TYPES, inputData } from "./types";
+import { TInputTypes } from "@/components/shared/input/types";
+import { IInputProps, inputData } from "./types";
+import { INPUT_TYPES } from "../types";
 
 import styles from "./styles.module.scss";
-import { TInputTypes } from "@/components/shared/input/types";
 
 export const Input = ({
   type,
@@ -19,14 +20,13 @@ export const Input = ({
   const [icon, setIcon] = useState<string>(Hide);
   const isPassType =
     type === INPUT_TYPES.PASSWORD || type === INPUT_TYPES.CONFIRM;
-
   useEffect(() => {
     setInputType(() => {
       if (isPassType) return INPUT_TYPES.PASSWORD;
       if (type === INPUT_TYPES.EMAIL) return INPUT_TYPES.EMAIL;
       return "text";
     });
-  }, []);
+  }, [type, isPassType]);
 
   useEffect(() => {
     setInputType(() => {

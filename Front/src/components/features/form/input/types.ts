@@ -1,16 +1,10 @@
+import { INPUT_TYPES } from "../types";
+
 export interface IInputProps {
   error?: string;
   value?: string | number;
   handleChange?: React.Dispatch<React.SetStateAction<string>>;
   type: INPUT_TYPES;
-}
-
-export enum INPUT_TYPES {
-  EMAIL = "email",
-  FIRSTNAME = "firstname",
-  LASTNAME = "lastname",
-  PASSWORD = "password",
-  CONFIRM = "confirm",
 }
 
 export const inputData: Record<

@@ -4,6 +4,7 @@
     flex-direction: column;
     gap: 8px;
     align-items: flex-start;
+    margin-bottom: 16px;
 
     .topic {
         font-family: "Alata";
@@ -31,5 +32,13 @@
         &::placeholder {
             color: #B3B6BD;
         }
+    }
+
+    .error {
+        font-family: 'Alata';
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 133%;
+        color: #E72E48;
     }
 }

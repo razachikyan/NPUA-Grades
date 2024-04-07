@@ -5,24 +5,17 @@ import Link from "next/link";
 import classNames from "classnames";
 import { Button } from "@/components/shared/button";
 import { Input } from "./input";
-import {
-  validateConfirm,
-  validateEmail,
-  validateName,
-  validatePassword,
-} from "@/utils/helpers/validation";
-import { IFormData, IFormProps } from "./types";
-import { INPUT_TYPES } from "./input/types";
+import { FormValidation } from "@/utils/helpers/validation";
+import { IFormData, IFormProps, INPUT_TYPES } from "./types";
 
 import styles from "./styles.module.scss";
 
 export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
+  const [firstname, setFirstName] = useState<string>("");
+  const [lastname, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirm, setConfirm] = useState<string>("");
-
   const [errors, setErrors] = useState<IFormData>({
     confirm: "",
     email: "",
@@ -30,30 +23,23 @@ export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
     lastname: "",
     password: "",
   });
+  
+  const validator = new FormValidation();
 
-  const handleSubmit = () => {
-    const emailRes = validateEmail(email);
-    const firstNameRes = validateName(firstName);
-    const lastNameRes = validateName(lastName);
-    const passwordRes = validatePassword(password);
-    const confirmRes = validateConfirm(password, confirm);
+  const handleSubmit = (ev: React.MouseEvent) => {
+    ev.preventDefault();
+    const validationRes = validator.validate({
+      email,
+      confirm,
+      firstname,
+      lastname,
+      password,
+    });
 
-    if (
-      emailRes.success &&
-      firstNameRes.success &&
-      lastNameRes.success &&
-      passwordRes.success &&
-      confirmRes.success
-    ) {
+    if (!validationRes.errors) {
       // post query
     } else {
-      setErrors({
-        confirm: confirmRes.message ?? "",
-        email: emailRes.message ?? "",
-        firstname: firstNameRes.message ?? "",
-        lastname: lastNameRes.message ?? "",
-        password: passwordRes.message ?? "",
-      });
+      setErrors(validationRes.errors);
     }
   };
 
@@ -62,20 +48,25 @@ export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
       {type === "signup" && (
         <Input
           type={INPUT_TYPES.FIRSTNAME}
-          value={firstName}
+          value={firstname}
           handleChange={setFirstName}
           error={errors.firstname}
         />
       )}
       {type === "signup" && (
         <Input
-          value={lastName}
+          value={lastname}
           handleChange={setLastName}
           type={INPUT_TYPES.LASTNAME}
           error={errors.lastname}
         />
       )}
-      <Input value={email} handleChange={setEmail} type={INPUT_TYPES.EMAIL} />
+      <Input
+        value={email}
+        handleChange={setEmail}
+        error={errors.email}
+        type={INPUT_TYPES.EMAIL}
+      />
       {type !== "forgot" && (
         <Input
           value={password}
