@@ -1,14 +1,5 @@
-export default function Home(props: any) {
-  console.log(props);
+"use client";
 
-  return <>Hello</>;
+export default function Homepage() {
+  return <main></main>;
 }
-
-export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:5000");
-  return {
-    props: {
-      res,
-    },
-  };
-};
