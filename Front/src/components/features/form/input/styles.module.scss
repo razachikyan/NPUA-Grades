@@ -1,0 +1,44 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+
+    .topic {
+        font-family: "Alata";
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 133%;
+        text-transform: uppercase;
+        color: #6e7175;
+    }
+
+    .input, .input::placeholder {
+        line-height: 24px;
+        font-size: 14px;
+        font-family: "Alata";
+    }
+
+    .input {
+        width: 100%;
+        padding: 8px 12px;
+        color: #010919;
+        border-radius: 6px;
+        border: 1px solid #e8eaed;
+        outline: none;
+
+        &::placeholder {
+            color: #B3B6BD;
+        }
+    }
+
+    .error {
+        font-family: 'Alata';
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 133%;
+        color: #E72E48;
+    }
+}
