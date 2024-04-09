@@ -1,4 +1,5 @@
 import knex, { Knex } from "knex";
+import "dotenv/config";
 
 class Database {
   private static instance: Database;
@@ -8,11 +9,11 @@ class Database {
     this._knex = knex({
       client: "pg",
       connection: {
-        host: process.env.DB_HOST || "localhost",
+        host: process.env.DB_HOST,
         port: Number(process.env.DB_PORT) || 5432,
-        database: process.env.DB_NAME || "your_database_name",
-        user: process.env.DB_USER || "your_username",
-        password: process.env.DB_PASSWORD || "your_password",
+        database: process.env.DB_NAME,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
       },
     });
   }
@@ -30,4 +31,4 @@ class Database {
   }
 }
 
-export default Database.getInstance();
+export default Database.getInstance().getKnex();

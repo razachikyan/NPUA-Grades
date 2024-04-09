@@ -6,30 +6,30 @@ const userServices = new UserServices();
 export default {
   async createUser(req: Request, res: Response) {
     try {
-      const { firstname, lastname, email, password } = req.body;
-
-      const userId = await userServices.createUser({
-        firstname,
-        lastname,
-        email,
-        password,
-      });
-
-      res.status(201).json({ userId });
+      const user = await userServices.createUser(req.body);
+      res.status(201).json(user);
     } catch (error) {
       console.error("Error creating user:", error);
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ message: `Internal server error`, error });
     }
   },
 
-  async authenticateUser(req: Request, res: Response) {
+  async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
+      const user = await userServices.login(email, password);
+      res.status(200).json(user);
+    } catch (error) {
+      console.error("Error authenticating user:", error);
+      res.status(500).json({ message: "Internal server error", error });
+    }
+  },
 
-      const user = await userServices.getUser(email, password);
-
-      if (user) res.status(200).json({ message: "Login successful" });
-      else res.status(401).json({ message: "Invalid email or password" });
+  async getUser(req: Request, res: Response) {
+    try {
+      const { session } = req.query;
+      const user = await userServices.getUserBySession(String(session));
+      return res.status(200).send(user);
     } catch (error) {
       console.error("Error authenticating user:", error);
       res.status(500).json({ message: "Internal server error" });

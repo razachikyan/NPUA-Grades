@@ -1,4 +1,4 @@
-import { MESSAGES } from "@/utils/helpers/validation";
+import { MESSAGES } from "@/utils/helpers/validator";
 
 export interface IFormProps {
   type: "login" | "signup" | "forgot";

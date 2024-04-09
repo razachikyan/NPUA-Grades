@@ -5,8 +5,10 @@ import Link from "next/link";
 import classNames from "classnames";
 import { Button } from "@/components/shared/button";
 import { Input } from "./input";
-import { FormValidation } from "@/utils/helpers/validation";
+import { UserServices } from "@/services/users";
+import { FormValidation } from "@/utils/helpers/validator";
 import { IFormData, IFormProps, INPUT_TYPES } from "./types";
+import { useRouter } from "next/navigation";
 
 import styles from "./styles.module.scss";
 
@@ -23,23 +25,42 @@ export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
     lastname: "",
     password: "",
   });
-  
-  const validator = new FormValidation();
 
-  const handleSubmit = (ev: React.MouseEvent) => {
+  const router = useRouter();
+
+  const validator = new FormValidation();
+  const userServices = new UserServices();
+
+  const handleSubmit = async (ev: React.MouseEvent) => {
     ev.preventDefault();
-    const validationRes = validator.validate({
-      email,
-      confirm,
-      firstname,
-      lastname,
-      password,
-    });
+    const validationRes =
+      type === "signup"
+        ? validator.validateForSignUp({
+            email,
+            confirm,
+            firstname,
+            lastname,
+            password,
+          })
+        : validator.validateForLogIn({
+            email,
+            password,
+          });
 
     if (!validationRes.errors) {
-      // post query
+      const res =
+        type === "login"
+          ? await userServices.login(email, password)
+          : await userServices.createUser({
+              email,
+              firstname,
+              lastname,
+              password,
+            });
+
+      router.push("/");
     } else {
-      setErrors(validationRes.errors);
+      setErrors((prev) => ({ ...prev, ...validationRes.errors }));
     }
   };
 

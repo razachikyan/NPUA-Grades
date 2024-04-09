@@ -1,7 +1,27 @@
 import { formErrors, IFormData } from "@/components/features/form/types";
 
 export class FormValidation {
-  public validate({
+  public validateForLogIn({
+    email,
+    password,
+  }: Pick<IFormData, "email" | "password">) {
+    const passwordRes = this.validatePassword(password);
+    const emailRes = this.validateEmail(email);
+
+    if (passwordRes.success && emailRes.success) {
+      return { errors: null };
+    }
+
+    const errors = {
+      email: emailRes.message ? formErrors.email[emailRes.message] ?? "" : "",
+      password: passwordRes.message
+        ? formErrors.password[passwordRes.message] ?? ""
+        : "",
+    };
+
+    return { errors };
+  }
+  public validateForSignUp({
     email,
     firstname,
     lastname,
@@ -26,23 +46,24 @@ export class FormValidation {
       };
     }
     const errors = {
-      confirm: confirmRes.message
-        ? formErrors.confirm[confirmRes.message] ?? ""
-        : "",
-      email: emailRes.message ? formErrors.email[emailRes.message] ?? "" : "",
-      firstname: firstNameRes.message
-        ? formErrors.firstname[firstNameRes.message] ?? ""
-        : "",
-      lastname: lastNameRes.message
-        ? formErrors.firstname[lastNameRes.message] ?? ""
-        : "",
-      password: passwordRes.message
-        ? formErrors.password[passwordRes.message] ?? ""
-        : "",
+      confirm:
+        (confirmRes.message && formErrors.confirm[confirmRes.message]) ?? "",
+      email: (emailRes.message && formErrors.email[emailRes.message]) ?? "",
+      firstname:
+        (firstNameRes.message && formErrors.firstname[firstNameRes.message]) ??
+        "",
+      lastname:
+        (lastNameRes.message && formErrors.firstname[lastNameRes.message]) ??
+        "",
+      password:
+        (passwordRes.message && formErrors.password[passwordRes.message]) ?? "",
     };
 
     return { errors };
   }
+
+  public validateForForgot() {}
+
   private validateName(name: string): TValidateResult {
     if (name.length > 3 && name.match(/^[A-Za-z]+$/)) {
       return { success: true };
