@@ -7,5 +7,4 @@ export interface IUser {
   role: 0 | 1 | 2;
   user_id: string;
   session_id: string;
-  one_time_code?: string;
 }

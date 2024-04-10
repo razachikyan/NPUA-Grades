@@ -62,7 +62,17 @@ export class FormValidation {
     return { errors };
   }
 
-  public validateForForgot() {}
+  public validateForForgot(email: string) {
+    const emailRes = this.validateEmail(email);
+
+    if (emailRes.success) return { errors: null };
+
+    const errors = {
+      email: emailRes.message ? formErrors.email[emailRes.message] ?? "" : "",
+    };
+
+    return { errors };
+  }
 
   private validateName(name: string): TValidateResult {
     if (name.length > 3 && name.match(/^[A-Za-z]+$/)) {

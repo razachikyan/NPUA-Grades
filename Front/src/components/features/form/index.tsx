@@ -27,40 +27,48 @@ export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
   });
 
   const router = useRouter();
-
   const validator = new FormValidation();
   const userServices = new UserServices();
 
+  const clearForm = () => {
+    setEmail("");
+    setPassword("");
+    setFirstName("");
+    setLastName("");
+    setConfirm("");
+  }
+
   const handleSubmit = async (ev: React.MouseEvent) => {
     ev.preventDefault();
-    const validationRes =
-      type === "signup"
-        ? validator.validateForSignUp({
-            email,
-            confirm,
-            firstname,
-            lastname,
-            password,
-          })
-        : validator.validateForLogIn({
-            email,
-            password,
-          });
-
-    if (!validationRes.errors) {
-      const res =
-        type === "login"
-          ? await userServices.login(email, password)
-          : await userServices.createUser({
-              email,
-              firstname,
-              lastname,
-              password,
-            });
-
-      router.push("/");
-    } else {
-      setErrors((prev) => ({ ...prev, ...validationRes.errors }));
+    if (type === "signup") {
+      const data = { email, firstname, lastname, password };
+      const { errors } = validator.validateForSignUp({
+        confirm,
+        ...data,
+      });
+      if (errors) {
+        setErrors(errors);
+      } else {
+        const user = await userServices.createUser(data);
+        user && router.push("/");
+        clearForm()
+      }
+    } else if (type === "login") {
+      const { errors } = validator.validateForLogIn({
+        email,
+        password,
+      });
+      if (errors) {
+        setErrors((prev) => ({ ...prev, ...errors }));
+      } else {
+        const user = await userServices.login(email, password);
+        user && router.push("/");
+        clearForm()
+      }
+    } else if (type === "forgot") {
+      const { errors } = validator.validateForForgot(email);
+      if (errors) setErrors((prev) => ({ ...prev, ...errors }));
+      else await userServices.resetPassword(email);
     }
   };
 

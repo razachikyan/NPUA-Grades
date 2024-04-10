@@ -10,7 +10,7 @@ export default {
       res.status(201).json(user);
     } catch (error) {
       console.error("Error creating user:", error);
-      res.status(500).json({ message: `Internal server error`, error });
+      res.status(500).json(error);
     }
   },
 
@@ -21,17 +21,26 @@ export default {
       res.status(200).json(user);
     } catch (error) {
       console.error("Error authenticating user:", error);
-      res.status(500).json({ message: "Internal server error", error });
+      res.status(500).json(error);
     }
   },
 
   async getUser(req: Request, res: Response) {
     try {
-      const { session } = req.query;
-      const user = await userServices.getUserBySession(String(session));
+      const { session_id } = req.query;
+      const user = await userServices.getUserBySession(String(session_id));
       return res.status(200).send(user);
     } catch (error) {
-      console.error("Error authenticating user:", error);
+      res.status(500).json(error);
+    }
+  },
+
+  async reset(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+      await userServices.sendCode(email);
+      res.sendStatus(200);
+    } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }
   },
