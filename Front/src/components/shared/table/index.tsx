@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react";
 import { ITableProps } from "./types";
 
@@ -7,22 +9,18 @@ export const Table = ({
   bodyClassName,
   className,
   headClassName,
+  handleSort
 }: ITableProps) => {
   const [data, setData] = useState(initialData);
-
-  const sortData = (topic: string) => {
-    const colIndex = headers.indexOf(topic)
-    if(colIndex < 0) return
-    const newData = data.sort()
-    setData(newData)
-  }
 
   return (
     <table className={className}>
       <thead className={headClassName}>
         <tr>
           {headers.map((header) => {
-            return <th>{header}</th>;
+            return <th onClick={() => {
+              handleSort && setData(handleSort(header))
+            }}>{header}</th>;
           })}
         </tr>
       </thead>

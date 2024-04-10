@@ -1,0 +1,31 @@
+.container {
+    .username {
+        display: inline-block;
+        background-color: #002C83;
+        padding: 25px 140px;
+        font-size: 40px;
+        color: #ffffff;
+        margin-bottom: 38px;
+    }
+
+    .table {
+        border: 2px solid #002C83;
+        .head {
+            tr {
+                th {
+                    border: 2px solid #002C83;
+                    padding: 68px 42px;
+                };
+            }
+        }
+        
+        .body {
+            tr {
+                td {
+                    border: 2px solid #002C83;
+                    padding: 68px 42px;
+                }
+            }
+        }
+    }
+}
