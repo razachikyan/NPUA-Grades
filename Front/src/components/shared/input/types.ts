@@ -6,7 +6,7 @@ export interface IInputProps {
   value?: number | string;
   css?: React.CSSProperties;
   onIconClick?: () => void;
-  handleChange?: React.Dispatch<React.SetStateAction<string>>;
+  handleChange?: (value: string) => void;
 }
 
 export type TInputTypes = "number" | "text" | "email" | "password";

@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { ITableProps } from "./types";
+import { nanoid } from "nanoid";
 
 export const Table = ({
   initialData,
@@ -9,7 +10,7 @@ export const Table = ({
   bodyClassName,
   className,
   headClassName,
-  handleSort
+  handleSort,
 }: ITableProps) => {
   const [data, setData] = useState(initialData);
 
@@ -18,18 +19,25 @@ export const Table = ({
       <thead className={headClassName}>
         <tr>
           {headers.map((header) => {
-            return <th onClick={() => {
-              handleSort && setData(handleSort(header))
-            }}>{header}</th>;
+            return (
+              <th
+                key={nanoid()}
+                onClick={() => {
+                  handleSort && setData(handleSort(header));
+                }}
+              >
+                {header}
+              </th>
+            );
           })}
         </tr>
       </thead>
       <tbody className={bodyClassName}>
         {data.map((row) => {
           return (
-            <tr>
+            <tr key={nanoid()}>
               {row.map((item) => {
-                return <td>{item}</td>;
+                return <td key={nanoid()}>{item}</td>;
               })}
             </tr>
           );

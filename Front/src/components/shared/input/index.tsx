@@ -22,7 +22,7 @@ export const Input = ({
           src={icon}
           onClick={(ev) => {
             ev.stopPropagation();
-            onIconClick?.()
+            onIconClick?.();
           }}
           className={styles.icon}
         />

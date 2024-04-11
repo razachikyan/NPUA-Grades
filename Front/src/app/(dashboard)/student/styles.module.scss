@@ -2,28 +2,54 @@
     .username {
         display: inline-block;
         background-color: #002C83;
-        padding: 25px 140px;
-        font-size: 40px;
+        padding: 13px 82px;
+        font-size: 34px;
         color: #ffffff;
-        margin-bottom: 38px;
+        margin-bottom: 20px;
+    }
+
+    .selects {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 4px;
+        margin-bottom: 40px;
+
+        .select {
+            background-color: #002C83;
+            color: #ffffff;
+            padding: 13px 82px;
+            font-size: 34px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            padding: 13px 82px;
+            font-size: 34px;
+            margin-bottom: 20px;
+        }
     }
 
     .table {
-        border: 2px solid #002C83;
+        border: 3px solid #002C83;
+        color: #002C83;
+
         .head {
             tr {
                 th {
-                    border: 2px solid #002C83;
-                    padding: 68px 42px;
+                    border: 3px solid #002C83;
+                    padding: 24px 42px;
+                    font-size: 24px;
                 };
             }
         }
-        
+
         .body {
             tr {
                 td {
-                    border: 2px solid #002C83;
-                    padding: 68px 42px;
+                    border: 3px solid #002C83;
+                    padding: 24px 42px;
+                    font-size: 23px;
                 }
             }
         }

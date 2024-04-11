@@ -1,7 +1,4 @@
-import classNames from "classnames";
 import { IButtonProps } from "./types";
-
-import styles from "./styles.module.scss";
 
 export const Button = ({
   text,
@@ -13,7 +10,7 @@ export const Button = ({
   return (
     <button
       onClick={handleClick}
-      className={classNames(styles.button, className)}
+      className={className}
       style={css}
     >
       {text}

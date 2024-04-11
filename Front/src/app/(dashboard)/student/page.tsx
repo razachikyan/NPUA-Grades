@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Table } from "@/components/shared/table";
+import { Select } from "@/components/shared/select";
+import Arrow from "@public/icons/arrow.svg"
 import { UserServices } from "@/services/users";
 import { IUser } from "@/types/user";
 
@@ -10,6 +12,7 @@ import styles from "./styles.module.scss";
 
 export default function Student() {
   const [user, setUser] = useState<IUser | null>(null)
+  const [selectValue, setSelectValue] = useState<string>("RAZIG")
   const router = useRouter()
 
   const userServices = new UserServices()
@@ -42,8 +45,31 @@ export default function Student() {
 
   return (
     <div className={styles.container}>
-      {user && <span className={styles.username}>{user.firstname} {user.lastname}</span>}
-      <Table bodyClassName={styles.body} headClassName={styles.head} className={styles.table} headers={headers} initialData={data} />
+      {user && (
+        <span className={styles.username}>
+          {user.firstname} {user.lastname}
+        </span>
+      )}
+      <div className={styles.selects}>
+
+      {[1,2,3,4,5].map(() => (
+          <Select
+            icon={Arrow}
+            value={selectValue}
+            className={styles.select}
+            setValue={setSelectValue}
+            optionClassName={styles.option}
+            options={["lazmo", "gazmo", "pazmig", "kazmig", "qazmig"]}
+          />
+        ))}
+        </div>
+      <Table
+        bodyClassName={styles.body}
+        headClassName={styles.head}
+        className={styles.table}
+        headers={headers}
+        initialData={data}
+        />
     </div>
   );
 }

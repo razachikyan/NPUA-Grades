@@ -46,3 +46,11 @@ export const formErrors: Record<
     [MESSAGES.INCORRECT]: "•‎Incorrect password",
   },
 };
+
+export const initialData = {
+  firstname: "",
+  lastname: "",
+  email: "",
+  password: "",
+  confirm: "",
+};

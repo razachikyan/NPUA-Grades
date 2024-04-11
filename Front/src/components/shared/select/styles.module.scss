@@ -1,0 +1,29 @@
+.container {
+  position: relative;
+
+  .select {
+    position: relative;
+    text-transform: capitalize;
+    cursor: pointer;
+
+    .icon {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 10px;
+    }
+  }
+
+  .options {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+
+    .option {
+      cursor: pointer;
+    }
+  }
+}

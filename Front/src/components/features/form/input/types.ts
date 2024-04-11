@@ -3,7 +3,7 @@ import { INPUT_TYPES } from "../types";
 export interface IInputProps {
   error?: string;
   value?: string | number;
-  handleChange?: React.Dispatch<React.SetStateAction<string>>;
+  handleChange?: (value: string) => void;
   type: INPUT_TYPES;
 }
 
