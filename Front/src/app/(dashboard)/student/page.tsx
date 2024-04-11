@@ -12,7 +12,7 @@ import styles from "./styles.module.scss";
 
 export default function Student() {
   const [user, setUser] = useState<IUser | null>(null)
-  const [selectValue, setSelectValue] = useState<string>("RAZIG")
+  const [selectValue, setSelectValue] = useState<string>("Test 1")
   const router = useRouter()
 
   const userServices = new UserServices()
@@ -27,10 +27,10 @@ export default function Student() {
       "Արդ․ ՄՈԳ",
     ];
     const data = [
-        ["Raz", "Raz", "Raz", "Raz","Raz", "Raz", "Raz", "Raz"],
-        ["Raz", "Raz", "Raz", "Raz","Raz", "Raz", "Raz", "Raz"],
-        ["Raz", "Raz", "Raz", "Raz","Raz", "Raz", "Raz", "Raz"],
-        ["Raz", "Raz", "Raz", "Raz","Raz", "Raz", "Raz", "Raz"],
+        ["Data 3", "Data 3", "Data 3", "Data 3","Data 3", "Data 3", "Data 3", "Data 3"],
+        ["Data 3", "Data 3", "Data 3", "Data 3","Data 3", "Data 3", "Data 3", "Data 3"],
+        ["Data 3", "Data 3", "Data 3", "Data 3","Data 3", "Data 3", "Data 3", "Data 3"],
+        ["Data 3", "Data 3", "Data 3", "Data 3","Data 3", "Data 3", "Data 3", "Data 3"],
       ];
 
       useEffect(() => {
@@ -51,25 +51,24 @@ export default function Student() {
         </span>
       )}
       <div className={styles.selects}>
-
-      {[1,2,3,4,5].map(() => (
+        {[1, 2, 3, 4, 5].map(() => (
           <Select
             icon={Arrow}
             value={selectValue}
             className={styles.select}
             setValue={setSelectValue}
             optionClassName={styles.option}
-            options={["lazmo", "gazmo", "pazmig", "kazmig", "qazmig"]}
+            options={["test 2", "test 3", "test 4", "test 5", "test 6"]}
           />
         ))}
-        </div>
+      </div>
       <Table
         bodyClassName={styles.body}
         headClassName={styles.head}
         className={styles.table}
         headers={headers}
         initialData={data}
-        />
+      />
     </div>
   );
 }

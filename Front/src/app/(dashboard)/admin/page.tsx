@@ -12,7 +12,7 @@ import styles from "./styles.module.scss";
 
 export default function Admin() {
   const [user, setUser] = useState<IUser | null>(null);
-  const [selectValue, setSelectValue] = useState<string>("RAZIG");
+  const [selectValue, setSelectValue] = useState<string>("Test 1");
   const router = useRouter();
 
   const userServices = new UserServices();
@@ -27,10 +27,10 @@ export default function Admin() {
     "Արդ․ ՄՈԳ",
   ];
   const data = [
-    ["Raz", "Raz", "Raz", "Raz", "Raz", "Raz", "Raz", "Raz"],
-    ["Raz", "Raz", "Raz", "Raz", "Raz", "Raz", "Raz", "Raz"],
-    ["Raz", "Raz", "Raz", "Raz", "Raz", "Raz", "Raz", "Raz"],
-    ["Raz", "Raz", "Raz", "Raz", "Raz", "Raz", "Raz", "Raz"],
+    ["data 2", "data 2", "data 2", "data 2", "data 2", "data 2", "data 2", "data 2"],
+    ["data 2", "data 2", "data 2", "data 2", "data 2", "data 2", "data 2", "data 2"],
+    ["data 2", "data 2", "data 2", "data 2", "data 2", "data 2", "data 2", "data 2"],
+    ["data 2", "data 2", "data 2", "data 2", "data 2", "data 2", "data 2", "data 2"],
   ];
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function Admin() {
             className={styles.select}
             setValue={setSelectValue}
             optionClassName={styles.option}
-            options={["lazmo", "gazmo", "pazmig", "kazmig", "qazmig"]}
+            options={["test 2", "test 3", "test 4", "test 5", "test 6"]}
           />
         ))}
       </div>
