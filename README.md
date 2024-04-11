@@ -35,7 +35,8 @@
 
 <a href="https://getbootstrap.com](https://nextjs.org/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/378440/nextjs-fill.svg" alt="next.js" width="40" height="40"/> </a>
 <a href="https://sass-lang.com/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/349502/sass.svg" alt="sass" width="40" height="40"/> </a>
-
-sass
+<a href="https://expressjs.com/ru/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/378837/node.svg" alt="expressjs" width="40" height="40"/> </a>
+<a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/374147/typescriptdef-official.svg" alt="typescript" width="40" height="40"/> </a>
+<a href="https://nodemon.io/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/373932/nodemon.svg" alt="nodemon" width="40" height="40"/> </a>
 
 [Figma](https://www.figma.com/file/vGOP0ne2AezZBReroXWNK7/Untitled?type=design&mode=design)
