@@ -1,0 +1,57 @@
+.container {
+    .username {
+        display: inline-block;
+        background-color: #002C83;
+        padding: 13px 82px;
+        font-size: 34px;
+        color: #ffffff;
+        margin-bottom: 20px;
+    }
+
+    .selects {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 4px;
+        margin-bottom: 40px;
+
+        .select {
+            background-color: #002C83;
+            color: #ffffff;
+            padding: 13px 82px 13px 20px;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            padding: 13px 82px 13px 20px;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+    }
+
+    .table {
+        border: 3px solid #002C83;
+        color: #002C83;
+
+        .head {
+            tr {
+                th {
+                    border: 3px solid #002C83;
+                    padding: 24px 42px;
+                    font-size: 24px;
+                };
+            }
+        }
+
+        .body {
+            tr {
+                td {
+                    border: 3px solid #002C83;
+                    padding: 24px 42px;
+                    font-size: 23px;
+                }
+            }
+        }
+    }
+}
