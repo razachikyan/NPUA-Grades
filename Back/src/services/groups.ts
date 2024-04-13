@@ -11,6 +11,13 @@ export class GroupService {
     return group;
   }
 
+  public async getGroupByName(group_name: string): Promise<IGroup> {
+    const group = await DB<IGroup>("groups").where({ group_name }).first();
+    if (!group) throw Error("Group name is not valid");
+
+    return group;
+  }
+
   public async createGroup(group_name: string): Promise<IGroup> {
     const group_id = nanoid();
     await DB<IGroup>("groups").insert({

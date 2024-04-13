@@ -5,6 +5,9 @@ import DB from "../DB/index";
 import { IUser } from "../types";
 import EmailService from "../utils/mailer";
 import "dotenv/config";
+import { GroupService } from "./groups";
+
+const groupService = new GroupService()
 
 export class UserServices {
   private validator: ValidationService;
@@ -37,7 +40,7 @@ export class UserServices {
   }
 
   public async createUser(
-    userData: Pick<IUser, "email" | "password" | "lastname" | "firstname">
+    userData: Pick<IUser, "email" | "password" | "lastname" | "firstname" | "group_name" | "role">
   ): Promise<IUser> {
     this.validator.validate(userData);
     const checkUser = await DB<IUser>("users")
@@ -48,11 +51,18 @@ export class UserServices {
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const user_id = nanoid();
     const session_id = nanoid();
+
+    const group = await groupService.getGroupByName(userData.group_name ?? "")
+    if(!group) throw Error("Wrong group name!")
     await DB<IUser>("users").insert({
-      ...userData,
       password: hashedPassword,
       user_id,
+      group_id: group.group_id,
       session_id,
+      email: userData.email,
+      firstname: userData.firstname,
+      lastname: userData.lastname,
+      role: userData.role
     });
 
     const user = await DB<IUser>("users").where({ user_id }).first();

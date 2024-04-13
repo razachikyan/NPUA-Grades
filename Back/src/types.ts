@@ -8,6 +8,8 @@ export interface IUser {
   user_id: string;
   session_id: string;
   one_time_code?: string;
+  group_name?: string
+  group_id?: string
 }
 
 export interface IEvaluation {
