@@ -8,3 +8,9 @@ export interface IUser {
   user_id: string;
   session_id: string;
 }
+
+export const userRoles = {
+  student: 0,
+  lecturer: 1,
+  admin: 2,
+}

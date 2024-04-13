@@ -1,20 +1,31 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
 import { Button } from "@/components/shared/button";
+import { Select } from "@/components/shared/select";
 import { Input } from "./input";
 import { UserServices } from "@/services/users";
 import { FormValidation } from "@/utils/helpers/validator";
-import { IFormData, IFormProps, initialData, INPUT_TYPES } from "./types";
-import { useRouter } from "next/navigation";
+import {
+  groupOptions,
+  IFormData,
+  IFormProps,
+  initialData,
+  INPUT_TYPES,
+  roleOptions,
+} from "./types";
+import { userRoles } from "@/types/user";
 
 import styles from "./styles.module.scss";
 
 export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
   const [formData, setFormData] = useState<IFormData>(initialData);
   const [errors, setErrors] = useState<IFormData>(initialData);
+  const [role, setRole] = useState<"admin" | "lecturer" | "student">("student");
+  const [group, setGroup] = useState<string>("920");
 
   const router = useRouter();
   const validator = new FormValidation();
@@ -36,9 +47,22 @@ export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
     } else if (type === "forgot")
       errors = validator.validateForForgot(formData.email).errors;
 
-    if (errors) return setErrors((prev) => ({ ...prev, ...errors }));
+    if (errors) {
+      return setErrors((prev) => ({ ...prev, ...errors }));
+    }
     if (type === "signup") {
-      const user = await userServices.createUser(formData);
+      const data = Object.assign(
+        { role: userRoles[role] },
+        {
+          email: formData.email,
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          password: formData.password,
+          role: userRoles[role],
+        },
+        role === "student" ? { group } : {}
+      );
+      const user = await userServices.createUser(data);
       user && router.push("/");
     } else if (type === "login") {
       const user = await userServices.login(formData.email, formData.password);
@@ -51,6 +75,32 @@ export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
 
   return (
     <form className={styles.form}>
+      {type === "signup" && (
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div className={styles.selectBox}>
+            <Select
+              className={styles.select}
+              optionClassName={styles.option}
+              options={roleOptions}
+              value={role}
+              setValue={setRole as (val: string) => void}
+            />
+            <span>role</span>
+          </div>
+          {role === "student" && (
+            <div className={styles.selectBox}>
+              <Select
+                className={styles.select}
+                optionClassName={styles.option}
+                options={groupOptions}
+                value={group}
+                setValue={setGroup}
+              />
+              <span>group</span>
+            </div>
+          )}
+        </div>
+      )}
       {type === "signup" && (
         <>
           <Input

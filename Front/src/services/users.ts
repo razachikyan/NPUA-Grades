@@ -1,4 +1,5 @@
 import { IFormData } from "@/components/features/form/types";
+import { TEvalutionsData } from "@/types/evaluations";
 import { IUser } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
@@ -32,10 +33,10 @@ export class UserServices {
     }
   }
 
-  async getUser(): Promise<IUser | null> {
+  async getUser(): Promise<(IUser & {evaluations: TEvalutionsData}) | null> {
     try {
       const session = localStorage.getItem("session_id") ?? "";
-      const res = await axios.get<IUser>(
+      const res = await axios.get<IUser & { evaluations: TEvalutionsData }>(
         `${this.BaseUrl}/users?session_id=${session}`
       );
 
@@ -48,7 +49,7 @@ export class UserServices {
   }
 
   async createUser(
-    userData?: Pick<IFormData, "email" | "firstname" | "lastname" | "password">
+    userData:( Pick<IFormData, "email" | "firstname" | "lastname" | "password"> & {group?: string, role: number})
   ): Promise<IUser | null> {
     try {
       const { data } = await axios.post(

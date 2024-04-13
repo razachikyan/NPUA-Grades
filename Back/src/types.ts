@@ -9,3 +9,23 @@ export interface IUser {
   session_id: string;
   one_time_code?: string;
 }
+
+export interface IEvaluation {
+  subject_id: string;
+  user_id: string;
+  id: string;
+  lecturer_id: string;
+  value: number;
+}
+
+export interface IGroup {
+  group_id: string;
+  group_name: string;
+  id: string;
+}
+
+export interface ISubject {
+  subject_id: string;
+  subject_name: string;
+  id: string;
+}

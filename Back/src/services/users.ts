@@ -2,9 +2,9 @@ import bcrypt from "bcrypt";
 import { nanoid, customAlphabet } from "nanoid";
 import { ValidationService } from "../utils/valitator";
 import DB from "../DB/index";
-import "dotenv/config";
 import { IUser } from "../types";
 import EmailService from "../utils/mailer";
+import "dotenv/config";
 
 export class UserServices {
   private validator: ValidationService;
@@ -40,8 +40,10 @@ export class UserServices {
     userData: Pick<IUser, "email" | "password" | "lastname" | "firstname">
   ): Promise<IUser> {
     this.validator.validate(userData);
-    const checkUser = await DB<IUser>("users").where({email: userData.email}).first()
-    if(checkUser) throw Error("User with this email address already exist")
+    const checkUser = await DB<IUser>("users")
+      .where({ email: userData.email })
+      .first();
+    if (checkUser) throw Error("User with this email address already exist");
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const user_id = nanoid();
@@ -51,8 +53,8 @@ export class UserServices {
       password: hashedPassword,
       user_id,
       session_id,
-      role: 0,
     });
+
     const user = await DB<IUser>("users").where({ user_id }).first();
     if (!user) throw Error("Couldn't create user");
     return user;

@@ -20,10 +20,10 @@ export const Select = ({
 
   useEffect(() => {
     setHeight((prev) => (ref.current ? ref.current.clientHeight : prev));
-  }, [ref.current]);
+  }, []);
 
   return (
-    <div className={styles.container}>
+    <div style={{height}} className={styles.container}>
       <div
         ref={ref}
         onClick={() => setOpen((prev) => !prev)}

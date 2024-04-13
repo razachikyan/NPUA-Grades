@@ -33,7 +33,7 @@ export const Input = ({
       if (!isPass) return null;
       return prev === Hide ? Show : Hide;
     });
-  }, [inputType]);
+  }, [inputType, type]);
 
   return (
     <div className={styles.container}>

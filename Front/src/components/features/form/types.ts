@@ -54,3 +54,6 @@ export const initialData = {
   password: "",
   confirm: "",
 };
+
+export const roleOptions = ["admin", "lecturer", "student"];
+export const groupOptions = ["020", "920"];
