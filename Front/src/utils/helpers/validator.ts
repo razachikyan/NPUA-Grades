@@ -21,6 +21,21 @@ export class FormValidation {
 
     return { errors };
   }
+  public validateForChangePass({ password }: Pick<IFormData, "password">) {
+    const passwordRes = this.validatePassword(password);
+
+    if (passwordRes.success) {
+      return { errors: null };
+    }
+
+    const errors = {
+      password: passwordRes.message
+        ? formErrors.password[passwordRes.message] ?? ""
+        : "",
+    };
+
+    return { errors };
+  }
   public validateForSignUp({
     email,
     firstname,

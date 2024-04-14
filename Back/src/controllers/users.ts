@@ -25,6 +25,28 @@ export default {
     }
   },
 
+  async changePass(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+      const user = await userServices.changePass(email, password);
+      res.status(200).json(user);
+    } catch (error) {
+      console.error("Error authenticating user:", error);
+      res.status(500).json(error);
+    }
+  },
+
+  async loginWithOnetimeCode(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+      const user = await userServices.loginWithOnetimeCode(email, password);
+      res.status(200).json(user);
+    } catch (error) {
+      console.error("Error authenticating user:", error);
+      res.status(500).json(error);
+    }
+  },
+
   async getUser(req: Request, res: Response) {
     try {
       const { session_id } = req.query;
@@ -35,7 +57,7 @@ export default {
     }
   },
 
-  async reset(req: Request, res: Response) {
+  async sendCode(req: Request, res: Response) {
     try {
       const { email } = req.body;
       await userServices.sendCode(email);

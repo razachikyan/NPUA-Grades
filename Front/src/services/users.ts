@@ -9,14 +9,35 @@ export class UserServices {
     this.BaseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
   }
 
-  async login(email: string, password: string): Promise<IUser | null> {
+  async login(
+    email: string,
+    password: string,
+    isReset?: boolean
+  ): Promise<IUser | null> {
     try {
-      const { data } = await axios.post(`${this.BaseUrl}/users/login`, {
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${this.BaseUrl}/users/login${isReset ? "/reset" : ""}`,
+        {
+          email,
+          password,
+        }
+      );
 
       localStorage.setItem("session_id", data.session_id);
+      return data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async changePass(password: string): Promise<IUser | null> {
+    try {
+      const user = await this.getUser();
+      const { data } = await axios.post(`${this.BaseUrl}/users/change-pass`, {
+        password,
+        email: user?.email,
+      });
+
       return data;
     } catch (error) {
       return null;

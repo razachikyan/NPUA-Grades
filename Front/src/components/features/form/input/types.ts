@@ -31,4 +31,8 @@ export const inputData: Record<
     placeholder: "Confirm password",
     topic: "CONFIRM PASSWORD",
   },
+  [INPUT_TYPES.CHANGE]: {
+    placeholder: "Enter new password",
+    topic: "NEW PASSWORD",
+  },
 };

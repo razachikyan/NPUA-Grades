@@ -5,26 +5,27 @@ class EmailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: "Gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
         user: "tttttteeeeeesssssttttt@gmail.com",
-        pass: "23364raz27$",
+        pass: "latn injq bfnx sbff",
       },
     });
   }
 
   async sendResetPasswordEmail(email: string, resetCode: string) {
     try {
-      // Define email options
       const mailOptions: nodemailer.SendMailOptions = {
         from: "tttttteeeeeesssssttttt@gmail.com",
         to: email,
         subject: "Reset Your Password",
-        text: `Your reset code is: ${resetCode}`,
+        text: `Your reset code is: ${resetCode} \n\n Visit http://localhost:3000/login?type=reset and login with this pass`,
       };
 
       await this.transporter.sendMail(mailOptions);
-      console.log("Reset password email sent successfully");
     } catch (error) {
       console.error("Error sending reset password email:", error);
       throw error;

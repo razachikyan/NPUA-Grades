@@ -1,7 +1,7 @@
 import { MESSAGES } from "@/utils/helpers/validator";
 
 export interface IFormProps {
-  type: "login" | "signup" | "forgot";
+  type: "login" | "signup" | "forgot" | "change";
   submitText: string;
   onSubmit?: () => void;
   disabledSubmit?: boolean;
@@ -21,6 +21,7 @@ export enum INPUT_TYPES {
   LASTNAME = "lastname",
   PASSWORD = "password",
   CONFIRM = "confirm",
+  CHANGE = "change",
 }
 
 export const formErrors: Record<
@@ -46,6 +47,10 @@ export const formErrors: Record<
   [INPUT_TYPES.CONFIRM]: {
     [MESSAGES.EMPTY]: "•‎Enter the password again",
     [MESSAGES.INCORRECT]: "•‎Incorrect password",
+  },
+  [INPUT_TYPES.CHANGE]: {
+    [MESSAGES.EMPTY]: "•‎Enter the password again",
+    [MESSAGES.SHORT]: "•‎ Password should be at least 10 characters long",
   },
 };
 

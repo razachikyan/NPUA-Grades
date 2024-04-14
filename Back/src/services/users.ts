@@ -8,6 +8,7 @@ import "dotenv/config";
 import { GroupService } from "./groups";
 
 const groupService = new GroupService();
+const mailer = new EmailService();
 
 export class UserServices {
   private validator: ValidationService;
@@ -32,10 +33,30 @@ export class UserServices {
     if (!newUser) throw Error("Database error");
     return newUser;
   }
+  public async changePass(email: string, password: string): Promise<IUser> {
+    const user = await DB<IUser>("users").where({ email }).first();
+    if (!user) throw Error("User with this email address doesn't exist");
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const updatedCount = await DB<IUser>("users")
+      .where({ email })
+      .update({ password: hashedPassword });
+    if (updatedCount !== 1) throw new Error("Can't update user");
+
+    const newUser = await DB<IUser>("users").where({ email }).first();
+    if (!newUser) throw Error("Database error");
+    return newUser;
+  }
 
   public async getUserBySession(session_id: string): Promise<IUser> {
     const user = await DB<IUser>("users").where({ session_id }).first();
     if (!user) throw Error("Session id is not valid");
+    return user;
+  }
+
+  public async loginWithOnetimeCode(email:string ,one_time_code: string, ): Promise<IUser> {
+    const user = await DB<IUser>("users").where({ email }).first();
+    if (!user || user?.one_time_code !== one_time_code)
+      throw Error("Session id is not valid");
     return user;
   }
 
@@ -75,7 +96,6 @@ export class UserServices {
   public async sendCode(email: string): Promise<void> {
     const user = await DB<IUser>("users").where({ email }).first();
     if (!user) throw Error("User with this email address doesn't exist");
-    const mailer = new EmailService();
     const code = customAlphabet("0123456789", 6)();
     await DB<IUser>("users").where({ email }).update({ one_time_code: code });
     mailer.sendResetPasswordEmail(user.email, code);

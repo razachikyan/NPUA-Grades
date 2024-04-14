@@ -5,7 +5,9 @@ const router = Router();
 
 router.get("/", UserController.getUser);
 router.post("/login", UserController.login);
-router.post("/reset", UserController.reset);
+router.post("/login/reset", UserController.loginWithOnetimeCode);
+router.post("/reset", UserController.sendCode);
 router.post("/signup", UserController.createUser);
+router.post("/change-pass", UserController.changePass);
 
 export default router;

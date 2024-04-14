@@ -21,7 +21,11 @@ export const Input = ({
 
   useEffect(() => {
     setInputType(() => {
-      const isPass = [INPUT_TYPES.PASSWORD, INPUT_TYPES.CONFIRM].includes(type);
+      const isPass = [
+        INPUT_TYPES.PASSWORD,
+        INPUT_TYPES.CONFIRM,
+        INPUT_TYPES.CHANGE,
+      ].includes(type);
       const isEmail = type === INPUT_TYPES.EMAIL;
       return isPass ? "password" : isEmail ? "email" : "text";
     });

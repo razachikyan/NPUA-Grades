@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
@@ -31,6 +32,10 @@ export const Form = ({
   const [errors, setErrors] = useState<IFormData>(initialData);
   const [role, setRole] = useState<"admin" | "lecturer" | "student">("student");
   const [group, setGroup] = useState<string>("920");
+  const searchParams = useSearchParams();
+
+  const reset: boolean =
+    searchParams.get("type") === "reset" && type === "login";
 
   const router = useRouter();
   const validator = new FormValidation();
@@ -45,12 +50,17 @@ export const Form = ({
     if (type === "signup")
       errors = validator.validateForSignUp(formData).errors;
     else if (type === "login") {
-      errors = validator.validateForLogIn({
+      errors = reset ? null:  validator.validateForLogIn({
         email: formData.email,
         password: formData.password,
       }).errors;
-    } else if (type === "forgot")
+    } else if (type === "forgot") {
       errors = validator.validateForForgot(formData.email).errors;
+    } else if (type === "change") {
+      errors = validator.validateForChangePass({
+        password: formData.password,
+      }).errors;
+    }
 
     if (errors) {
       return setErrors((prev) => ({ ...prev, ...errors }));
@@ -75,15 +85,20 @@ export const Form = ({
           email: "User with this email already exist",
         }));
     } else if (type === "login") {
-      const user = await userServices.login(formData.email, formData.password);
-      user && router.push("/");
+      const user = await userServices.login(formData.email, formData.password, reset);
+      if (user) {
+        reset ? router.push("/new-pass") : router.push("/");
+      }
       user === null &&
         setErrors((prev) => ({
           ...prev,
           email: "Wrong email or password",
         }));
     } else if (type === "forgot") {
-      // await userServices.resetPassword(formData.email);
+      await userServices.resetPassword(formData.email);
+    } else if (type === "change") {
+      const user = await userServices.changePass(formData.password);
+      user && router.push("/");
     }
     onSubmit?.();
     clearForm();
@@ -137,19 +152,21 @@ export const Form = ({
           />
         </>
       )}
-      <Input
-        value={formData.email}
-        handleChange={(email) => setFormData((prev) => ({ ...prev, email }))}
-        error={errors.email}
-        type={INPUT_TYPES.EMAIL}
-      />
+      {type !== "change" && (
+        <Input
+          value={formData.email}
+          handleChange={(email) => setFormData((prev) => ({ ...prev, email }))}
+          error={errors.email}
+          type={INPUT_TYPES.EMAIL}
+        />
+      )}
       {type !== "forgot" && (
         <Input
           value={formData.password}
           handleChange={(password) =>
             setFormData((prev) => ({ ...prev, password }))
           }
-          type={INPUT_TYPES.PASSWORD}
+          type={type === "change" ? INPUT_TYPES.CHANGE : INPUT_TYPES.PASSWORD}
           error={errors.password}
         />
       )}
