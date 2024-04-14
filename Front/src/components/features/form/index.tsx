@@ -21,7 +21,12 @@ import { userRoles } from "@/types/user";
 
 import styles from "./styles.module.scss";
 
-export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
+export const Form = ({
+  type,
+  onSubmit,
+  submitText,
+  disabledSubmit = false,
+}: IFormProps): JSX.Element => {
   const [formData, setFormData] = useState<IFormData>(initialData);
   const [errors, setErrors] = useState<IFormData>(initialData);
   const [role, setRole] = useState<"admin" | "lecturer" | "student">("student");
@@ -60,16 +65,27 @@ export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
           password: formData.password,
           role: userRoles[role],
         },
-        role === "student" ? { group } : {}
+        role === "student" ? { group_name: group } : {}
       );
       const user = await userServices.createUser(data);
       user && router.push("/");
+      user === null &&
+        setErrors((prev) => ({
+          ...prev,
+          email: "User with this email already exist",
+        }));
     } else if (type === "login") {
       const user = await userServices.login(formData.email, formData.password);
       user && router.push("/");
+      user === null &&
+        setErrors((prev) => ({
+          ...prev,
+          email: "Wrong email or password",
+        }));
     } else if (type === "forgot") {
-      await userServices.resetPassword(formData.email);
+      // await userServices.resetPassword(formData.email);
     }
+    onSubmit?.();
     clearForm();
   };
 
@@ -150,6 +166,7 @@ export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
       <Button
         className={styles.button}
         text={submitText}
+        disabled={disabledSubmit}
         handleClick={handleSubmit}
       />
       {type === "forgot" && (

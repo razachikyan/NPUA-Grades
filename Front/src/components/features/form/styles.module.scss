@@ -25,7 +25,7 @@
       font-size: 18px;
       font-weight: 600;
       white-space: nowrap;
-      
+
       &:hover {
         color: #fff;
         background-color: rgba(#1261ff, 0.7);
@@ -45,6 +45,14 @@
     font-family: "Alata";
     width: 100%;
     margin-bottom: 8px;
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #ffffff;
+      color: #1261ff;
+      border: 1px solid #1261ff;
+      opacity: 0.5;
+    }
   }
 
   .back {

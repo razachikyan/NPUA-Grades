@@ -3,6 +3,8 @@ import { MESSAGES } from "@/utils/helpers/validator";
 export interface IFormProps {
   type: "login" | "signup" | "forgot";
   submitText: string;
+  onSubmit?: () => void;
+  disabledSubmit?: boolean;
 }
 
 export interface IFormData {

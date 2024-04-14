@@ -1,5 +1,4 @@
 import { IFormData } from "@/components/features/form/types";
-import { TEvalutionsData } from "@/types/evaluations";
 import { IUser } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
@@ -20,7 +19,6 @@ export class UserServices {
       localStorage.setItem("session_id", data.session_id);
       return data;
     } catch (error) {
-      console.error("Error fetching user:", error);
       return null;
     }
   }
@@ -33,23 +31,25 @@ export class UserServices {
     }
   }
 
-  async getUser(): Promise<(IUser & {evaluations: TEvalutionsData}) | null> {
+  async getUser(): Promise<IUser | null> {
     try {
       const session = localStorage.getItem("session_id") ?? "";
-      const res = await axios.get<IUser & { evaluations: TEvalutionsData }>(
+      const res = await axios.get<IUser>(
         `${this.BaseUrl}/users?session_id=${session}`
       );
 
       if (!res.data) return null;
       return res.data;
     } catch (error) {
-      console.error("Error fetching user:", error);
       return null;
     }
   }
 
   async createUser(
-    userData:( Pick<IFormData, "email" | "firstname" | "lastname" | "password"> & {group?: string, role: number})
+    userData: Pick<
+      IFormData,
+      "email" | "firstname" | "lastname" | "password"
+    > & { group?: string; role: number }
   ): Promise<IUser | null> {
     try {
       const { data } = await axios.post(
@@ -57,10 +57,9 @@ export class UserServices {
         userData
       );
       localStorage.setItem("session_id", data.session_id);
-      return data
+      return data;
     } catch (error) {
-      console.error("Error creating user:", error);
-      return null
+      return null;
     }
   }
 }

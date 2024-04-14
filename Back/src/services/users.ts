@@ -7,7 +7,7 @@ import EmailService from "../utils/mailer";
 import "dotenv/config";
 import { GroupService } from "./groups";
 
-const groupService = new GroupService()
+const groupService = new GroupService();
 
 export class UserServices {
   private validator: ValidationService;
@@ -40,20 +40,22 @@ export class UserServices {
   }
 
   public async createUser(
-    userData: Pick<IUser, "email" | "password" | "lastname" | "firstname" | "group_name" | "role">
+    userData: Pick<
+      IUser,
+      "email" | "password" | "lastname" | "firstname" | "group_name" | "role"
+    >
   ): Promise<IUser> {
     this.validator.validate(userData);
     const checkUser = await DB<IUser>("users")
       .where({ email: userData.email })
       .first();
     if (checkUser) throw Error("User with this email address already exist");
-
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const user_id = nanoid();
     const session_id = nanoid();
 
-    const group = await groupService.getGroupByName(userData.group_name ?? "")
-    if(!group) throw Error("Wrong group name!")
+    const group = await groupService.getGroupByName(userData.group_name ?? "");
+    if (!group) throw Error("Wrong group name!");
     await DB<IUser>("users").insert({
       password: hashedPassword,
       user_id,
@@ -62,7 +64,7 @@ export class UserServices {
       email: userData.email,
       firstname: userData.firstname,
       lastname: userData.lastname,
-      role: userData.role
+      role: userData.role,
     });
 
     const user = await DB<IUser>("users").where({ user_id }).first();
