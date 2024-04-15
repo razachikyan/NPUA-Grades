@@ -53,7 +53,15 @@ export class UserServices {
     return user;
   }
 
-  public async loginWithOnetimeCode(email:string ,one_time_code: string, ): Promise<IUser> {
+  public async getUsers(): Promise<IUser[]> {
+    const users = await DB<IUser>("users")
+    return users;
+  }
+
+  public async loginWithOnetimeCode(
+    email: string,
+    one_time_code: string
+  ): Promise<IUser> {
     const user = await DB<IUser>("users").where({ email }).first();
     if (!user || user?.one_time_code !== one_time_code)
       throw Error("Session id is not valid");

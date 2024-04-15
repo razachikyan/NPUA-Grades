@@ -56,7 +56,7 @@ export class UserServices {
     try {
       const session = localStorage.getItem("session_id") ?? "";
       const res = await axios.get<IUser>(
-        `${this.BaseUrl}/users?session_id=${session}`
+        `${this.BaseUrl}/users/${session}`
       );
 
       if (!res.data) return null;

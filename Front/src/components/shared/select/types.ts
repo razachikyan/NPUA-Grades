@@ -1,8 +1,9 @@
 export interface ISelectProps {
-  value: string;
-  options: string[];
+  value: string | number;
+  cover: string;
+  options: Array<string | number>;
   className?: string;
   optionClassName?: string;
-  setValue: (value: string) => void;
+  setValue: (value: string | number) => void;
   icon?: string;
 }

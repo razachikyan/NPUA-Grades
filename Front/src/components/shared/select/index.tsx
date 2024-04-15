@@ -12,6 +12,7 @@ export const Select = ({
   className,
   value,
   icon,
+  cover,
   setValue,
 }: ISelectProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
@@ -29,7 +30,7 @@ export const Select = ({
         onClick={() => setOpen((prev) => !prev)}
         className={classNames(styles.select, className)}
       >
-        {value}
+        {cover}
         {icon && (
           <Image
             src={icon}

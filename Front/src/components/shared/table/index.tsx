@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ITableProps } from "./types";
 import { nanoid } from "nanoid";
 
@@ -13,6 +13,10 @@ export const Table = ({
   handleSort,
 }: ITableProps) => {
   const [data, setData] = useState(initialData);
+
+  useEffect(() => {
+    setData(initialData);
+  }, [initialData])
 
   return (
     <table className={className}>

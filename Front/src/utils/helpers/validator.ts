@@ -90,7 +90,7 @@ export class FormValidation {
   }
 
   private validateName(name: string): TValidateResult {
-    if (name.length > 3 && name.match(/^[A-Za-z]+$/)) {
+    if (name.length >= 3 && name.match(/^[A-Za-z]+$/)) {
       return { success: true };
     }
     const message: MESSAGES =

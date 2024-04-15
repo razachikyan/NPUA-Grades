@@ -1,6 +1,6 @@
 export class ValidationService {
   private validateUsername(username: string) {
-    return username.length > 3 && username.match(/^[A-Za-z]+$/);
+    return username.length >= 3 && username.match(/^[A-Za-z]+$/);
   }
 
   private validateEmail(email: string) {

@@ -9,6 +9,12 @@ export interface IUser {
   session_id: string;
 }
 
+export interface ISubject {
+  subject_name: string;
+  subject_id: string
+  id: number
+}
+
 export const userRoles = {
   student: 0,
   lecturer: 1,

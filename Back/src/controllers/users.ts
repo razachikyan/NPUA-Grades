@@ -49,9 +49,18 @@ export default {
 
   async getUser(req: Request, res: Response) {
     try {
-      const { session_id } = req.query;
-      const user = await userServices.getUserBySession(String(session_id));
+      const { session_id } = req.params;
+      const user = await userServices.getUserBySession(session_id);
       return res.status(200).send(user);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
+  async getUsers(req: Request, res: Response) {
+    try {
+      const users = await userServices.getUsers();
+      return res.status(200).send(users);
     } catch (error) {
       res.status(500).json(error);
     }

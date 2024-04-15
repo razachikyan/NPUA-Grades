@@ -50,10 +50,12 @@ export const Form = ({
     if (type === "signup")
       errors = validator.validateForSignUp(formData).errors;
     else if (type === "login") {
-      errors = reset ? null:  validator.validateForLogIn({
-        email: formData.email,
-        password: formData.password,
-      }).errors;
+      errors = reset
+        ? null
+        : validator.validateForLogIn({
+            email: formData.email,
+            password: formData.password,
+          }).errors;
     } else if (type === "forgot") {
       errors = validator.validateForForgot(formData.email).errors;
     } else if (type === "change") {
@@ -85,7 +87,11 @@ export const Form = ({
           email: "User with this email already exist",
         }));
     } else if (type === "login") {
-      const user = await userServices.login(formData.email, formData.password, reset);
+      const user = await userServices.login(
+        formData.email,
+        formData.password,
+        reset
+      );
       if (user) {
         reset ? router.push("/new-pass") : router.push("/");
       }
@@ -114,7 +120,8 @@ export const Form = ({
               optionClassName={styles.option}
               options={roleOptions}
               value={role}
-              setValue={setRole as (val: string) => void}
+              cover="role"
+              setValue={setRole as (value: string | number) => void}
             />
             <span>role</span>
           </div>
@@ -125,7 +132,8 @@ export const Form = ({
                 optionClassName={styles.option}
                 options={groupOptions}
                 value={group}
-                setValue={setGroup}
+                cover="group"
+                setValue={setGroup as (value: string | number) => void}
               />
               <span>group</span>
             </div>
