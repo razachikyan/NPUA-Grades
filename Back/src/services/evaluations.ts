@@ -25,8 +25,10 @@ export class EvaluationService {
     const semesterNum = Number(semester);
     if (isNaN(gradeNum) || isNaN(semesterNum))
       throw Error("invalid grade or semester");
-    const evaluations = await DB<IEvaluation>("evaluations")
-      .where({ grade: gradeNum, semester: semesterNum })
+    const evaluations = await DB<IEvaluation>("evaluations").where({
+      grade: gradeNum,
+      semester: semesterNum,
+    });
     if (!evaluations) throw Error("Evaluation id is not valid");
 
     return evaluations;
@@ -34,14 +36,35 @@ export class EvaluationService {
   public async getEvaluationsBySemesterAndUser(
     grade: string,
     semester: string,
-    user_id:string
+    user_id: string
   ): Promise<IEvaluation[]> {
     const gradeNum = Number(grade);
     const semesterNum = Number(semester);
     if (isNaN(gradeNum) || isNaN(semesterNum))
       throw Error("invalid grade or semester");
-    const evaluation = await DB<IEvaluation>("evaluations")
-      .where({ grade: gradeNum, semester: semesterNum, user_id })
+    const evaluation = await DB<IEvaluation>("evaluations").where({
+      grade: gradeNum,
+      semester: semesterNum,
+      user_id,
+    });
+    if (!evaluation) throw Error("Evaluation id is not valid");
+
+    return evaluation;
+  }
+  public async getEvaluationsBySemesterAndSubject(
+    grade: string,
+    semester: string,
+    subject_id: string
+  ): Promise<IEvaluation[]> {
+    const gradeNum = Number(grade);
+    const semesterNum = Number(semester);
+    if (isNaN(gradeNum) || isNaN(semesterNum))
+      throw Error("invalid grade or semester");
+    const evaluation = await DB<IEvaluation>("evaluations").where({
+      grade: gradeNum,
+      semester: semesterNum,
+      subject_id,
+    });
     if (!evaluation) throw Error("Evaluation id is not valid");
 
     return evaluation;

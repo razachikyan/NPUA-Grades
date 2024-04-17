@@ -1,5 +1,5 @@
 import { IFormData } from "@/components/features/form/types";
-import { IUser } from "@/types/user";
+import { IUser, IUserResponse } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
 
@@ -52,12 +52,21 @@ export class UserServices {
     }
   }
 
-  async getUser(): Promise<IUser | null> {
+  async getUser(): Promise<IUserResponse | null> {
     try {
       const session = localStorage.getItem("session_id") ?? "";
-      const res = await axios.get<IUser>(
-        `${this.BaseUrl}/users/${session}`
-      );
+      const res = await axios.get<IUserResponse>(`${this.BaseUrl}/users/${session}`);
+
+      if (!res.data) return null;
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getUserById(user_id: string): Promise<IUser | null> {
+    try {
+      const res = await axios.get<IUser>(`${this.BaseUrl}/users/id/${user_id}`);
 
       if (!res.data) return null;
       return res.data;
@@ -67,10 +76,7 @@ export class UserServices {
   }
 
   async createUser(
-    userData: Pick<
-      IFormData,
-      "email" | "firstname" | "lastname" | "password"
-    > & { group?: string; role: number }
+    userData: Pick<IFormData, "email" | "firstname" | "lastname" | "password">
   ): Promise<IUser | null> {
     try {
       const { data } = await axios.post(

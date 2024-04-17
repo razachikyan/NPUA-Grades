@@ -10,6 +10,7 @@ export interface IFormProps {
 export interface IFormData {
   firstname: string;
   lastname: string;
+  middlename: string;
   email: string;
   password: string;
   confirm: string;
@@ -19,6 +20,7 @@ export enum INPUT_TYPES {
   EMAIL = "email",
   FIRSTNAME = "firstname",
   LASTNAME = "lastname",
+  MIDDLENAME = "middlename",
   PASSWORD = "password",
   CONFIRM = "confirm",
   CHANGE = "change",
@@ -29,6 +31,10 @@ export const formErrors: Record<
   Partial<Record<MESSAGES, string>>
 > = {
   [INPUT_TYPES.FIRSTNAME]: {
+    [MESSAGES.EMPTY]: "•‎Enter First name",
+    [MESSAGES.SHORT]: "•‎First name shoud be longer",
+  },
+  [INPUT_TYPES.MIDDLENAME]: {
     [MESSAGES.EMPTY]: "•‎Enter First name",
     [MESSAGES.SHORT]: "•‎First name shoud be longer",
   },
@@ -57,6 +63,7 @@ export const formErrors: Record<
 export const initialData = {
   firstname: "",
   lastname: "",
+  middlename: "",
   email: "",
   password: "",
   confirm: "",

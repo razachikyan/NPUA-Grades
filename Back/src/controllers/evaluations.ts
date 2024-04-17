@@ -49,11 +49,27 @@ export default {
   async getEvaluationsBySemesterAndUser(req: Request, res: Response) {
     try {
       const { grade, semester, user_id } = req.params;
-      const evaluations = await evaluationService.getEvaluationsBySemesterAndUser(
-        grade,
-        semester,
-        user_id
-      );
+      const evaluations =
+        await evaluationService.getEvaluationsBySemesterAndUser(
+          grade,
+          semester,
+          user_id
+        );
+
+      return res.status(200).send(evaluations);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  async getEvaluationsBySemesterAndSubject(req: Request, res: Response) {
+    try {
+      const { grade, semester, subject_id } = req.params;
+      const evaluations =
+        await evaluationService.getEvaluationsBySemesterAndSubject(
+          grade,
+          semester,
+          subject_id
+        );
 
       return res.status(200).send(evaluations);
     } catch (error) {

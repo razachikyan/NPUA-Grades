@@ -30,7 +30,7 @@ export const Select = ({
         onClick={() => setOpen((prev) => !prev)}
         className={classNames(styles.select, className)}
       >
-        {cover}
+        {cover} {value}
         {icon && (
           <Image
             src={icon}

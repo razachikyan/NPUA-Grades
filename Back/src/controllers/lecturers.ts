@@ -32,4 +32,13 @@ export default {
       res.status(500).json(error);
     }
   },
+  async getLecturerByUserId(req: Request, res: Response) {
+    try {
+      const { user_id } = req.params;
+      const lecturer = await lecturerService.getLecturerByUserId(user_id);
+      return res.status(200).send(lecturer);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
 };

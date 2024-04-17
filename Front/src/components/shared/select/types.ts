@@ -4,6 +4,6 @@ export interface ISelectProps {
   options: Array<string | number>;
   className?: string;
   optionClassName?: string;
-  setValue: (value: string | number) => void;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
   icon?: string;
 }

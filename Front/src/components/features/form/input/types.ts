@@ -7,10 +7,7 @@ export interface IInputProps {
   type: INPUT_TYPES;
 }
 
-export const inputData: Record<
-  INPUT_TYPES,
-  { placeholder: string; topic: string }
-> = {
+export const inputData: Record<INPUT_TYPES, { placeholder: string; topic: string }> = {
   [INPUT_TYPES.FIRSTNAME]: {
     placeholder: "Enter your first name",
     topic: "FIRST NAME",
@@ -18,6 +15,10 @@ export const inputData: Record<
   [INPUT_TYPES.LASTNAME]: {
     placeholder: "Enter your last name",
     topic: "LAST NAME",
+  },
+  [INPUT_TYPES.MIDDLENAME]: {
+    placeholder: "Enter your middle name",
+    topic: "MIDDLE NAME",
   },
   [INPUT_TYPES.EMAIL]: {
     placeholder: "Enter your email",

@@ -13,6 +13,15 @@ export class LecturerService {
     return lecturer;
   }
 
+  public async getLecturerByUserId(user_id: string): Promise<ILecturer> {
+    const lecturer = await DB<ILecturer>("lecturers")
+      .where({ user_id })
+      .first();
+    if (!lecturer) throw Error("Lecturer id is not valid");
+
+    return lecturer;
+  }
+
   public async createLecturer(lecturer_name: string, subject_id: string): Promise<ILecturer> {
     const lecturer_id = nanoid();
     await DB<ILecturer>("lecturers").insert({

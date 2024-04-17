@@ -1,10 +1,7 @@
-import styles from "./styles.module.scss"
+import { PropsWithChildren } from "react";
+import styles from "./styles.module.scss";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <>
       <header className={styles.header}>

@@ -2,7 +2,6 @@ import cookieParser from "cookie-parser";
 import Routes from "./routes/route";
 import express from "express";
 import cors from "cors";
-import knex from "knex";
 
 import "dotenv/config";
 

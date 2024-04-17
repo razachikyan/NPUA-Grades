@@ -17,13 +17,8 @@ export default function Login(): JSX.Element {
   useEffect(() => {
     service
       .getUser()
-      .then((res) => {
-        setUser(res);
-      })
-      .catch(() => {
-        router.push("/login");
-        setUser(null);
-      });
+      .then((res) => setUser(res))
+      .catch(() => router.push("/login"));
   }, []);
 
   const startCounting = () => {
@@ -33,7 +28,7 @@ export default function Login(): JSX.Element {
           clearInterval(key);
           return 0;
         }
-        return prev - 1;
+        return --prev;
       });
     }, 1000);
   };

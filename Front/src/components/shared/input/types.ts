@@ -5,6 +5,7 @@ export interface IInputProps {
   placeholder?: string;
   value?: number | string;
   css?: React.CSSProperties;
+  required?: boolean;
   onIconClick?: () => void;
   handleChange?: (value: string) => void;
 }

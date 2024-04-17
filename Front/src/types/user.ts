@@ -1,22 +1,21 @@
-export interface IUser {
+export interface IUserResponse {
   id: number;
   firstname: string;
   lastname: string;
   email: string;
+  middlename: string;
   password: string;
   role: 0 | 1 | 2;
   user_id: string;
   session_id: string;
 }
 
-export interface ISubject {
-  subject_name: string;
-  subject_id: string
-  id: number
+export interface IUser {
+  firstname: string;
+  lastname: string;
+  email: string;
+  middlename: string;
+  password: string;
 }
 
-export const userRoles = {
-  student: 0,
-  lecturer: 1,
-  admin: 2,
-}
+export type TGroups = "020" | "920";

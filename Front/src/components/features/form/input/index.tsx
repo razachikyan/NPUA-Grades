@@ -49,6 +49,7 @@ export const Input = ({
         placeholder={inputData[type].placeholder}
         type={inputType}
         icon={icon}
+        required
         onIconClick={() =>
           setInputType((prev) => (prev === "text" ? "password" : "text"))
         }

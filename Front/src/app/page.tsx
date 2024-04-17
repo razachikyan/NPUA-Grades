@@ -1,23 +1,29 @@
 "use client";
 
-import { UserServices } from "@/services/users";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ClockLoader } from "react-spinners";
+import { UserServices } from "@/services/users";
+
+import styles from "./styles.module.scss";
 
 export default function Homepage() {
-  const userServices = new UserServices()
-  const router = useRouter()
-  const pages = ['student', 'lecturer', "admin"]
+  const userServices = new UserServices();
+  const router = useRouter();
 
   useEffect(() => {
     const load = async () => {
-      const user = await userServices.getUser()
-      user &&  router.push(pages[user?.role]);
-      if(!user) router.push('/login')
-    }
+      const user = await userServices.getUser();
+      user && router.push("/signup");
+      if (!user) router.push("/login");
+    };
 
-    load()
-  }, [])
+    load();
+  }, []);
 
-  return <main>Hello</main>;
+  return (
+    <main className={styles.main}>
+      <ClockLoader size={200} color="#fff" speedMultiplier={3} />
+    </main>
+  );
 }

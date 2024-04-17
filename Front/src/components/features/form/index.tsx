@@ -6,19 +6,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
 import { Button } from "@/components/shared/button";
-import { Select } from "@/components/shared/select";
 import { Input } from "./input";
 import { UserServices } from "@/services/users";
 import { FormValidation } from "@/utils/helpers/validator";
-import {
-  groupOptions,
-  IFormData,
-  IFormProps,
-  initialData,
-  INPUT_TYPES,
-  roleOptions,
-} from "./types";
-import { userRoles } from "@/types/user";
+import { IFormData, IFormProps, initialData, INPUT_TYPES } from "./types";
+import { LOGIN_ERR, USER_EXIST } from "@/utils/constants/errorsMessages";
 
 import styles from "./styles.module.scss";
 
@@ -30,116 +22,84 @@ export const Form = ({
 }: IFormProps): JSX.Element => {
   const [formData, setFormData] = useState<IFormData>(initialData);
   const [errors, setErrors] = useState<IFormData>(initialData);
-  const [role, setRole] = useState<"admin" | "lecturer" | "student">("student");
-  const [group, setGroup] = useState<string>("920");
-  const searchParams = useSearchParams();
-
-  const reset: boolean =
-    searchParams.get("type") === "reset" && type === "login";
-
+  const params = useSearchParams();
   const router = useRouter();
+  const reset: boolean = params.get("type") === "reset" && type === "login";
   const validator = new FormValidation();
   const userServices = new UserServices();
 
-  const clearForm = () => setFormData(initialData);
-
   const handleSubmit = async (ev: React.MouseEvent) => {
     ev.preventDefault();
-    let errors: Partial<IFormData> | null = null;
-
-    if (type === "signup")
-      errors = validator.validateForSignUp(formData).errors;
-    else if (type === "login") {
-      errors = reset
-        ? null
-        : validator.validateForLogIn({
-            email: formData.email,
-            password: formData.password,
-          }).errors;
-    } else if (type === "forgot") {
-      errors = validator.validateForForgot(formData.email).errors;
-    } else if (type === "change") {
-      errors = validator.validateForChangePass({
-        password: formData.password,
-      }).errors;
-    }
-
-    if (errors) {
-      return setErrors((prev) => ({ ...prev, ...errors }));
-    }
-    if (type === "signup") {
-      const data = Object.assign(
-        { role: userRoles[role] },
-        {
-          email: formData.email,
-          firstname: formData.firstname,
-          lastname: formData.lastname,
-          password: formData.password,
-          role: userRoles[role],
-        },
-        role === "student" ? { group_name: group } : {}
-      );
-      const user = await userServices.createUser(data);
-      user && router.push("/");
-      user === null &&
-        setErrors((prev) => ({
-          ...prev,
-          email: "User with this email already exist",
-        }));
-    } else if (type === "login") {
-      const user = await userServices.login(
-        formData.email,
-        formData.password,
-        reset
-      );
-      if (user) {
-        reset ? router.push("/new-pass") : router.push("/");
+    switch (type) {
+      case "signup": {
+        const errors = validator.validateForSignUp(formData).errors;
+        if (errors) {
+          setErrors(errors);
+          break;
+        }
+        const { confirm, ...data } = formData;
+        const user = await userServices.createUser(data);
+        if (user === null) {
+          setErrors((prev) => ({
+            ...prev,
+            email: USER_EXIST,
+          }));
+          break;
+        }
+        router.push("/admin");
       }
-      user === null &&
-        setErrors((prev) => ({
-          ...prev,
-          email: "Wrong email or password",
-        }));
-    } else if (type === "forgot") {
-      await userServices.resetPassword(formData.email);
-    } else if (type === "change") {
-      const user = await userServices.changePass(formData.password);
-      user && router.push("/");
+      case "login": {
+        const errors = validator.validateForLogIn({
+          email: formData.email,
+          password: formData.password,
+          isReset: reset,
+        }).errors;
+        if (errors) {
+          setErrors(errors);
+          break;
+        }
+        const user = await userServices.login(
+          formData.email,
+          formData.password,
+          reset
+        );
+        if (!user) {
+          setErrors((prev) => ({
+            ...prev,
+            email: LOGIN_ERR,
+          }));
+          break;
+        }
+        reset ? router.push("/new-pass") : router.push("/admin");
+      }
+      case "forgot": {
+        const errors = validator.validateForForgot(formData.email).errors;
+        if (errors) {
+          setErrors((prev) => ({ ...prev, ...errors }));
+          break;
+        }
+        await userServices.resetPassword(formData.email);
+      }
+      case "change": {
+        const errors = validator.validateForChangePass({
+          password: formData.password,
+        }).errors;
+        if (errors) {
+          setErrors((prev) => ({ ...prev, ...errors }));
+          break;
+        }
+        const user = await userServices.changePass(formData.password);
+        user && router.push("/admin");
+      }
     }
     onSubmit?.();
-    clearForm();
+    console.log(errors);
+
+    // setFormData(initialData);
   };
 
   return (
     <form className={styles.form}>
-      {type === "signup" && (
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div className={styles.selectBox}>
-            <Select
-              className={styles.select}
-              optionClassName={styles.option}
-              options={roleOptions}
-              value={role}
-              cover="role"
-              setValue={setRole as (value: string | number) => void}
-            />
-            <span>role</span>
-          </div>
-          {role === "student" && (
-            <div className={styles.selectBox}>
-              <Select
-                className={styles.select}
-                optionClassName={styles.option}
-                options={groupOptions}
-                value={group}
-                cover="group"
-                setValue={setGroup as (value: string | number) => void}
-              />
-              <span>group</span>
-            </div>
-          )}
-        </div>
-      )}
       {type === "signup" && (
         <>
           <Input
@@ -157,6 +117,14 @@ export const Form = ({
             }
             type={INPUT_TYPES.LASTNAME}
             error={errors.lastname}
+          />
+          <Input
+            value={formData.middlename}
+            handleChange={(middlename) =>
+              setFormData((prev) => ({ ...prev, middlename }))
+            }
+            type={INPUT_TYPES.LASTNAME}
+            error={errors.middlename}
           />
         </>
       )}
@@ -189,17 +157,17 @@ export const Form = ({
         />
       )}
       <Button
-        className={styles.button}
         text={submitText}
+        btnType="submit"
+        className={styles.button}
         disabled={disabledSubmit}
         handleClick={handleSubmit}
       />
-      {type === "forgot" && (
+      {type === "forgot" ? (
         <Link className={classNames(styles.button, styles.back)} href="/login">
           Back to login
         </Link>
-      )}
-      {type !== "forgot" && (
+      ) : (
         <p className={styles.redirect}>
           {type === "login" ? (
             <>

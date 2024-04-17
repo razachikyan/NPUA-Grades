@@ -3,5 +3,6 @@ export interface IButtonProps extends React.PropsWithChildren {
   className?: string;
   css?: React.CSSProperties;
   disabled?: boolean;
+  btnType?: "submit" | "button";
   handleClick?: (ev: React.MouseEvent) => void;
 }

@@ -1,4 +1,4 @@
-import { ISubject } from "@/types/user";
+import { ISubjectResponse } from "@/types/subjects";
 import axios from "axios";
 import "dotenv/config";
 
@@ -8,7 +8,7 @@ export class SubjectSevice {
     this.BaseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
   }
 
-  async getSubjects(): Promise<ISubject[] | null> {
+  async getSubjects(): Promise<ISubjectResponse[] | null> {
     try {
       const { data } = await axios.get(`${this.BaseUrl}/subjects`);
       return data;

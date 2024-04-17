@@ -1,133 +1,91 @@
 import { formErrors, IFormData } from "@/components/features/form/types";
 
 export class FormValidation {
-  public validateForLogIn({
-    email,
-    password,
-  }: Pick<IFormData, "email" | "password">) {
-    const passwordRes = this.validatePassword(password);
-    const emailRes = this.validateEmail(email);
+  public validateForLogIn(
+    data: Pick<IFormData, "email" | "password"> & { isReset: boolean }
+  ) {
+    const passwordRes = this.validatePassword(data.password);
+    const emailRes = this.validateEmail(data.email);
+    if (data.isReset || (passwordRes && emailRes)) return { errors: null };
 
-    if (passwordRes.success && emailRes.success) {
+    return {
+      email: emailRes ? formErrors.email[emailRes] ?? "" : "",
+      password: passwordRes ? formErrors.password[passwordRes] ?? "" : "",
+    };
+  }
+
+  public validateForChangePass({ password }: Pick<IFormData, "password">): {
+    errors: Pick<IFormData, "password"> | null;
+  } {
+    const passwordRes = this.validatePassword(password);
+    if (passwordRes) return { errors: null };
+    const errors = {
+      password: passwordRes ? formErrors.password[passwordRes] ?? "" : "",
+    };
+
+    return { errors };
+  }
+
+  public validateForSignUp(data: IFormData): { errors: IFormData | null } {
+    const emailRes = this.validateEmail(data.email);
+    const firstNameRes = this.validateName(data.firstname);
+    const middlenameRes = this.validateName(data.middlename);
+    const lastNameRes = this.validateName(data.lastname);
+    const passwordRes = this.validatePassword(data.password);
+    const confirmRes = this.validateConfirm(data.password, data.confirm);
+    if (!confirmRes && !lastNameRes && !passwordRes && !firstNameRes && !emailRes)
       return { errors: null };
-    }
-
     const errors = {
-      email: emailRes.message ? formErrors.email[emailRes.message] ?? "" : "",
-      password: passwordRes.message
-        ? formErrors.password[passwordRes.message] ?? ""
-        : "",
+      confirm: (confirmRes && formErrors.confirm[confirmRes]) ?? "",
+      email: (emailRes && formErrors.email[emailRes]) ?? "",
+      firstname: (firstNameRes && formErrors.firstname[firstNameRes]) ?? "",
+      middlename: (middlenameRes && formErrors.middlename[middlenameRes]) ?? "",
+      lastname: (lastNameRes && formErrors.firstname[lastNameRes]) ?? "",
+      password: (passwordRes && formErrors.password[passwordRes]) ?? "",
     };
 
     return { errors };
   }
-  public validateForChangePass({ password }: Pick<IFormData, "password">) {
-    const passwordRes = this.validatePassword(password);
 
-    if (passwordRes.success) {
-      return { errors: null };
-    }
-
-    const errors = {
-      password: passwordRes.message
-        ? formErrors.password[passwordRes.message] ?? ""
-        : "",
-    };
-
-    return { errors };
-  }
-  public validateForSignUp({
-    email,
-    firstname,
-    lastname,
-    password,
-    confirm,
-  }: IFormData): { errors: IFormData | null } {
+  public validateForForgot(email: string): {
+    errors: Pick<IFormData, "email"> | null;
+  } {
     const emailRes = this.validateEmail(email);
-    const firstNameRes = this.validateName(firstname);
-    const lastNameRes = this.validateName(lastname);
-    const passwordRes = this.validatePassword(password);
-    const confirmRes = this.validateConfirm(password, confirm);
-
-    if (
-      confirmRes.success &&
-      lastNameRes.success &&
-      passwordRes.success &&
-      firstNameRes.success &&
-      emailRes.success
-    ) {
-      return {
-        errors: null,
-      };
-    }
+    if (emailRes) return { errors: null };
     const errors = {
-      confirm:
-        (confirmRes.message && formErrors.confirm[confirmRes.message]) ?? "",
-      email: (emailRes.message && formErrors.email[emailRes.message]) ?? "",
-      firstname:
-        (firstNameRes.message && formErrors.firstname[firstNameRes.message]) ??
-        "",
-      lastname:
-        (lastNameRes.message && formErrors.firstname[lastNameRes.message]) ??
-        "",
-      password:
-        (passwordRes.message && formErrors.password[passwordRes.message]) ?? "",
+      email: emailRes ? formErrors.email[emailRes] ?? "" : "",
     };
 
     return { errors };
   }
 
-  public validateForForgot(email: string) {
-    const emailRes = this.validateEmail(email);
+  private validateName(name: string): MESSAGES | null {
+    if (name.length >= 3 && this.NAME_REGEXP.test(name)) return null;
 
-    if (emailRes.success) return { errors: null };
-
-    const errors = {
-      email: emailRes.message ? formErrors.email[emailRes.message] ?? "" : "",
-    };
-
-    return { errors };
+    return name.length <= 3
+      ? MESSAGES.SHORT
+      : name.length === 0
+      ? MESSAGES.EMPTY
+      : MESSAGES.INVALID;
   }
 
-  private validateName(name: string): TValidateResult {
-    if (name.length >= 3 && name.match(/^[A-Za-z]+$/)) {
-      return { success: true };
+  private validateEmail(email: string): MESSAGES | null {
+    if (email.length && this.EMAIL_REGEXP.test(email)) {
+      return null;
     }
-    const message: MESSAGES =
-      name.length <= 3
-        ? MESSAGES.SHORT
-        : name.length === 0
-        ? MESSAGES.EMPTY
-        : MESSAGES.INVALID;
-    return { success: false, message };
+    return email.length === 0 ? MESSAGES.EMPTY : MESSAGES.INVALID;
   }
 
-  private validateEmail(email: string): TValidateResult {
-    if (
-      email.length > 0 &&
-      email.match(/^[\w]+\.?[\w]+@[A-Za-z]+\.[A-Za-z]+$/)
-    ) {
-      return { success: true };
-    }
-    const message = email.length === 0 ? MESSAGES.EMPTY : MESSAGES.INVALID;
-    return { success: false, message };
+  private validatePassword(password: string): MESSAGES | null {
+    return password.length >= 10 ? null : MESSAGES.SHORT;
   }
 
-  private validatePassword(password: string): TValidateResult {
-    if (password.length >= 10) {
-      return { success: true };
-    }
-    return { success: false, message: MESSAGES.SHORT };
+  private validateConfirm(pass1: string, pass2: string): MESSAGES | null {
+    return pass1 === pass2 && pass1 && pass2 ? null : MESSAGES.INCORRECT;
   }
-
-  private validateConfirm(pass1: string, pass2: string): TValidateResult {
-    return pass1 === pass2 && pass1 && pass2
-      ? { success: true }
-      : { success: false, message: MESSAGES.INCORRECT };
-  }
+  private NAME_REGEXP = /^[\u0531-\u0587\u0561-\u0587\u055A\u055B'-]+$/u;
+  private EMAIL_REGEXP = /^[\w]+\.?[\w]+@[A-Za-z]+\.[A-Za-z]+$/;
 }
-
-type TValidateResult = { success: boolean; message?: MESSAGES };
 
 export enum MESSAGES {
   SHORT = "short",

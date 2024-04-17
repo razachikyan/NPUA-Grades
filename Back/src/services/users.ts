@@ -6,6 +6,7 @@ import { IUser } from "../types";
 import EmailService from "../utils/mailer";
 import "dotenv/config";
 import { GroupService } from "./groups";
+import { USER_EXIST } from "../utils/constants";
 
 const groupService = new GroupService();
 const mailer = new EmailService();
@@ -33,6 +34,7 @@ export class UserServices {
     if (!newUser) throw Error("Database error");
     return newUser;
   }
+
   public async changePass(email: string, password: string): Promise<IUser> {
     const user = await DB<IUser>("users").where({ email }).first();
     if (!user) throw Error("User with this email address doesn't exist");
@@ -53,8 +55,14 @@ export class UserServices {
     return user;
   }
 
+  public async getUserById(user_id: string): Promise<IUser> {
+    const user = await DB<IUser>("users").where({ user_id }).first();
+    if (!user) throw Error("user id is not valid");
+    return user;
+  }
+
   public async getUsers(): Promise<IUser[]> {
-    const users = await DB<IUser>("users")
+    const users = await DB<IUser>("users");
     return users;
   }
 
@@ -69,10 +77,7 @@ export class UserServices {
   }
 
   public async createUser(
-    userData: Pick<
-      IUser,
-      "email" | "password" | "lastname" | "firstname" | "group_name" | "role"
-    >
+    userData: Pick<IUser, "email" | "password" | "lastname" | "firstname">
   ): Promise<IUser> {
     this.validator.validate(userData);
     const checkUser = await DB<IUser>("users")
@@ -83,17 +88,43 @@ export class UserServices {
     const user_id = nanoid();
     const session_id = nanoid();
 
-    const group = await groupService.getGroupByName(userData.group_name ?? "");
-    if (!group) throw Error("Wrong group name!");
     await DB<IUser>("users").insert({
       password: hashedPassword,
       user_id,
-      group_id: group.group_id,
       session_id,
       email: userData.email,
       firstname: userData.firstname,
       lastname: userData.lastname,
-      role: userData.role,
+    });
+
+    const user = await DB<IUser>("users").where({ user_id }).first();
+    if (!user) throw Error("Couldn't create user");
+    return user;
+  }
+
+  public async signup(
+    userData: Pick<
+      IUser,
+      "email" | "password" | "lastname" | "firstname" | "middlename"
+    >
+  ): Promise<IUser> {
+    this.validator.validate(userData);
+    const checkUser = await DB<IUser>("users")
+      .where({ email: userData.email })
+      .first();
+    if (checkUser) throw Error(USER_EXIST);
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const user_id = nanoid();
+    const session_id = nanoid();
+
+    await DB<IUser>("users").insert({
+      password: hashedPassword,
+      user_id,
+      session_id,
+      email: userData.email,
+      firstname: userData.firstname,
+      lastname: userData.lastname,
+      middlename: userData.middlename,
     });
 
     const user = await DB<IUser>("users").where({ user_id }).first();

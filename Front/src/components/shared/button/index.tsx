@@ -3,6 +3,7 @@ import { IButtonProps } from "./types";
 export const Button = ({
   text,
   css,
+  btnType = "button",
   children,
   className,
   handleClick,
@@ -13,6 +14,7 @@ export const Button = ({
       disabled={disabled}
       onClick={handleClick}
       className={className}
+      type={btnType}
       style={css}
     >
       {text}

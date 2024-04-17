@@ -1,15 +1,13 @@
 export interface IUser {
   id: number;
   firstname: string;
+  middlename: string;
   lastname: string;
   email: string;
   password: string;
-  role: 0 | 1 | 2;
   user_id: string;
   session_id: string;
   one_time_code?: string;
-  group_name?: string
-  group_id?: string
 }
 
 export interface IEvaluation {
@@ -39,6 +37,7 @@ export interface ISubject {
 
 export interface ILecturer {
   lecturer_id: string;
+  user_id: string;
   lecturer_name: string;
   subject_id: string;
   id: number;

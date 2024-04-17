@@ -4,10 +4,10 @@ import { UserServices } from "../services/users";
 const userServices = new UserServices();
 
 export default {
-  async createUser(req: Request, res: Response) {
+  async signup(req: Request, res: Response) {
     try {
-      const user = await userServices.createUser(req.body);
-      res.status(201).json(user);
+      const user = await userServices.signup(req.body);
+      res.status(201).json("hwllo");
     } catch (error) {
       console.error("Error creating user:", error);
       res.status(500).json(error);
@@ -51,6 +51,16 @@ export default {
     try {
       const { session_id } = req.params;
       const user = await userServices.getUserBySession(session_id);
+      return res.status(200).send(user);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
+  async getUserById(req: Request, res: Response) {
+    try {
+      const { user_id } = req.params;
+      const user = await userServices.getUserById(user_id);
       return res.status(200).send(user);
     } catch (error) {
       res.status(500).json(error);

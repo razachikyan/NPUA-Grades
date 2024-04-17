@@ -1,9 +1,9 @@
-export interface IEvaluation {
+export interface IEvaluationResponse {
+  lecturer_id: string;
   subject_id: string;
   user_id: string;
-  id: number;
-  lecturer_id: string;
+  semester: number;
   value: number;
   grade: number;
-  semester: number;
+  id: number;
 }

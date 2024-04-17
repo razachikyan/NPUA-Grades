@@ -1,6 +1,7 @@
 export class ValidationService {
   private validateUsername(username: string) {
-    return username.length >= 3 && username.match(/^[A-Za-z]+$/);
+    const reg = /^[\u0531-\u0587\u0561-\u0587\u055A\u055B'-]+$/u;
+    return username.length >= 3 && reg.test(username);
   }
 
   private validateEmail(email: string) {

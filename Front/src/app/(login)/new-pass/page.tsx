@@ -1,4 +1,5 @@
 "use client";
+
 import { Form } from "@/components/features/form";
 
 import styles from "./styles.module.scss";
