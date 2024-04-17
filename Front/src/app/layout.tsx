@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "normalize.css";
+import "react-loading-skeleton/dist/skeleton.css";
 import "./fonts.scss";
 import "./globals.scss";
 
