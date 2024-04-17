@@ -14,7 +14,7 @@ export default function Homepage() {
   useEffect(() => {
     const load = async () => {
       const user = await userServices.getUser();
-      user && router.push("/signup");
+      user && router.push("/admin");
       if (!user) router.push("/login");
     };
 

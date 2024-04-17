@@ -1,5 +1,7 @@
+"use client";
+
 import styles from "./styles.module.scss";
 
 export default function StudentsStats() {
-  return <>Students here</>;
+  return <div className={styles.container}></div>;
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { nanoid } from "nanoid";
 import classNames from "classnames";
@@ -24,7 +26,7 @@ export const Select = ({
   }, []);
 
   return (
-    <div style={{height}} className={styles.container}>
+    <div style={{ height }} className={styles.container}>
       <div
         ref={ref}
         onClick={() => setOpen((prev) => !prev)}
@@ -45,7 +47,7 @@ export const Select = ({
           {options.map((option) => {
             return (
               <div
-              onClick={() => {
+                onClick={() => {
                   setOpen(false);
                   setValue(option);
                 }}
