@@ -1,5 +1,5 @@
 .container {
-    .selects {
+  .selects {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -29,6 +29,7 @@
   .table {
     border: 3px solid #002c83;
     color: #002c83;
+    margin-bottom: 40px;
 
     .head {
       tr {
@@ -48,6 +49,68 @@
           font-size: 23px;
         }
       }
+    }
+  }
+  .newStudent {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .input,
+    .input::placeholder {
+      line-height: 24px;
+      font-size: 14px;
+      font-family: "Alata";
+    }
+
+    .input {
+      width: 100%;
+      padding: 8px 12px;
+      color: #010919;
+      border-radius: 6px;
+      border: 1px solid var(--white_400);
+      outline: none;
+
+      &::placeholder {
+        color: var(--white_400);
+      }
+    }
+
+    .studentSelect {
+      background-color: #1261ff;
+      color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 18px;
+      width: 85px;
+    }
+
+    .studentOption {
+      color: #1261ff;
+      background-color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 18px;
+      font-weight: 600;
+      white-space: nowrap;
+
+      &:hover {
+        color: #fff;
+        background-color: rgba(#1261ff, 0.7);
+      }
+    }
+
+    .addBtn {
+      padding: 10px;
+      margin-top: 8px 0 40px;
+      background: #1261ff;
+      border-radius: 6px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 171%;
+      color: #fff;
+      font-family: "Alata";
+      margin-bottom: 8px;
     }
   }
 }

@@ -19,3 +19,36 @@ export interface IUser {
 }
 
 export type TGroups = "020" | "920";
+
+export interface ILecturerResponse {
+  lecturer_id: string;
+  firstname: string;
+  lastname: string;
+  nickname: string;
+  password: string;
+  middlename: string;
+  subject_id: string;
+  id: number;
+}
+
+export interface ILecturer {
+  firstname: string;
+  lastname: string;
+  middlename: string;
+  subject: string;
+}
+
+export interface IStudentResponse {
+  stident_id: string;
+  firstname: string;
+  lastname: string;
+  middlename: string;
+  group_id: string;
+  id: number;
+}
+export interface IStudent {
+  firstname: string;
+  lastname: string;
+  middlename: string;
+  group: string;
+}

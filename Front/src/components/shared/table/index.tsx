@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ITableProps } from "./types";
 import { nanoid } from "nanoid";
+import { Cell } from "./cell";
 
 export const Table = ({
   initialData,
@@ -41,7 +42,7 @@ export const Table = ({
           return (
             <tr key={nanoid()}>
               {row.map((item) => {
-                return <td key={nanoid()}>{item}</td>;
+                return <Cell value={item} setValue={(v) => {}}/>;
               })}
             </tr>
           );

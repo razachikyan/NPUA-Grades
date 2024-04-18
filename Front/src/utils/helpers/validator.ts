@@ -1,6 +1,22 @@
 import { formErrors, IFormData } from "@/components/features/form/types";
+import { IStudent } from "@/types/user";
 
 export class FormValidation {
+  public validateStudent(data: IStudent) {
+    const firstNameRes = this.validateName(data.firstname);
+    const middlenameRes = this.validateName(data.middlename);
+    const lastNameRes = this.validateName(data.lastname);
+    if (!lastNameRes && !firstNameRes && !middlenameRes)
+      return { errors: null };
+    const errors = {
+      firstname: (firstNameRes && formErrors.firstname[firstNameRes]) ?? "",
+      middlename: (middlenameRes && formErrors.middlename[middlenameRes]) ?? "",
+      lastname: (lastNameRes && formErrors.firstname[lastNameRes]) ?? "",
+    };
+
+    return { errors };
+  }
+
   public validateForLogIn(
     data: Pick<IFormData, "email" | "password"> & { isReset: boolean }
   ) {
@@ -33,7 +49,13 @@ export class FormValidation {
     const lastNameRes = this.validateName(data.lastname);
     const passwordRes = this.validatePassword(data.password);
     const confirmRes = this.validateConfirm(data.password, data.confirm);
-    if (!confirmRes && !lastNameRes && !passwordRes && !firstNameRes && !emailRes)
+    if (
+      !confirmRes &&
+      !lastNameRes &&
+      !passwordRes &&
+      !firstNameRes &&
+      !emailRes
+    )
       return { errors: null };
     const errors = {
       confirm: (confirmRes && formErrors.confirm[confirmRes]) ?? "",
