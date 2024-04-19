@@ -1,32 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Table } from "@/components/shared/table";
 import { Select } from "@/components/shared/select";
-import { IStudent, TGroups } from "@/types/user";
-import { initialStudent, tableHeaders } from "./constants";
-
-import styles from "./styles.module.scss";
+import { IStudent, IStudentResponse, TGroups } from "@/types/user";
 import { Input } from "@/components/shared/input";
 import { Button } from "@/components/shared/button";
+import { initialStudent, tableHeaders } from "./constants";
 import { AdminServices } from "@/services/admin";
 import { FormValidation } from "@/utils/helpers/validator";
 
+import styles from "./styles.module.scss";
+
 export default function StudentsStats() {
   const [year, setYear] = useState<number>(2024);
-  const [group, setGroup] = useState<TGroups>("020");
+  const [group, setGroup] = useState<TGroups>("920");
   const [semester, setSemester] = useState<number>(2);
+  const [students, setStudents] = useState<IStudent[]>([]);
   const [newStudent, setNewStudent] = useState<IStudent>(initialStudent);
   const adminServices = new AdminServices();
   const validator = new FormValidation();
-  const handleSubmit =async () => {
-    const errors = validator.validateStudent(newStudent);
+  const handleSubmit = async () => {
+    const errors = validator.validateStudent(newStudent).errors;
+
     if (errors) {
       setNewStudent(initialStudent);
       return;
     }
-    const user = await adminServices.addStudent(newStudent)
+    const user = await adminServices.addStudent(newStudent);
+    if (user) {
+      setStudents((prev) => {
+        prev.push(user);
+        return prev;
+      });
+    }
   };
+
+  useEffect(() => {
+    adminServices
+      .getStudents({ group, grade: year - 2020, semester })
+      .then(({ data }: any) => {
+        console.log(data);
+
+        setStudents(
+          data.map((item: any) => ({
+            firstname: item.firstname,
+            group: item.group,
+            lastname: item.lastname,
+            middlename: item.middlename,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -60,7 +86,16 @@ export default function StudentsStats() {
         className={styles.table}
         bodyClassName={styles.body}
         headClassName={styles.head}
-        initialData={[]}
+        initialData={students.map((stud, i) =>
+          [
+            i,
+            `${stud.firstname} ${stud.lastname} ${stud.middlename}`,
+            stud.group,
+            year - 2020,
+            "ՏՀՏԷ",
+            123,
+          ].map((it) => String(it))
+        )}
         headers={tableHeaders}
       />
       <form className={styles.newStudent}>

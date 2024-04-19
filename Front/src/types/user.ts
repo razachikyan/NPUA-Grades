@@ -43,7 +43,7 @@ export interface IStudentResponse {
   firstname: string;
   lastname: string;
   middlename: string;
-  group_id: string;
+  group: string;
   id: number;
 }
 export interface IStudent {

@@ -9,4 +9,4 @@ export interface ITableProps {
   handleSort?: (title: string) => TData;
 }
 
-type TData = Array<Array<React.ReactNode>>
+type TData = Array<Array<string>>;

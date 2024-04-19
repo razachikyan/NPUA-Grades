@@ -17,8 +17,6 @@ export default function Admin({ children }: PropsWithChildren) {
   useEffect(() => {
     const load = async () => {
       const user = await userServices.getUser();
-      console.log(user);
-
       if (!user || user.session_id !== localStorage.getItem("session_id"))
         router.push("/login");
       setUser(user);

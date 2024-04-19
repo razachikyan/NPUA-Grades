@@ -1,4 +1,4 @@
-import { ILecturer, IStudent, TGroups } from "@/types/user";
+import { ILecturer, IStudent, IStudentResponse, TGroups } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
 
@@ -8,14 +8,40 @@ export class AdminServices {
     this.BaseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
   }
 
-  public async addStudent(student: IStudent) {
+  public async addStudent(student: IStudent): Promise<IStudent | null> {
     try {
-      const user = await axios.post(`${this.BaseUrl}/students`, student);
-      if (!user) return null;
-      return user;
+      const { data } = await axios.post(`${this.BaseUrl}/students`, student);
+      if (!data) return null;
+      return {
+        firstname: data.firstname.trim(),
+        lastname: data.lastname.trim(),
+        middlename: data.middlename.trim(),
+        group: data.group.trim(),
+      };
     } catch (error: any) {
       console.error(error.message);
       return null;
+    }
+  }
+
+  public async getStudents({
+    group,
+    grade,
+    semester,
+  }: {
+    group: TGroups;
+    grade: number;
+    semester: number;
+  }): Promise<IStudentResponse[]> {
+    try {
+      const students: IStudentResponse[] = await axios.get(
+        `${this.BaseUrl}/students/${group}/${grade}/${semester}`
+      );
+      if (!students) return [];
+      return students;
+    } catch (error: any) {
+      console.error(error.message);
+      return [];
     }
   }
 

@@ -1,5 +1,3 @@
-import { MESSAGES } from "@/utils/helpers/validator";
-
 export interface IFormProps {
   type: "login" | "signup" | "forgot" | "change";
   submitText: string;
@@ -24,6 +22,13 @@ export enum INPUT_TYPES {
   PASSWORD = "password",
   CONFIRM = "confirm",
   CHANGE = "change",
+}
+
+export enum MESSAGES {
+  SHORT = "short",
+  EMPTY = "empty",
+  INVALID = "invalid",
+  INCORRECT = "incorrect",
 }
 
 export const formErrors: Record<

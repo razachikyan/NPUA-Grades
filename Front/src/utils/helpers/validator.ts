@@ -1,4 +1,8 @@
-import { formErrors, IFormData } from "@/components/features/form/types";
+import {
+  formErrors,
+  IFormData,
+  MESSAGES,
+} from "@/components/features/form/types";
 import { IStudent } from "@/types/user";
 
 export class FormValidation {
@@ -107,11 +111,4 @@ export class FormValidation {
   }
   private NAME_REGEXP = /^[\u0531-\u0587\u0561-\u0587\u055A\u055B'-]+$/u;
   private EMAIL_REGEXP = /^[\w]+\.?[\w]+@[A-Za-z]+\.[A-Za-z]+$/;
-}
-
-export enum MESSAGES {
-  SHORT = "short",
-  EMPTY = "empty",
-  INVALID = "invalid",
-  INCORRECT = "incorrect",
 }

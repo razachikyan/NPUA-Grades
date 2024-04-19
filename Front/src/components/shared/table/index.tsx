@@ -17,7 +17,7 @@ export const Table = ({
 
   useEffect(() => {
     setData(initialData);
-  }, [initialData])
+  }, [initialData]);
 
   return (
     <table className={className}>
@@ -38,11 +38,21 @@ export const Table = ({
         </tr>
       </thead>
       <tbody className={bodyClassName}>
-        {data.map((row) => {
+        {data.map((row, i) => {
           return (
             <tr key={nanoid()}>
-              {row.map((item) => {
-                return <Cell value={item} setValue={(v) => {}}/>;
+              {row.map((item, j) => {
+                return (
+                  <Cell
+                    value={item}
+                    setValue={(val) => {
+                      setData((prev) => {
+                        prev[i][j] = val;
+                        return prev;
+                      });
+                    }}
+                  />
+                );
               })}
             </tr>
           );

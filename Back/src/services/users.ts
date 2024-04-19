@@ -2,13 +2,11 @@ import bcrypt from "bcrypt";
 import { nanoid, customAlphabet } from "nanoid";
 import { ValidationService } from "../utils/valitator";
 import DB from "../DB/index";
-import { IUser } from "../types";
+import { IUser, IUserResponse } from "../types";
 import EmailService from "../utils/mailer";
-import "dotenv/config";
-import { GroupService } from "./groups";
 import { USER_EXIST } from "../utils/constants";
+import "dotenv/config";
 
-const groupService = new GroupService();
 const mailer = new EmailService();
 
 export class UserServices {
@@ -25,7 +23,7 @@ export class UserServices {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) throw Error("Wrong password");
 
-    const updatedCount = await DB<IUser>("users")
+    const updatedCount = await DB<IUserResponse>("users")
       .where({ email })
       .update({ session_id: nanoid() });
     if (updatedCount !== 1) throw new Error("Can't update user");
@@ -49,14 +47,14 @@ export class UserServices {
     return newUser;
   }
 
-  public async getUserBySession(session_id: string): Promise<IUser> {
-    const user = await DB<IUser>("users").where({ session_id }).first();
+  public async getUserBySession(session_id: string): Promise<IUserResponse> {
+    const user = await DB<IUserResponse>("users").where({ session_id }).first();
     if (!user) throw Error("Session id is not valid");
     return user;
   }
 
-  public async getUserById(user_id: string): Promise<IUser> {
-    const user = await DB<IUser>("users").where({ user_id }).first();
+  public async getUserById(user_id: string): Promise<IUserResponse> {
+    const user = await DB<IUserResponse>("users").where({ user_id }).first();
     if (!user) throw Error("user id is not valid");
     return user;
   }
@@ -70,7 +68,7 @@ export class UserServices {
     email: string,
     one_time_code: string
   ): Promise<IUser> {
-    const user = await DB<IUser>("users").where({ email }).first();
+    const user = await DB<IUserResponse>("users").where({ email }).first();
     if (!user || user?.one_time_code !== one_time_code)
       throw Error("Session id is not valid");
     return user;
@@ -88,7 +86,7 @@ export class UserServices {
     const user_id = nanoid();
     const session_id = nanoid();
 
-    await DB<IUser>("users").insert({
+    await DB<IUserResponse>("users").insert({
       password: hashedPassword,
       user_id,
       session_id,
@@ -97,7 +95,7 @@ export class UserServices {
       lastname: userData.lastname,
     });
 
-    const user = await DB<IUser>("users").where({ user_id }).first();
+    const user = await DB<IUserResponse>("users").where({ user_id }).first();
     if (!user) throw Error("Couldn't create user");
     return user;
   }
@@ -117,7 +115,7 @@ export class UserServices {
     const user_id = nanoid();
     const session_id = nanoid();
 
-    await DB<IUser>("users").insert({
+    await DB<IUserResponse>("users").insert({
       password: hashedPassword,
       user_id,
       session_id,
@@ -127,16 +125,18 @@ export class UserServices {
       middlename: userData.middlename,
     });
 
-    const user = await DB<IUser>("users").where({ user_id }).first();
+    const user = await DB<IUserResponse>("users").where({ user_id }).first();
     if (!user) throw Error("Couldn't create user");
     return user;
   }
 
   public async sendCode(email: string): Promise<void> {
-    const user = await DB<IUser>("users").where({ email }).first();
+    const user = await DB<IUserResponse>("users").where({ email }).first();
     if (!user) throw Error("User with this email address doesn't exist");
     const code = customAlphabet("0123456789", 6)();
-    await DB<IUser>("users").where({ email }).update({ one_time_code: code });
+    await DB<IUserResponse>("users")
+      .where({ email })
+      .update({ one_time_code: code });
     mailer.sendResetPasswordEmail(user.email, code);
   }
 }
