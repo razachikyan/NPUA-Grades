@@ -35,24 +35,24 @@ export interface IGroup {
 
 export interface ISubject {
   subject_name: string;
+  lecturer: string;
 }
 
 export interface ISubjectResponse {
   subject_id: string;
   subject_name: string;
   id: number;
+  lecturer_id: string;
 }
 
 export interface ILecturerResponse {
   lecturer_id: string;
   lecturer_name: string;
-  subject_id: string;
   id: number;
 }
 
 export interface ILecturer {
   lecturer_name: string;
-  subject: string;
 }
 
 export interface IStudentResponse {

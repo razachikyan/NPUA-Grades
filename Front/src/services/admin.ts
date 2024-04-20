@@ -54,6 +54,30 @@ export class AdminServices {
     }
   }
 
+  public async editStudent(student_id: string, data: IStudent) {
+    try {
+      const student = axios.put(`${this.BaseUrl}/students/${student_id}`, data);
+      if (!student) return null;
+      return student;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  public async deleteStudent(student_id: string) {
+    try {
+      const student = await axios.delete(
+        `${this.BaseUrl}/students/${student_id}`
+      );
+      if (!student) return null;
+      return student;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
   public async getLecturers(): Promise<ILecturerResponse[]> {
     try {
       const { data }: { data: ILecturerResponse[] } = await axios.get(
@@ -67,7 +91,7 @@ export class AdminServices {
     }
   }
 
-  public async addLecturer(lecturer: ILecturer) {
+  public async addLecturer(lecturer: ILecturer & { subject: string }) {
     try {
       const user = await axios.post(`${this.BaseUrl}/lecturers`, lecturer);
       if (!user) return null;
@@ -80,7 +104,7 @@ export class AdminServices {
 
   public async editLecturer(
     lecturer_id: string,
-    updated: ILecturer
+    updated: ILecturer & { subject: string }
   ): Promise<ILecturerResponse | null> {
     try {
       const lecturer: ILecturerResponse = await axios.put(
@@ -96,17 +120,6 @@ export class AdminServices {
     }
   }
 
-  public async editStudent(student_id: string, data: IStudent) {
-    try {
-      const student = axios.put(`${this.BaseUrl}/students/${student_id}`, data);
-      if (!student) return null;
-      return student;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }
-
   public async deleteLecturer(lecturer_id: string) {
     try {
       const lecturer = await axios.delete(
@@ -114,19 +127,6 @@ export class AdminServices {
       );
       if (!lecturer) return null;
       return lecturer;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }
-
-  public async deleteStudent(student_id: string) {
-    try {
-      const student = await axios.delete(
-        `${this.BaseUrl}/students/${student_id}`
-      );
-      if (!student) return null;
-      return student;
     } catch (error) {
       console.log(error);
       return null;

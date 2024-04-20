@@ -15,7 +15,9 @@ import { FormValidation } from "@/utils/helpers/validator";
 import styles from "./styles.module.scss";
 
 export default function StudentsStats() {
-  const [newLecturer, setNewLecturer] = useState<ILecturer>(initialLecturer);
+  const [newLecturer, setNewLecturer] = useState<
+    ILecturer & { subject: string }
+  >(initialLecturer);
   const [lecturers, setLecturers] = useState<ILecturerResponse[]>([]);
   const [subjects, setSubjects] = useState<ISubjectResponse[]>([]);
   const subjectServices = new SubjectSevice();
@@ -48,7 +50,7 @@ export default function StudentsStats() {
       return;
     }
 
-    await adminServices.addLecturer(newLecturer);
+  await adminServices.addLecturer(newLecturer);
     setNewLecturer(initialLecturer);
     location.reload();
   };
@@ -92,8 +94,9 @@ export default function StudentsStats() {
         initialData={lecturers.map((lect) =>
           [
             lect.lecturer_name,
-            subjects.find((sub) => sub.subject_id === lect.subject_id)
-              ?.subject_name,
+            ...subjects
+              .filter((sub) => sub.lecturer_id === lect.lecturer_id)
+              .map((item) => item.subject_name),
           ].map((it) => String(it))
         )}
         headers={tableHeaders}
