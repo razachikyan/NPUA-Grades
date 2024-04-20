@@ -45,17 +45,26 @@ export default function StudentsStats() {
     location.reload();
   };
 
-  const handleUpdate = async (data: string[], index: number) => {
-    const [num, fullname, group_name] = data;
-    const [firstname, lastname, middlename] = fullname.split(" ");
-    const updated = students[index];
-    if (!groupOptions.includes(group)) return;
-    await adminServices.editStudent(updated.student_id, {
-      firstname,
-      group: group_name,
-      lastname,
-      middlename,
-    });
+  const handleUpdate = async (
+    type: "change" | "remove",
+    index: number,
+    data?: string[]
+  ) => {
+    if (type === "change" && data) {
+      const [num, fullname, group_name] = data;
+      const [firstname, lastname, middlename] = fullname.split(" ");
+      const updated = students[index];
+      if (!groupOptions.includes(group)) return;
+      await adminServices.editStudent(updated.student_id, {
+        firstname,
+        group: group_name,
+        lastname,
+        middlename,
+      });
+    } else {
+      const student = students[index];
+      await adminServices.deleteStudent(student.student_id);
+    }
     location.reload();
   };
 

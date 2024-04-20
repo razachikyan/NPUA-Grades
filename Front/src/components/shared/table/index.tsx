@@ -1,12 +1,14 @@
 "use client";
 
+import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { Pagination } from "./pagination";
 import { Cell } from "./cell";
 import { ITableProps } from "./types";
-
 import { Button } from "../button";
+
+import styles from "./styles.module.scss";
 
 export const Table = ({
   headers,
@@ -24,6 +26,7 @@ export const Table = ({
   const [tempData, setTempData] = useState(initialData);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [changed, setChanged] = useState<number>(-1);
+  const [removed, setRemoved] = useState<number>(-1);
 
   useEffect(() => {
     setData(initialData);
@@ -55,13 +58,26 @@ export const Table = ({
         <tbody className={bodyClassName}>
           {tempData.map((row, i) => {
             return (
-              <tr key={nanoid()}>
+              <tr
+                className={classNames({
+                  [styles.active]: changed === i,
+                  [styles.delete]: removed === i,
+                })}
+                key={nanoid()}
+              >
                 {row.map((item, j) => {
                   return (
                     <Cell
                       ableEdit={ableEdit}
                       key={nanoid()}
                       value={item}
+                      handleRemove={
+                        j === 0
+                          ? () => {
+                              setRemoved(i);
+                            }
+                          : undefined
+                      }
                       setValue={(val) => {
                         setChanged(i);
                         setData((prev) => {
@@ -88,7 +104,8 @@ export const Table = ({
       </table>
       <Button
         handleClick={() => {
-          onSubmit?.(data[changed], changed);
+          changed !== -1 && onSubmit?.("change", changed, data[changed]);
+          removed !== -1 && onSubmit?.("remove", removed);
         }}
         className={btnClassname}
       >

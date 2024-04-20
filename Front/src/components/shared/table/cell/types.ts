@@ -3,4 +3,5 @@ export interface ICellProps {
   value: string;
   setValue: (value: string) => void;
   ableEdit?: boolean;
+  handleRemove?: () => void;
 }

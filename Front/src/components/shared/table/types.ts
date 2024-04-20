@@ -6,7 +6,11 @@ export interface ITableProps {
   headClassName?: string;
   bodyClassName?: string;
   btnClassname?: string;
-  onSubmit?: (data: string[], inded: number) => void;
+  onSubmit?: (
+    type: "remove" | "change",
+    index: number,
+    data?: string[]
+  ) => void;
   handleSort?: (title: string) => TData;
   ableEdit?: boolean;
 }

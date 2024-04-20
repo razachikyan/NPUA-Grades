@@ -43,7 +43,6 @@ export class StudentServices {
   }
 
   public async updateStudent(student_id: string, student: IStudent) {
-
     const updatedLectCount = await DB<IStudentResponse>("students")
       .where({ student_id })
       .update(student);
@@ -56,8 +55,9 @@ export class StudentServices {
     return user;
   }
 
-  public async deleteStudent(id: string): Promise<IStudent[]> {
-    const students = await DB<IStudent>("students");
-    return students;
+  public async deleteStudent(student_id: string) {
+    const students = await DB<IStudentResponse>("students")
+      .where({ student_id })
+      .delete();
   }
 }

@@ -3,6 +3,7 @@ import { Input } from "../../input";
 import { Image } from "../../image";
 import Edit from "@public/icons/edit.svg";
 import Save from "@public/icons/save.svg";
+import Remove from "@public/icons/remove.svg";
 import classNames from "classnames";
 import { ICellProps } from "./types";
 
@@ -13,6 +14,7 @@ export const Cell = ({
   value,
   className,
   ableEdit = false,
+  handleRemove,
 }: ICellProps) => {
   const [inputMode, setInputMode] = useState<boolean>(false);
   const [tempValue, setTempValue] = useState<string>("");
@@ -37,6 +39,18 @@ export const Cell = ({
               } else {
                 setTempValue(value);
               }
+            }}
+          />
+        </div>
+      )}
+      {ableEdit && handleRemove && (
+        <div className={styles.removeBloc}>
+          <Image
+            src={Remove}
+            alt="remove"
+            className={styles.icon}
+            onClick={() => {
+              handleRemove?.();
             }}
           />
         </div>
