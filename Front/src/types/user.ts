@@ -31,7 +31,6 @@ export interface ILecturerResponse {
 
 export interface ILecturer {
   lecturer_name: string;
-  subject: string;
 }
 
 export interface IStudentResponse {
@@ -39,12 +38,14 @@ export interface IStudentResponse {
   firstname: string;
   lastname: string;
   middlename: string;
+  number: number;
   group: string;
   id: number;
 }
 export interface IStudent {
   firstname: string;
   lastname: string;
+  number: number;
   middlename: string;
   group: string;
 }

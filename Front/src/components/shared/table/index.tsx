@@ -92,16 +92,18 @@ export const Table = ({
             );
           })}
         </tbody>
-        {data.length > 7 && (
-          <Pagination
-            current={currentPage}
-            onClick={(num) => {
-              setCurrentPage(num);
-            }}
-            size={Math.ceil(data.length / 7)}
-          />
-        )}
       </table>
+      {data.length > 7 && (
+        <Pagination
+          current={currentPage}
+          onClick={(num) => {
+            setRemoved(-1);
+            setChanged(-1);
+            setCurrentPage(num);
+          }}
+          size={Math.ceil(data.length / 7)}
+        />
+      )}
       <Button
         handleClick={() => {
           changed !== -1 && onSubmit?.("change", changed, data[changed]);

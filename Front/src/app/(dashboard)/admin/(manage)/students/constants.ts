@@ -8,8 +8,9 @@ export const tableHeaders = [
 ];
 
 export const initialStudent: IStudent = {
+  middlename: "",
   firstname: "",
   lastname: "",
-  middlename: "",
   group: "020",
+  number: 0,
 };

@@ -15,7 +15,9 @@ import { FormValidation } from "@/utils/helpers/validator";
 import styles from "./styles.module.scss";
 
 export default function StudentsStats() {
-  const [newLecturer, setNewLecturer] = useState<ILecturer>(initialLecturer);
+  const [newLecturer, setNewLecturer] = useState<
+    ILecturer & { subject: string }
+  >(initialLecturer);
   const [lecturers, setLecturers] = useState<ILecturerResponse[]>([]);
   const [subjects, setSubjects] = useState<ISubjectResponse[]>([]);
   const subjectServices = new SubjectSevice();
@@ -42,12 +44,10 @@ export default function StudentsStats() {
 
   const handleSubmit = async () => {
     const errors = validator.validateLecturer(newLecturer).errors;
-
     if (errors) {
       setNewLecturer(initialLecturer);
       return;
     }
-
     await adminServices.addLecturer(newLecturer);
     setNewLecturer(initialLecturer);
     location.reload();
@@ -92,8 +92,9 @@ export default function StudentsStats() {
         initialData={lecturers.map((lect) =>
           [
             lect.lecturer_name,
-            subjects.find((sub) => sub.subject_id === lect.subject_id)
-              ?.subject_name,
+            ...subjects
+              .filter((sub) => sub.lecturer_id === lect.lecturer_id)
+              .map((item) => item.subject_name),
           ].map((it) => String(it))
         )}
         headers={tableHeaders}
@@ -109,16 +110,16 @@ export default function StudentsStats() {
             }
           />
         </div>
-        <Select
-          className={styles.lecturerSelect}
-          optionClassName={styles.lecturerOption}
-          value={newLecturer.subject}
-          cover="Առարկա"
-          options={subjects.map((item) => item.subject_name)}
-          setValue={(val) =>
-            setNewLecturer((prev) => ({ ...prev, subject: val }))
-          }
-        />
+        <div className={styles.inputBox}>
+          <Input
+            className={styles.input}
+            placeholder="Առարկա"
+            value={newLecturer.subject}
+            handleChange={(val) =>
+              setNewLecturer((prev) => ({ ...prev, subject: val }))
+            }
+          />
+        </div>
         <Button
           btnType="submit"
           text="Ավելացնել"
