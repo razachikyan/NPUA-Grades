@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Table } from "@/components/shared/table";
 import { Select } from "@/components/shared/select";
 import Arrow from "@public/icons/arrow.svg";
-import { UserServices } from "@/services/users";
+import { AdminServices } from "@/services/admin";
 import { IUser } from "@/types/user";
 import { tableHeaders, years } from "./constants";
 import { groupOptions } from "@/components/features/form/types";
@@ -24,14 +24,14 @@ export default function Student() {
   const [data, setData] = useState<Array<React.ReactNode[]>>([]);
   const router = useRouter();
 
-  const userServices = new UserServices();
+  const adminServices = new AdminServices();
   const subjectServices = new SubjectSevice();
   const evaluationsServices = new EvaluationService();
   const headers = tableHeaders;
 
   useEffect(() => {
     const load = async () => {
-      const user = await userServices.getUser();
+      const user = await adminServices.getUser();
       if (!user) router.push("/login");
       const subjects = await subjectServices.getSubjects();
       const evaluations =
@@ -106,13 +106,13 @@ export default function Student() {
           options={[1, 2]}
         />
       </div>
-      <Table
+      {/* <Table
         bodyClassName={styles.body}
         headClassName={styles.head}
         className={styles.table}
         headers={headers}
         initialData={data}
-      />
+      /> */}
     </div>
   );
 }

@@ -32,8 +32,6 @@ export default {
 
   async addStudent(req: Request, res: Response) {
     try {
-      console.log("------------------", req.body);
-
       const student = await studentServices.addStudent(req.body);
       res.status(201).send(student);
     } catch (error) {

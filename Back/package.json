@@ -9,8 +9,8 @@
     "build": "npx tsc"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
+  "author": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",

@@ -1,4 +1,13 @@
-import { ILecturer, IStudent, IStudentResponse, TGroups } from "@/types/user";
+import { IFormData } from "@/components/features/form/types";
+import {
+  ILecturer,
+  ILecturerResponse,
+  IStudent,
+  IStudentResponse,
+  IUser,
+  IUserResponse,
+  TGroups,
+} from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
 
@@ -45,6 +54,19 @@ export class AdminServices {
     }
   }
 
+  public async getLecturers(): Promise<ILecturerResponse[]> {
+    try {
+      const { data }: { data: ILecturerResponse[] } = await axios.get(
+        `${this.BaseUrl}/lecturers`
+      );
+      if (!data) return [];
+      return data;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
   public async addLecturer(lecturer: ILecturer) {
     try {
       const user = await axios.post(`${this.BaseUrl}/lecturers`, lecturer);
@@ -77,6 +99,7 @@ export class AdminServices {
       return [];
     }
   }
+
   public async editStudent(student_id: string, data: Partial<IStudent>) {
     try {
       const student = axios.put(`${this.BaseUrl}/students/${student_id}`, data);
@@ -100,6 +123,7 @@ export class AdminServices {
       return null;
     }
   }
+
   public async deleteStudent(student_id: string) {
     try {
       const student = await axios.delete(
@@ -109,6 +133,89 @@ export class AdminServices {
       return student;
     } catch (error) {
       console.log(error);
+      return null;
+    }
+  }
+
+  async login(
+    email: string,
+    password: string,
+    isReset?: boolean
+  ): Promise<IUser | null> {
+    try {
+      const { data } = await axios.post(
+        `${this.BaseUrl}/users/login${isReset ? "/reset" : ""}`,
+        {
+          email,
+          password,
+        }
+      );
+
+      localStorage.setItem("session_id", data.session_id);
+      return data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async changePass(password: string): Promise<IUser | null> {
+    try {
+      const user = await this.getUser();
+      const { data } = await axios.post(`${this.BaseUrl}/users/change-pass`, {
+        password,
+        email: user?.email,
+      });
+
+      return data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async resetPassword(email: string): Promise<void> {
+    try {
+      await axios.post(`${this.BaseUrl}/users/reset`, { email });
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  }
+
+  async getUser(): Promise<IUserResponse | null> {
+    try {
+      const session = localStorage.getItem("session_id") ?? "";
+      const res = await axios.get<IUserResponse>(
+        `${this.BaseUrl}/users/${session}`
+      );
+
+      if (!res.data) return null;
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getUserById(user_id: string): Promise<IUser | null> {
+    try {
+      const res = await axios.get<IUser>(`${this.BaseUrl}/users/id/${user_id}`);
+
+      if (!res.data) return null;
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async createUser(
+    userData: Pick<IFormData, "email" | "firstname" | "lastname" | "password">
+  ): Promise<IUser | null> {
+    try {
+      const { data } = await axios.post(
+        `${this.BaseUrl}/users/signup`,
+        userData
+      );
+      localStorage.setItem("session_id", data.session_id);
+      return data;
+    } catch (error) {
       return null;
     }
   }

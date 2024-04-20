@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Table } from "@/components/shared/table";
 import { Select } from "@/components/shared/select";
 import { IStudent, IStudentResponse, TGroups } from "@/types/user";
@@ -13,35 +14,27 @@ import { FormValidation } from "@/utils/helpers/validator";
 import styles from "./styles.module.scss";
 
 export default function StudentsStats() {
+  const [newStudent, setNewStudent] = useState<IStudent>(initialStudent);
+  const [students, setStudents] = useState<IStudentResponse[]>([]);
   const [year, setYear] = useState<number>(2024);
   const [group, setGroup] = useState<TGroups>("920");
   const [semester, setSemester] = useState<number>(2);
-  const [students, setStudents] = useState<IStudent[]>([]);
-  const [newStudent, setNewStudent] = useState<IStudent>(initialStudent);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const adminServices = new AdminServices();
   const validator = new FormValidation();
-  const handleSubmit = async () => {
-    const errors = validator.validateStudent(newStudent).errors;
-
-    if (errors) {
-      setNewStudent(initialStudent);
-      return;
-    }
-    const user = await adminServices.addStudent(newStudent);
-    if (user) {
-      setStudents((prev) => {
-        prev.push(user);
-        return prev;
-      });
-    }
-  };
 
   useEffect(() => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("year", year.toString());
+    newParams.set("group", group);
+    newParams.set("semester", semester.toString());
+    router.replace(`${pathname}?${newParams.toString()}`);
+
     adminServices
       .getStudents({ group, grade: year - 2020, semester })
       .then(({ data }: any) => {
-        console.log(data);
-
         setStudents(
           data.map((item: any) => ({
             firstname: item.firstname,
@@ -52,7 +45,29 @@ export default function StudentsStats() {
         );
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [year, group, semester]);
+
+  const handleSubmit = async () => {
+    const errors = validator.validateUser(newStudent).errors;
+    if (errors) {
+      setNewStudent(initialStudent);
+      return;
+    }
+
+    await adminServices.addStudent(newStudent);
+    setNewStudent(initialStudent);
+    location.reload();
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    const yearParam = params.get("year");
+    setYear(yearParam ? parseInt(yearParam, 10) : 2024);
+    const groupParam = params.get("group");
+    setGroup((groupParam || "920") as TGroups);
+    const semesterParam = params.get("semester");
+    setSemester(semesterParam ? parseInt(semesterParam, 10) : 2);
+  }, [searchParams]);
 
   return (
     <div className={styles.container}>
@@ -88,12 +103,11 @@ export default function StudentsStats() {
         headClassName={styles.head}
         initialData={students.map((stud, i) =>
           [
-            i,
+            i + 1,
             `${stud.firstname} ${stud.lastname} ${stud.middlename}`,
             stud.group,
             year - 2020,
             "ՏՀՏԷ",
-            123,
           ].map((it) => String(it))
         )}
         headers={tableHeaders}

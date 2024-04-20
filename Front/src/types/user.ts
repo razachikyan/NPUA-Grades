@@ -22,9 +22,7 @@ export type TGroups = "020" | "920";
 
 export interface ILecturerResponse {
   lecturer_id: string;
-  firstname: string;
-  lastname: string;
-  nickname: string;
+  lecturer_name: string;
   password: string;
   middlename: string;
   subject_id: string;
@@ -32,9 +30,7 @@ export interface ILecturerResponse {
 }
 
 export interface ILecturer {
-  firstname: string;
-  lastname: string;
-  middlename: string;
+  lecturer_name: string;
   subject: string;
 }
 

@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 import { Table } from "@/components/shared/table";
 import { Select } from "@/components/shared/select";
 import Arrow from "@public/icons/arrow.svg";
-import { UserServices } from "@/services/users";
-import { IUser, IUserResponse } from "@/types/user";
-
-import styles from "./styles.module.scss";
+import { AdminServices } from "@/services/admin";
+import { IUserResponse } from "@/types/user";
 import { tableHeaders, years } from "./constants";
 import { groupOptions } from "@/components/features/form/types";
 import { EvaluationService } from "@/services/evaluations";
 import { getStats } from "@/utils/helpers/getStats";
 import { LecturerService } from "@/services/lecturers";
+
+import styles from "./styles.module.scss";
 
 export default function Lecturer() {
   const [user, setUser] = useState<IUserResponse | null>(null);
@@ -23,14 +23,14 @@ export default function Lecturer() {
   const [data, setData] = useState<Array<string[]>>([]);
   const router = useRouter();
 
-  const userServices = new UserServices();
+  const adminServices = new AdminServices();
   const evaluationsServices = new EvaluationService();
   const lecturerServices = new LecturerService();
   const headers = tableHeaders;
 
   useEffect(() => {
     const load = async () => {
-      const user = await userServices.getUser();
+      const user = await adminServices.getUser();
       if (!user) router.push("/login");
       setUser(user);
     };
@@ -55,7 +55,7 @@ export default function Lecturer() {
       const data = evaluations
         ? await Promise.all(
             evaluations?.map(async (item, i) => {
-              const user = await userServices.getUserById(item.user_id);
+              const user = await adminServices.getUserById(item.user_id);
               const { fin, frequencies, mij1, mij2 } = getStats(item.value);
               const status =
                 item.value < 41

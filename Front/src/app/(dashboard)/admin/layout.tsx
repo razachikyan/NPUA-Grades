@@ -3,7 +3,7 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useRouter } from "next/navigation";
-import { UserServices } from "@/services/users";
+import { AdminServices } from "@/services/admin";
 import { IUser } from "@/types/user";
 
 import styles from "./styles.module.scss";
@@ -12,11 +12,11 @@ export default function Admin({ children }: PropsWithChildren) {
   const [user, setUser] = useState<IUser | null>(null);
   const router = useRouter();
 
-  const userServices = new UserServices();
+  const adminServices = new AdminServices();
 
   useEffect(() => {
     const load = async () => {
-      const user = await userServices.getUser();
+      const user = await adminServices.getUser();
       if (!user || user.session_id !== localStorage.getItem("session_id"))
         router.push("/login");
       setUser(user);

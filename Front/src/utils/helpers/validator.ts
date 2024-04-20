@@ -3,19 +3,36 @@ import {
   IFormData,
   MESSAGES,
 } from "@/components/features/form/types";
-import { IStudent } from "@/types/user";
+import { ILecturer, IStudent } from "@/types/user";
 
 export class FormValidation {
-  public validateStudent(data: IStudent) {
+  public validateUser(data: IStudent) {
     const firstNameRes = this.validateName(data.firstname);
     const middlenameRes = this.validateName(data.middlename);
     const lastNameRes = this.validateName(data.lastname);
+
     if (!lastNameRes && !firstNameRes && !middlenameRes)
       return { errors: null };
     const errors = {
       firstname: (firstNameRes && formErrors.firstname[firstNameRes]) ?? "",
       middlename: (middlenameRes && formErrors.middlename[middlenameRes]) ?? "",
       lastname: (lastNameRes && formErrors.firstname[lastNameRes]) ?? "",
+    };
+
+    return { errors };
+  }
+
+  public validateLecturer(data: ILecturer) {
+    const [lastname, shortname] = data.lecturer_name.split(" ");
+    const lastNameRes = this.validateName(lastname);
+    const shortnameRes = this.validateName(
+      shortname.slice(0, shortname.length - 1)
+    );
+
+    if (lastNameRes || shortnameRes) return { errors: null };
+    const errors = {
+      lastname: (lastNameRes && formErrors.lastname[lastNameRes]) ?? "",
+      shortname: (shortnameRes && formErrors.firstname[shortnameRes]) ?? "",
     };
 
     return { errors };

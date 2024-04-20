@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Form } from "@/components/features/form";
-import { UserServices } from "@/services/users";
+import { AdminServices } from "@/services/admin";
 import { IUser } from "@/types/user";
 
 import styles from "./styles.module.scss";
@@ -12,7 +12,7 @@ export default function Login(): JSX.Element {
   const [sent, setSent] = useState<boolean>(false);
   const [canSend, setCanSend] = useState<number>(0);
   const router = useRouter();
-  const service = new UserServices();
+  const service = new AdminServices();
 
   useEffect(() => {
     service

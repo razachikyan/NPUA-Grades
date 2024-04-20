@@ -8,12 +8,12 @@ export class SubjectSevice {
     this.BaseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
   }
 
-  async getSubjects(): Promise<ISubjectResponse[] | null> {
+  async getSubjects(): Promise<ISubjectResponse[] | []> {
     try {
       const { data } = await axios.get(`${this.BaseUrl}/subjects`);
       return data;
     } catch (error) {
-      return null;
+      return [];
     }
   }
 }

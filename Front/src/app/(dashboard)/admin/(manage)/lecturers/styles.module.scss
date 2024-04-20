@@ -35,7 +35,7 @@
       tr {
         th {
           border: 3px solid #002c83;
-          padding: 24px 42px;
+          padding: 15px 22px;
           font-size: 24px;
         }
       }
@@ -45,54 +45,56 @@
       tr {
         td {
           border: 3px solid #002c83;
-          padding: 24px 42px;
+          padding: 15px 22px;
           font-size: 23px;
         }
       }
     }
   }
-  .newStudent {
+  .newLecturer {
     display: flex;
     align-items: center;
     gap: 20px;
 
-    .input,
-    .input::placeholder {
-      line-height: 24px;
-      font-size: 14px;
-      font-family: "Alata";
-    }
+    .inputBox {
+      width: 450px;
 
-    .input {
-      width: 100%;
-      padding: 8px 12px;
-      color: #010919;
-      border-radius: 6px;
-      border: 1px solid var(--white_400);
-      outline: none;
+      .input,
+      .input::placeholder {
+        line-height: 24px;
+        font-size: 14px;
+        font-family: "Alata";
+      }
 
-      &::placeholder {
-        color: var(--white_400);
+      .input {
+        padding: 8px 12px;
+        color: #010919;
+        border-radius: 6px;
+        border: 1px solid var(--white_400);
+        outline: none;
+
+        &::placeholder {
+          color: var(--white_400);
+        }
       }
     }
 
-    .studentSelect {
+    .lecturerSelect {
       background-color: #1261ff;
       color: #ffffff;
       padding: 5px 10px;
       border-radius: 5px;
       font-size: 18px;
-      width: 85px;
+      width: 170px;
     }
 
-    .studentOption {
+    .lecturerOption {
       color: #1261ff;
       background-color: #ffffff;
       padding: 5px 10px;
       border-radius: 5px;
       font-size: 18px;
       font-weight: 600;
-      white-space: nowrap;
 
       &:hover {
         color: #fff;
@@ -102,7 +104,6 @@
 
     .addBtn {
       padding: 10px;
-      margin-top: 8px 0 40px;
       background: #1261ff;
       border-radius: 6px;
       font-weight: 400;
@@ -110,7 +111,6 @@
       line-height: 171%;
       color: #fff;
       font-family: "Alata";
-      margin-bottom: 8px;
     }
   }
 }

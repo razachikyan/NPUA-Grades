@@ -7,7 +7,7 @@ import Link from "next/link";
 import classNames from "classnames";
 import { Button } from "@/components/shared/button";
 import { Input } from "./input";
-import { UserServices } from "@/services/users";
+import { AdminServices } from "@/services/admin";
 import { FormValidation } from "@/utils/helpers/validator";
 import { IFormData, IFormProps, initialData, INPUT_TYPES } from "./types";
 import { LOGIN_ERR, USER_EXIST } from "@/utils/constants/errorsMessages";
@@ -26,7 +26,7 @@ export const Form = ({
   const router = useRouter();
   const reset: boolean = params.get("type") === "reset" && type === "login";
   const validator = new FormValidation();
-  const userServices = new UserServices();
+  const adminServices = new AdminServices();
 
   const handleSubmit = async (ev: React.MouseEvent) => {
     ev.preventDefault();
@@ -38,7 +38,7 @@ export const Form = ({
           break;
         }
         const { confirm, ...data } = formData;
-        const user = await userServices.createUser(data);
+        const user = await adminServices.createUser(data);
         if (user === null) {
           setErrors((prev) => ({
             ...prev,
@@ -58,7 +58,7 @@ export const Form = ({
           setErrors(errors);
           break;
         }
-        const user = await userServices.login(
+        const user = await adminServices.login(
           formData.email,
           formData.password,
           reset
@@ -78,7 +78,7 @@ export const Form = ({
           setErrors((prev) => ({ ...prev, ...errors }));
           break;
         }
-        await userServices.resetPassword(formData.email);
+        await adminServices.resetPassword(formData.email);
       }
       case "change": {
         const errors = validator.validateForChangePass({
@@ -88,7 +88,7 @@ export const Form = ({
           setErrors((prev) => ({ ...prev, ...errors }));
           break;
         }
-        const user = await userServices.changePass(formData.password);
+        const user = await adminServices.changePass(formData.password);
         user && router.push("/admin");
       }
     }
