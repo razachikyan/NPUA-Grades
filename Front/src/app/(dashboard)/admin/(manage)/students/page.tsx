@@ -10,6 +10,7 @@ import { Button } from "@/components/shared/button";
 import { initialStudent, tableHeaders } from "./constants";
 import { AdminServices } from "@/services/admin";
 import { FormValidation } from "@/utils/helpers/validator";
+import { groupOptions } from "@/components/features/form/types";
 
 import styles from "./styles.module.scss";
 
@@ -26,24 +27,9 @@ export default function StudentsStats() {
   const validator = new FormValidation();
 
   useEffect(() => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("year", year.toString());
-    newParams.set("group", group);
-    newParams.set("semester", semester.toString());
-    router.replace(`${pathname}?${newParams.toString()}`);
-
     adminServices
       .getStudents({ group, grade: year - 2020, semester })
-      .then(({ data }: any) => {
-        setStudents(
-          data.map((item: any) => ({
-            firstname: item.firstname,
-            group: item.group,
-            lastname: item.lastname,
-            middlename: item.middlename,
-          }))
-        );
-      })
+      .then((res) => setStudents(res))
       .catch((err) => console.log(err));
   }, [year, group, semester]);
 
@@ -59,12 +45,26 @@ export default function StudentsStats() {
     location.reload();
   };
 
+  const handleUpdate = async (data: string[], index: number) => {
+    const [num, fullname, group_name] = data;
+    const [firstname, lastname, middlename] = fullname.split(" ");
+    const updated = students[index];
+    if (!groupOptions.includes(group)) return;
+    await adminServices.editStudent(updated.student_id, {
+      firstname,
+      group: group_name,
+      lastname,
+      middlename,
+    });
+    location.reload();
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
     const yearParam = params.get("year");
     setYear(yearParam ? parseInt(yearParam, 10) : 2024);
-    const groupParam = params.get("group");
-    setGroup((groupParam || "920") as TGroups);
+    const groupParam = params.get("group") as TGroups;
+    setGroup(groupParam || "920");
     const semesterParam = params.get("semester");
     setSemester(semesterParam ? parseInt(semesterParam, 10) : 2);
   }, [searchParams]);
@@ -78,7 +78,11 @@ export default function StudentsStats() {
           value={year}
           cover="Տարեթիվ"
           options={[2022, 2023, 2024]}
-          setValue={setYear}
+          setValue={(val) => {
+            const newParams = new URLSearchParams(searchParams);
+            newParams.set("year", val);
+            router.replace(`${pathname}?${newParams.toString()}`);
+          }}
         />
         <Select
           className={styles.select}
@@ -86,7 +90,11 @@ export default function StudentsStats() {
           value={group}
           cover="Խումբ"
           options={["020", "920"]}
-          setValue={setGroup}
+          setValue={(val) => {
+            const newParams = new URLSearchParams(searchParams);
+            newParams.set("group", val);
+            router.replace(`${pathname}?${newParams.toString()}`);
+          }}
         />
         <Select
           className={styles.select}
@@ -94,19 +102,26 @@ export default function StudentsStats() {
           value={semester}
           cover="Կիսամյակ"
           options={[1, 2]}
-          setValue={setSemester}
+          setValue={(val) => {
+            const newParams = new URLSearchParams(searchParams);
+            newParams.set("semester", val);
+            router.replace(`${pathname}?${newParams.toString()}`);
+          }}
         />
       </div>
       <Table
-        className={styles.table}
+        ableEdit
+        btnClassname={styles.tableBtn}
+        className={styles.tableBox}
+        tableClassName={styles.table}
         bodyClassName={styles.body}
         headClassName={styles.head}
+        onSubmit={handleUpdate}
         initialData={students.map((stud, i) =>
           [
             i + 1,
             `${stud.firstname} ${stud.lastname} ${stud.middlename}`,
             stud.group,
-            year - 2020,
             "ՏՀՏԷ",
           ].map((it) => String(it))
         )}

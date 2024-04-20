@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import DB from "../DB/index";
-import { IStudent, IStudentResponse } from "../types";
+import { IGroup, IStudent, IStudentResponse } from "../types";
 import "dotenv/config";
 
 export class StudentServices {
@@ -42,19 +42,18 @@ export class StudentServices {
     return students;
   }
 
-  public async updateStudent(BODY: any): Promise<IStudent> {
-    const student_id = nanoid();
-    // await DB<IStudent>("students").insert({
-    //   student_id,
-    //   student_name,
-    //   subject_id,
-    // });
+  public async updateStudent(student_id: string, student: IStudent) {
 
-    const student = await DB<IStudentResponse>("students")
+    const updatedLectCount = await DB<IStudentResponse>("students")
       .where({ student_id })
+      .update(student);
+    if (updatedLectCount !== 1) throw Error("Can't update user");
+    const user = await DB<IStudentResponse>("students")
+      .where({
+        student_id,
+      })
       .first();
-    if (!student) throw Error("Couldn't create student");
-    return student;
+    return user;
   }
 
   public async deleteStudent(id: string): Promise<IStudent[]> {

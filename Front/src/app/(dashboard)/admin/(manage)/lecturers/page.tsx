@@ -67,7 +67,7 @@ export default function StudentsStats() {
       lecturer_name,
       subject: subject_name,
     });
-    // location.reload();
+    location.reload();
   };
 
   return (

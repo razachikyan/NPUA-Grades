@@ -43,11 +43,11 @@ export class AdminServices {
     semester: number;
   }): Promise<IStudentResponse[]> {
     try {
-      const students: IStudentResponse[] = await axios.get(
+      const { data }: { data: IStudentResponse[] } = await axios.get(
         `${this.BaseUrl}/students/${group}/${grade}/${semester}`
       );
-      if (!students) return [];
-      return students;
+      if (!data) return [];
+      return data;
     } catch (error: any) {
       console.error(error.message);
       return [];
@@ -83,7 +83,6 @@ export class AdminServices {
     updated: ILecturer
   ): Promise<ILecturerResponse | null> {
     try {
-
       const lecturer: ILecturerResponse = await axios.put(
         `${this.BaseUrl}/lecturers/${lecturer_id}`,
         updated
@@ -97,7 +96,7 @@ export class AdminServices {
     }
   }
 
-  public async editStudent(student_id: string, data: Partial<IStudent>) {
+  public async editStudent(student_id: string, data: IStudent) {
     try {
       const student = axios.put(`${this.BaseUrl}/students/${student_id}`, data);
       if (!student) return null;

@@ -35,7 +35,7 @@ export interface ILecturer {
 }
 
 export interface IStudentResponse {
-  stident_id: string;
+  student_id: string;
   firstname: string;
   lastname: string;
   middlename: string;

@@ -42,7 +42,9 @@ export default {
 
   async updateStudent(req: Request, res: Response) {
     try {
-      const student = await studentServices.updateStudent(req.body);
+      const { student_id } = req.params;
+      
+      const student = await studentServices.updateStudent(student_id, req.body);
       res.status(201).send(student);
     } catch (error) {
       console.error(error);
