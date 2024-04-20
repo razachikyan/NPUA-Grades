@@ -1,4 +1,6 @@
 .container {
+  height: 100%;
+
   .selects {
     display: flex;
     align-items: center;
@@ -26,31 +28,51 @@
     }
   }
 
-  .table {
-    border: 3px solid #002c83;
-    color: #002c83;
+  .tableBox {
     margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: fit-content;
 
-    .head {
-      tr {
-        th {
-          border: 3px solid #002c83;
-          padding: 15px 22px;
-          font-size: 24px;
+    .table {
+      border: 3px solid #002c83;
+      color: #002c83;
+      width: 100%;
+
+      .head {
+        tr {
+          th {
+            border: 3px solid #002c83;
+            padding: 15px 32px;
+            font-size: 24px;
+          }
+        }
+      }
+
+      .body {
+        tr {
+          td {
+            border: 3px solid #002c83;
+            padding: 15px 32px;
+            font-size: 23px;
+          }
         }
       }
     }
 
-    .body {
-      tr {
-        td {
-          border: 3px solid #002c83;
-          padding: 15px 22px;
-          font-size: 23px;
-        }
-      }
+    .tableBtn {
+      margin-left: auto;
+      margin-top: 10px;
+      border-radius: 10px;
+      padding: 10px 25px;
+      background-color: var(--blue_500);
+      color: var(--white_900);
+      font-weight: 600;
+      font-size: 24px;
     }
   }
+
   .newLecturer {
     display: flex;
     align-items: center;

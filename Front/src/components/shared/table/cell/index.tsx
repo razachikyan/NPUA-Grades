@@ -8,7 +8,12 @@ import { ICellProps } from "./types";
 
 import styles from "./styles.module.scss";
 
-export const Cell = ({ setValue, value, className }: ICellProps) => {
+export const Cell = ({
+  setValue,
+  value,
+  className,
+  ableEdit = false,
+}: ICellProps) => {
   const [inputMode, setInputMode] = useState<boolean>(false);
   const [tempValue, setTempValue] = useState<string>("");
 
@@ -19,21 +24,23 @@ export const Cell = ({ setValue, value, className }: ICellProps) => {
       ) : (
         <div>{value}</div>
       )}
-      <div className={styles.iconBloc}>
-        <Image
-          src={inputMode ? Save : Edit}
-          alt="icon"
-          className={styles.icon}
-          onClick={() => {
-            setInputMode((prev) => !prev);
-            if (inputMode) {
-              setValue(tempValue);
-            } else {
-              setTempValue(value);
-            }
-          }}
-        />
-      </div>
+      {ableEdit && (
+        <div className={styles.iconBloc}>
+          <Image
+            src={inputMode ? Save : Edit}
+            alt="icon"
+            className={styles.icon}
+            onClick={() => {
+              setInputMode((prev) => !prev && ableEdit);
+              if (inputMode) {
+                setValue(tempValue);
+              } else {
+                setTempValue(value);
+              }
+            }}
+          />
+        </div>
+      )}
     </td>
   );
 };

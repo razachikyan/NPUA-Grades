@@ -6,11 +6,19 @@
 
 html {
   box-sizing: border-box;
+  height: 100vh;
 
   body {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
     min-width: 320px;
     font-weight: 400;
     font-family: "Roboto", sans-serif;
+
+    & > main {
+      flex: 1;
+    }
 
     img {
       max-width: 100%;
@@ -51,11 +59,11 @@ html {
   --blue_600: #002c83;
   --blue_800: #001c3a;
   --blue_900: #010919;
-  --red_500: #E72E48;
+  --red_500: #e72e48;
   --red_700: #b30000;
   --white_200: #333333;
   --white_300: #6e7175;
-  --white_400: #B3B6BD;
+  --white_400: #b3b6bd;
   --white_600: #e8eaed;
   --white_900: #ffffff;
 }

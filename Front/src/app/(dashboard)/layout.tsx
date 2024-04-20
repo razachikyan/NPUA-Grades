@@ -7,7 +7,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <header className={styles.header}>
         National Polytechnic University of Armenia
       </header>
-      <main className={styles.main}>{children}</main>
+      {children}
     </>
   );
 }

@@ -78,25 +78,22 @@ export class AdminServices {
     }
   }
 
-  public async editLecturers({
-    grade,
-    group,
-    semester,
-  }: {
-    group: TGroups;
-    semester: number;
-    grade: number;
-  }) {
+  public async editLecturer(
+    lecturer_id: string,
+    updated: ILecturer
+  ): Promise<ILecturerResponse | null> {
     try {
-      const lecturers = await axios.get(
-        `${this.BaseUrl}/${group}/${grade}/${semester}`
+
+      const lecturer: ILecturerResponse = await axios.put(
+        `${this.BaseUrl}/lecturers/${lecturer_id}`,
+        updated
       );
 
-      if (!lecturers) return [];
-      return lecturers;
+      if (!lecturer) return null;
+      return lecturer;
     } catch (error: any) {
       console.error(error.message);
-      return [];
+      return null;
     }
   }
 
