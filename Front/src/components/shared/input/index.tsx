@@ -13,6 +13,7 @@ export const Input = ({
   placeholder,
   onIconClick,
   handleChange,
+  required = false,
 }: IInputProps): JSX.Element => {
   return (
     <div className={styles.container}>
@@ -22,7 +23,7 @@ export const Input = ({
           src={icon}
           onClick={(ev) => {
             ev.stopPropagation();
-            onIconClick?.()
+            onIconClick?.();
           }}
           className={styles.icon}
         />
@@ -31,9 +32,10 @@ export const Input = ({
         type={type}
         style={css}
         value={value}
-        onChange={(ev) => handleChange?.(ev.target.value)}
+        required={required}
         placeholder={placeholder}
         className={classNames(styles.input, className)}
+        onChange={(ev) => handleChange?.(ev.target.value.trim())}
       />
     </div>
   );

@@ -5,8 +5,9 @@ export interface IInputProps {
   placeholder?: string;
   value?: number | string;
   css?: React.CSSProperties;
+  required?: boolean;
   onIconClick?: () => void;
-  handleChange?: React.Dispatch<React.SetStateAction<string>>;
+  handleChange?: (value: string) => void;
 }
 
 export type TInputTypes = "number" | "text" | "email" | "password";

@@ -1,13 +1,14 @@
-import { MESSAGES } from "@/utils/helpers/validator";
-
 export interface IFormProps {
-  type: "login" | "signup" | "forgot";
+  type: "login" | "signup" | "forgot" | "change";
   submitText: string;
+  onSubmit?: () => void;
+  disabledSubmit?: boolean;
 }
 
 export interface IFormData {
   firstname: string;
   lastname: string;
+  middlename: string;
   email: string;
   password: string;
   confirm: string;
@@ -17,8 +18,17 @@ export enum INPUT_TYPES {
   EMAIL = "email",
   FIRSTNAME = "firstname",
   LASTNAME = "lastname",
+  MIDDLENAME = "middlename",
   PASSWORD = "password",
   CONFIRM = "confirm",
+  CHANGE = "change",
+}
+
+export enum MESSAGES {
+  SHORT = "short",
+  EMPTY = "empty",
+  INVALID = "invalid",
+  INCORRECT = "incorrect",
 }
 
 export const formErrors: Record<
@@ -26,6 +36,10 @@ export const formErrors: Record<
   Partial<Record<MESSAGES, string>>
 > = {
   [INPUT_TYPES.FIRSTNAME]: {
+    [MESSAGES.EMPTY]: "•‎Enter First name",
+    [MESSAGES.SHORT]: "•‎First name shoud be longer",
+  },
+  [INPUT_TYPES.MIDDLENAME]: {
     [MESSAGES.EMPTY]: "•‎Enter First name",
     [MESSAGES.SHORT]: "•‎First name shoud be longer",
   },
@@ -45,4 +59,20 @@ export const formErrors: Record<
     [MESSAGES.EMPTY]: "•‎Enter the password again",
     [MESSAGES.INCORRECT]: "•‎Incorrect password",
   },
+  [INPUT_TYPES.CHANGE]: {
+    [MESSAGES.EMPTY]: "•‎Enter the password again",
+    [MESSAGES.SHORT]: "•‎ Password should be at least 10 characters long",
+  },
 };
+
+export const initialData = {
+  firstname: "",
+  lastname: "",
+  middlename: "",
+  email: "",
+  password: "",
+  confirm: "",
+};
+
+export const roleOptions = ["admin", "lecturer", "student"];
+export const groupOptions = ["020", "920"];

@@ -1,19 +1,20 @@
-import classNames from "classnames";
 import { IButtonProps } from "./types";
-
-import styles from "./styles.module.scss";
 
 export const Button = ({
   text,
   css,
+  btnType = "button",
   children,
   className,
   handleClick,
+  disabled = false,
 }: IButtonProps): JSX.Element => {
   return (
     <button
+      disabled={disabled}
       onClick={handleClick}
-      className={classNames(styles.button, className)}
+      className={className}
+      type={btnType}
       style={css}
     >
       {text}

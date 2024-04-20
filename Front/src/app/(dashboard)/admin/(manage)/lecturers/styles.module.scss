@@ -1,0 +1,138 @@
+.container {
+  height: 100%;
+
+  .selects {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    margin-bottom: 40px;
+
+    .select {
+      background-color: #002c83;
+      color: #ffffff;
+      padding: 13px 72px 13px 48px;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      padding: 13px;
+      font-size: 24px;
+      border: 2px solid #002c83;
+    }
+
+    .option:hover {
+      background-color: rgba(#002c83, 0.78);
+      color: #ffffff;
+    }
+  }
+
+  .tableBox {
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: fit-content;
+
+    .table {
+      border: 3px solid #002c83;
+      color: #002c83;
+      width: 100%;
+
+      .head {
+        tr {
+          th {
+            border: 3px solid #002c83;
+            padding: 15px 32px;
+            font-size: 24px;
+          }
+        }
+      }
+
+      .body {
+        tr {
+          td {
+            border: 3px solid #002c83;
+            padding: 15px 32px;
+            font-size: 23px;
+          }
+        }
+      }
+    }
+
+    .tableBtn {
+      margin-left: auto;
+      margin-top: 10px;
+      border-radius: 10px;
+      padding: 10px 25px;
+      background-color: var(--blue_500);
+      color: var(--white_900);
+      font-weight: 600;
+      font-size: 24px;
+    }
+  }
+
+  .newLecturer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .inputBox {
+      width: 450px;
+
+      .input,
+      .input::placeholder {
+        line-height: 24px;
+        font-size: 14px;
+        font-family: "Alata";
+      }
+
+      .input {
+        padding: 8px 12px;
+        color: #010919;
+        border-radius: 6px;
+        border: 1px solid var(--white_400);
+        outline: none;
+
+        &::placeholder {
+          color: var(--white_400);
+        }
+      }
+    }
+
+    .lecturerSelect {
+      background-color: #1261ff;
+      color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 18px;
+      width: 170px;
+    }
+
+    .lecturerOption {
+      color: #1261ff;
+      background-color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 18px;
+      font-weight: 600;
+
+      &:hover {
+        color: #fff;
+        background-color: rgba(#1261ff, 0.7);
+      }
+    }
+
+    .addBtn {
+      padding: 10px;
+      background: #1261ff;
+      border-radius: 6px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 171%;
+      color: #fff;
+      font-family: "Alata";
+    }
+  }
+}

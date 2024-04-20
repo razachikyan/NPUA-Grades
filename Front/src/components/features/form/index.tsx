@@ -1,120 +1,173 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
 import { Button } from "@/components/shared/button";
 import { Input } from "./input";
-import { UserServices } from "@/services/users";
+import { AdminServices } from "@/services/admin";
 import { FormValidation } from "@/utils/helpers/validator";
-import { IFormData, IFormProps, INPUT_TYPES } from "./types";
-import { useRouter } from "next/navigation";
+import { IFormData, IFormProps, initialData, INPUT_TYPES } from "./types";
+import { LOGIN_ERR, USER_EXIST } from "@/utils/constants/errorsMessages";
 
 import styles from "./styles.module.scss";
 
-export const Form = ({ type, submitText }: IFormProps): JSX.Element => {
-  const [firstname, setFirstName] = useState<string>("");
-  const [lastname, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirm, setConfirm] = useState<string>("");
-  const [errors, setErrors] = useState<IFormData>({
-    confirm: "",
-    email: "",
-    firstname: "",
-    lastname: "",
-    password: "",
-  });
-
+export const Form = ({
+  type,
+  onSubmit,
+  submitText,
+  disabledSubmit = false,
+}: IFormProps): JSX.Element => {
+  const [formData, setFormData] = useState<IFormData>(initialData);
+  const [errors, setErrors] = useState<IFormData>(initialData);
+  const params = useSearchParams();
   const router = useRouter();
-
+  const reset: boolean = params.get("type") === "reset" && type === "login";
   const validator = new FormValidation();
-  const userServices = new UserServices();
+  const adminServices = new AdminServices();
 
   const handleSubmit = async (ev: React.MouseEvent) => {
     ev.preventDefault();
-    const validationRes =
-      type === "signup"
-        ? validator.validateForSignUp({
-            email,
-            confirm,
-            firstname,
-            lastname,
-            password,
-          })
-        : validator.validateForLogIn({
-            email,
-            password,
-          });
-
-    if (!validationRes.errors) {
-      const res =
-        type === "login"
-          ? await userServices.login(email, password)
-          : await userServices.createUser({
-              email,
-              firstname,
-              lastname,
-              password,
-            });
-
-      router.push("/");
-    } else {
-      setErrors((prev) => ({ ...prev, ...validationRes.errors }));
+    switch (type) {
+      case "signup": {
+        const errors = validator.validateForSignUp(formData).errors;
+        if (errors) {
+          setErrors(errors);
+          break;
+        }
+        const { confirm, ...data } = formData;
+        const user = await adminServices.createUser(data);
+        if (user === null) {
+          setErrors((prev) => ({
+            ...prev,
+            email: USER_EXIST,
+          }));
+          break;
+        }
+        router.push("/admin");
+      }
+      case "login": {
+        const errors = validator.validateForLogIn({
+          email: formData.email,
+          password: formData.password,
+          isReset: reset,
+        }).errors;
+        if (errors) {
+          setErrors(errors);
+          break;
+        }
+        const user = await adminServices.login(
+          formData.email,
+          formData.password,
+          reset
+        );
+        if (!user) {
+          setErrors((prev) => ({
+            ...prev,
+            email: LOGIN_ERR,
+          }));
+          break;
+        }
+        reset ? router.push("/new-pass") : router.push("/admin");
+      }
+      case "forgot": {
+        const errors = validator.validateForForgot(formData.email).errors;
+        if (errors) {
+          setErrors((prev) => ({ ...prev, ...errors }));
+          break;
+        }
+        await adminServices.resetPassword(formData.email);
+      }
+      case "change": {
+        const errors = validator.validateForChangePass({
+          password: formData.password,
+        }).errors;
+        if (errors) {
+          setErrors((prev) => ({ ...prev, ...errors }));
+          break;
+        }
+        const user = await adminServices.changePass(formData.password);
+        user && router.push("/admin");
+      }
     }
+    onSubmit?.();
+    console.log(errors);
+
+    // setFormData(initialData);
   };
 
   return (
     <form className={styles.form}>
       {type === "signup" && (
+        <>
+          <Input
+            type={INPUT_TYPES.FIRSTNAME}
+            value={formData.firstname}
+            handleChange={(firstname) =>
+              setFormData((prev) => ({ ...prev, firstname }))
+            }
+            error={errors.firstname}
+          />
+          <Input
+            value={formData.lastname}
+            handleChange={(lastname) =>
+              setFormData((prev) => ({ ...prev, lastname }))
+            }
+            type={INPUT_TYPES.LASTNAME}
+            error={errors.lastname}
+          />
+          <Input
+            value={formData.middlename}
+            handleChange={(middlename) =>
+              setFormData((prev) => ({ ...prev, middlename }))
+            }
+            type={INPUT_TYPES.LASTNAME}
+            error={errors.middlename}
+          />
+        </>
+      )}
+      {type !== "change" && (
         <Input
-          type={INPUT_TYPES.FIRSTNAME}
-          value={firstname}
-          handleChange={setFirstName}
-          error={errors.firstname}
+          value={formData.email}
+          handleChange={(email) => setFormData((prev) => ({ ...prev, email }))}
+          error={errors.email}
+          type={INPUT_TYPES.EMAIL}
         />
       )}
-      {type === "signup" && (
-        <Input
-          value={lastname}
-          handleChange={setLastName}
-          type={INPUT_TYPES.LASTNAME}
-          error={errors.lastname}
-        />
-      )}
-      <Input
-        value={email}
-        handleChange={setEmail}
-        error={errors.email}
-        type={INPUT_TYPES.EMAIL}
-      />
       {type !== "forgot" && (
         <Input
-          value={password}
-          handleChange={setPassword}
-          type={INPUT_TYPES.PASSWORD}
+          value={formData.password}
+          handleChange={(password) =>
+            setFormData((prev) => ({ ...prev, password }))
+          }
+          type={type === "change" ? INPUT_TYPES.CHANGE : INPUT_TYPES.PASSWORD}
           error={errors.password}
         />
       )}
       {type === "signup" && (
         <Input
-          value={confirm}
-          handleChange={setConfirm}
+          value={formData.confirm}
+          handleChange={(confirm) =>
+            setFormData((prev) => ({ ...prev, confirm }))
+          }
           type={INPUT_TYPES.CONFIRM}
           error={errors.confirm}
         />
       )}
       <Button
-        className={styles.button}
         text={submitText}
+        btnType="submit"
+        className={styles.button}
+        disabled={disabledSubmit}
         handleClick={handleSubmit}
       />
-      {type === "forgot" && (
+      {type === "forgot" ? (
         <Link className={classNames(styles.button, styles.back)} href="/login">
           Back to login
         </Link>
-      )}
-      {type !== "forgot" && (
+      ) : (
         <p className={styles.redirect}>
           {type === "login" ? (
             <>

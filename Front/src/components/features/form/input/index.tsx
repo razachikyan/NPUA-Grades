@@ -21,7 +21,11 @@ export const Input = ({
 
   useEffect(() => {
     setInputType(() => {
-      const isPass = [INPUT_TYPES.PASSWORD, INPUT_TYPES.CONFIRM].includes(type);
+      const isPass = [
+        INPUT_TYPES.PASSWORD,
+        INPUT_TYPES.CONFIRM,
+        INPUT_TYPES.CHANGE,
+      ].includes(type);
       const isEmail = type === INPUT_TYPES.EMAIL;
       return isPass ? "password" : isEmail ? "email" : "text";
     });
@@ -33,7 +37,7 @@ export const Input = ({
       if (!isPass) return null;
       return prev === Hide ? Show : Hide;
     });
-  }, [inputType]);
+  }, [inputType, type]);
 
   return (
     <div className={styles.container}>
@@ -45,6 +49,7 @@ export const Input = ({
         placeholder={inputData[type].placeholder}
         type={inputType}
         icon={icon}
+        required
         onIconClick={() =>
           setInputType((prev) => (prev === "text" ? "password" : "text"))
         }

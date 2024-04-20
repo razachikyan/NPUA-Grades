@@ -1,0 +1,36 @@
+.container {
+  height: 40px;
+  padding: 5px;
+  display: flex;
+
+  .item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 15px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: rgba(#002c83, 0.2);
+    transition: all 0.3s ease;
+
+    &:first-child {
+      border-radius: 10px 0 0 10px;
+    }
+
+    &:last-child {
+      border-radius: 0 10px 10px 0;
+    }
+
+    &:hover {
+      background-color: rgba(#002c83, 0.8);
+      color: #ffffff;
+    }
+  }
+
+  .active {
+    background-color: #002c83;
+    color: #ffffff;
+  }
+}

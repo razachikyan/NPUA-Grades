@@ -1,0 +1,53 @@
+.container {
+  position: relative;
+
+  .select {
+    position: relative;
+    text-transform: capitalize;
+    cursor: pointer;
+
+    .icon {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 10px;
+    }
+  }
+
+  .options {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    z-index: 1000;
+    max-height: 400px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #333333;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #333333;
+    }
+
+    .option {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

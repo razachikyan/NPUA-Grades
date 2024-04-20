@@ -2,22 +2,10 @@ import cookieParser from "cookie-parser";
 import Routes from "./routes/route";
 import express from "express";
 import cors from "cors";
-import knex from "knex";
 
 import "dotenv/config";
 
 const app = express();
-
-knex({
-  client: "pg",
-  connection: {
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT) || 5432,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-  },
-});
 
 const corsOptions = {
   origin: "http://localhost:3000",
