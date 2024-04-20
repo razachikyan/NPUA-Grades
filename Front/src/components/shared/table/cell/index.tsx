@@ -19,19 +19,21 @@ export const Cell = ({ setValue, value, className }: ICellProps) => {
       ) : (
         <div>{value}</div>
       )}
-      <Image
-        src={inputMode ? Save : Edit}
-        alt="icon"
-        className={styles.icon}
-        onClick={() => {
-          setInputMode((prev) => !prev);
-          if (inputMode) {
-            setValue(tempValue);
-          } else {
-            setTempValue(value);
-          }
-        }}
-      />
+      <div className={styles.iconBloc}>
+        <Image
+          src={inputMode ? Save : Edit}
+          alt="icon"
+          className={styles.icon}
+          onClick={() => {
+            setInputMode((prev) => !prev);
+            if (inputMode) {
+              setValue(tempValue);
+            } else {
+              setTempValue(value);
+            }
+          }}
+        />
+      </div>
     </td>
   );
 };
