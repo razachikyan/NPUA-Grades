@@ -4,6 +4,21 @@ import { LecturerService } from "../services/lecturers";
 const lecturerService = new LecturerService();
 
 export default {
+  async editLecturer(req: Request, res: Response) {
+    try {
+      const { lecturer_id } = req.params;
+
+      const newLecturer = await lecturerService.editLecturer(
+        lecturer_id as string,
+        req.body
+      );
+      res.status(201).json(newLecturer);
+    } catch (error) {
+      console.error("Error updating lecturer:", error);
+      res.status(500).json(error);
+    }
+  },
+
   async createLecturer(req: Request, res: Response) {
     try {
       const lecturer = await lecturerService.createLecturer(req.body);
