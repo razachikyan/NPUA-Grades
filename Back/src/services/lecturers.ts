@@ -1,12 +1,6 @@
 import { nanoid } from "nanoid";
 import DB from "../DB/index";
-import {
-  ILecturer,
-  ILecturerResponse,
-  IStudentResponse,
-  ISubject,
-  ISubjectResponse,
-} from "../types";
+import { ILecturer, ILecturerResponse, ISubjectResponse } from "../types";
 import "dotenv/config";
 
 export class LecturerService {

@@ -44,13 +44,11 @@ export default function StudentsStats() {
 
   const handleSubmit = async () => {
     const errors = validator.validateLecturer(newLecturer).errors;
-
     if (errors) {
       setNewLecturer(initialLecturer);
       return;
     }
-
-  await adminServices.addLecturer(newLecturer);
+    await adminServices.addLecturer(newLecturer);
     setNewLecturer(initialLecturer);
     location.reload();
   };
@@ -112,16 +110,16 @@ export default function StudentsStats() {
             }
           />
         </div>
-        <Select
-          className={styles.lecturerSelect}
-          optionClassName={styles.lecturerOption}
-          value={newLecturer.subject}
-          cover="Առարկա"
-          options={subjects.map((item) => item.subject_name)}
-          setValue={(val) =>
-            setNewLecturer((prev) => ({ ...prev, subject: val }))
-          }
-        />
+        <div className={styles.inputBox}>
+          <Input
+            className={styles.input}
+            placeholder="Առարկա"
+            value={newLecturer.subject}
+            handleChange={(val) =>
+              setNewLecturer((prev) => ({ ...prev, subject: val }))
+            }
+          />
+        </div>
         <Button
           btnType="submit"
           text="Ավելացնել"

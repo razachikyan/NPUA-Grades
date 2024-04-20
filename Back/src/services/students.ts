@@ -1,13 +1,22 @@
+import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
 import DB from "../DB/index";
-import { IGroup, IStudent, IStudentResponse } from "../types";
+import { IStudent, IStudentResponse } from "../types";
 import "dotenv/config";
 
 export class StudentServices {
   public async addStudent(data: IStudent): Promise<IStudent> {
     const student_id = nanoid();
+    const nickname = `Student${data.number}`;
+    const hashedPassword = await bcrypt.hash("aaa111", 10);
     await DB<IStudentResponse>("students").insert({
-      ...data,
+      firstname: data.firstname,
+      group: data.group,
+      lastname: data.lastname,
+      middlename: data.middlename,
+      number: data.number,
+      password: hashedPassword,
+      nickname: nickname,
       student_id,
     });
 

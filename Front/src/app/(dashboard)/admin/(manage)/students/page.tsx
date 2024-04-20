@@ -18,7 +18,7 @@ export default function StudentsStats() {
   const [newStudent, setNewStudent] = useState<IStudent>(initialStudent);
   const [students, setStudents] = useState<IStudentResponse[]>([]);
   const [year, setYear] = useState<number>(2024);
-  const [group, setGroup] = useState<TGroups>("920");
+  const [group, setGroup] = useState<TGroups>("020");
   const [semester, setSemester] = useState<number>(2);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function StudentsStats() {
   useEffect(() => {
     adminServices
       .getStudents({ group, grade: year - 2020, semester })
-      .then((res) => setStudents(res))
+      .then((res) => setStudents(res.sort((a, b) => a.number - b.number)))
       .catch((err) => console.log(err));
   }, [year, group, semester]);
 
@@ -60,6 +60,7 @@ export default function StudentsStats() {
         group: group_name,
         lastname,
         middlename,
+        number: Number(num),
       });
     } else {
       const student = students[index];
@@ -128,7 +129,7 @@ export default function StudentsStats() {
         onSubmit={handleUpdate}
         initialData={students.map((stud, i) =>
           [
-            i + 1,
+            stud.number,
             `${stud.firstname} ${stud.lastname} ${stud.middlename}`,
             stud.group,
             "ՏՀՏԷ",

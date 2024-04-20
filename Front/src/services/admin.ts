@@ -19,13 +19,17 @@ export class AdminServices {
 
   public async addStudent(student: IStudent): Promise<IStudent | null> {
     try {
-      const { data } = await axios.post(`${this.BaseUrl}/students`, student);
+      const { data }: { data: IStudentResponse } = await axios.post(
+        `${this.BaseUrl}/students`,
+        student
+      );
       if (!data) return null;
       return {
         firstname: data.firstname.trim(),
         lastname: data.lastname.trim(),
         middlename: data.middlename.trim(),
         group: data.group.trim(),
+        number: data.number,
       };
     } catch (error: any) {
       console.error(error.message);
@@ -93,7 +97,10 @@ export class AdminServices {
 
   public async addLecturer(lecturer: ILecturer & { subject: string }) {
     try {
-      const user = await axios.post(`${this.BaseUrl}/lecturers`, lecturer);
+      const user = await axios.post(`${this.BaseUrl}/lecturers`, {
+        lecturer_name: lecturer.lecturer_name.trim(),
+        subject: lecturer.subject.trim(),
+      });
       if (!user) return null;
       return user;
     } catch (error: any) {
@@ -109,7 +116,10 @@ export class AdminServices {
     try {
       const lecturer: ILecturerResponse = await axios.put(
         `${this.BaseUrl}/lecturers/${lecturer_id}`,
-        updated
+        {
+          lecturer_name: updated.lecturer_name.trim(),
+          subject: updated.subject.trim(),
+        }
       );
 
       if (!lecturer) return null;

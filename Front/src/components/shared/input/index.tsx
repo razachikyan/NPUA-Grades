@@ -35,7 +35,7 @@ export const Input = ({
         required={required}
         placeholder={placeholder}
         className={classNames(styles.input, className)}
-        onChange={(ev) => handleChange?.(ev.target.value.trim())}
+        onChange={(ev) => handleChange?.(ev.target.value)}
       />
     </div>
   );

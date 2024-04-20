@@ -4,7 +4,8 @@ import { IPaginationProps } from "./types";
 import { nanoid } from "nanoid";
 
 export const Pagination = ({ onClick, size, current }: IPaginationProps) => {
-  const pagArr = new Array(size, 0);
+  const pagArr = new Array(size).fill(0);
+
   return (
     <div className={styles.container}>
       {pagArr.map((_, ind) => (
