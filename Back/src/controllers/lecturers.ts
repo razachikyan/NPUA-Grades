@@ -47,4 +47,13 @@ export default {
       res.status(500).json(error);
     }
   },
+  async deleteLecturer(req: Request, res: Response) {
+    try {
+      const { lecturer_id } = req.params;
+      const lecturer = await lecturerService.deleteLecturer(lecturer_id);
+      return res.sendStatus(201);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
 };

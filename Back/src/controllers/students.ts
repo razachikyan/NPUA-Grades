@@ -54,8 +54,8 @@ export default {
   async deleteStudent(req: Request, res: Response) {
     try {
       const { student_id } = req.params;
-      const student = await studentServices.deleteStudent(student_id);
-      res.status(201).send(student);
+      await studentServices.deleteStudent(student_id);
+      res.sendStatus(201);
     } catch (error) {
       console.error(error);
       res.status(500).json(error);

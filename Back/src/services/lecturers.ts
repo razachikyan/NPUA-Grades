@@ -64,4 +64,8 @@ export class LecturerService {
     const lecturers = await DB<ILecturerResponse>("lecturers");
     return lecturers;
   }
+
+  public async deleteLecturer(lecturer_id: string) {
+    await DB<ILecturerResponse>("lecturers").where({ lecturer_id }).delete();
+  }
 }

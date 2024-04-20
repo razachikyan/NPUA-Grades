@@ -53,20 +53,29 @@ export default function StudentsStats() {
     location.reload();
   };
 
-  const handleUpdate = async (data: string[], index: number) => {
-    const [lecturer_name, subject_name] = data;
-    const updatet = lecturers[index];
-    console.log(updatet);
+  const handleUpdate = async (
+    type: "change" | "remove",
+    index: number,
+    data?: string[]
+  ) => {
+    if (type === "change" && data) {
+      const [lecturer_name, subject_name] = data;
+      const updatet = lecturers[index];
+      console.log(updatet);
 
-    const subject = subjects.find((sub) => sub.subject_name === subject_name);
+      const subject = subjects.find((sub) => sub.subject_name === subject_name);
 
-    if (!updatet || !subject || updatet.subject_id !== subject.subject_id)
-      return;
+      if (!updatet || !subject || updatet.subject_id !== subject.subject_id)
+        return;
 
-    await adminServices.editLecturer(updatet.lecturer_id, {
-      lecturer_name,
-      subject: subject_name,
-    });
+      await adminServices.editLecturer(updatet.lecturer_id, {
+        lecturer_name,
+        subject: subject_name,
+      });
+    } else {
+      const lecturer = lecturers[index];
+      await adminServices.deleteLecturer(lecturer.lecturer_id);
+    }
     location.reload();
   };
 
