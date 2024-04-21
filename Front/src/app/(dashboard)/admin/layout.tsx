@@ -53,10 +53,10 @@ export default function Admin({ children }: PropsWithChildren) {
           <Link className={styles.link} href="/admin/lecturers">
             Lecturers list
           </Link>
-          <Link className={styles.link} href="/admin/students/stats">
+          <Link className={styles.link} href="/admin/statistics/students">
             Students Statistics
           </Link>
-          <Link className={styles.link} href="/admin/lecturersstudents/stats">
+          <Link className={styles.link} href="/admin/statistics/lecturers">
             Lecturers Statistics
           </Link>
         </nav>

@@ -1,60 +1,68 @@
-.container {
-  .username {
-    display: inline-block;
-    background-color: #002c83;
-    padding: 13px 82px;
-    font-size: 34px;
-    color: #ffffff;
-    margin-bottom: 20px;
-  }
+.lecturer {
+  flex: 1;
+  padding: 50px 20px;
+  max-width: 1700px;
+  width: 100%;
+  margin: 0 auto;
 
-  .selects {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 4px;
-    margin-bottom: 40px;
-
-    .select {
+  .container {
+    .username {
+      display: inline-block;
       background-color: #002c83;
+      padding: 13px 82px;
+      font-size: 34px;
       color: #ffffff;
-      padding: 13px 72px 13px 48px;
-      font-size: 24px;
       margin-bottom: 20px;
     }
 
-    .option {
-      padding: 13px;
-      font-size: 24px;
-      border: 2px solid #002c83;
-    }
+    .selects {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      margin-bottom: 40px;
 
-    .option:hover {
-      background-color: rgba(#002c83, 0.78);
-      color: #ffffff;
-    }
-  }
+      .select {
+        background-color: #002c83;
+        color: #ffffff;
+        padding: 13px 72px 13px 48px;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
 
-  .table {
-    border: 3px solid #002c83;
-    color: #002c83;
+      .option {
+        padding: 13px;
+        font-size: 24px;
+        border: 2px solid #002c83;
+      }
 
-    .head {
-      tr {
-        th {
-          border: 3px solid #002c83;
-          padding: 24px 42px;
-          font-size: 24px;
-        }
+      .option:hover {
+        background-color: rgba(#002c83, 0.78);
+        color: #ffffff;
       }
     }
 
-    .body {
-      tr {
-        td {
-          border: 3px solid #002c83;
-          padding: 24px 42px;
-          font-size: 23px;
+    .table {
+      border: 3px solid #002c83;
+      color: #002c83;
+
+      .head {
+        tr {
+          th {
+            border: 3px solid #002c83;
+            padding: 24px 42px;
+            font-size: 24px;
+          }
+        }
+      }
+
+      .body {
+        tr {
+          td {
+            border: 3px solid #002c83;
+            padding: 24px 42px;
+            font-size: 23px;
+          }
         }
       }
     }
