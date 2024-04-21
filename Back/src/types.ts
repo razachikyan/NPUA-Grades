@@ -20,7 +20,7 @@ export interface IUser {
 
 export interface IEvaluation {
   subject_id: string;
-  user_id: string;
+  student_id: string;
   id: number;
   lecturer_id: string;
   value: number;

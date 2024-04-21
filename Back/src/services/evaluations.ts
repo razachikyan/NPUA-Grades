@@ -4,13 +4,13 @@ import "dotenv/config";
 
 export class EvaluationService {
   public async getEvaluationsByUser(
-    user_id: string,
+    student_id: string,
     semester: string
   ): Promise<IEvaluation> {
     const semesterNum = Number(semester);
     if (isNaN(semesterNum)) throw Error("Invalid semester");
     const evaluation = await DB<IEvaluation>("evaluations")
-      .where({ user_id, semester: semesterNum })
+      .where({ student_id, semester: semesterNum })
       .first();
     if (!evaluation) throw Error("Userid or semester is not valid");
 
@@ -36,7 +36,7 @@ export class EvaluationService {
   public async getEvaluationsBySemesterAndUser(
     grade: string,
     semester: string,
-    user_id: string
+    student_id: string
   ): Promise<IEvaluation[]> {
     const gradeNum = Number(grade);
     const semesterNum = Number(semester);
@@ -45,7 +45,7 @@ export class EvaluationService {
     const evaluation = await DB<IEvaluation>("evaluations").where({
       grade: gradeNum,
       semester: semesterNum,
-      user_id,
+      student_id,
     });
     if (!evaluation) throw Error("Evaluation id is not valid");
 
@@ -73,11 +73,11 @@ export class EvaluationService {
   public async addEvaluation(
     evaluationData: IEvaluation
   ): Promise<IEvaluation> {
-    const { grade, semester, user_id } = evaluationData;
+    const { grade, semester, student_id } = evaluationData;
     await DB<IEvaluation>("evaluations").insert(evaluationData);
 
     const evaluation = await DB<IEvaluation>("evaluations")
-      .where({ grade, semester, user_id })
+      .where({ grade, semester, student_id })
       .first();
 
     if (!evaluation) throw Error("Couldn't create evaluation");

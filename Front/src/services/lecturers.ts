@@ -1,3 +1,4 @@
+import { IEvaluationResponse } from "@/types/evaluations";
 import { ILecturerResponse } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
@@ -33,6 +34,24 @@ export class LecturerService {
       );
       if (!data) return null;
       localStorage.setItem("session_id", data.session_id);
+      return data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async evaluate(
+    evaluation: Pick<
+      IEvaluationResponse,
+      "grade" | "lecturer_id" | "semester" | "subject_id" | "value"
+    >
+  ): Promise<IEvaluationResponse | null> {
+    try {
+      const { data }: { data: IEvaluationResponse } = await axios.post(
+        `${this.BaseUrl}/evaluations`,
+        evaluation
+      );
+      if (!data) return null;
       return data;
     } catch (error) {
       return null;

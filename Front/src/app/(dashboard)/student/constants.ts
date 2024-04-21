@@ -6,7 +6,6 @@ export const tableHeaders = [
   "Ամփ․ քն․",
   "Կիս․ առ․ռեյտինգ",
   "Կիս․ ՄՈԳ",
-  // "Արդ․ ՄՈԳ",
 ];
 
 export const years = [2022, 2023, 2024];

@@ -48,12 +48,12 @@ export default {
   },
   async getEvaluationsBySemesterAndUser(req: Request, res: Response) {
     try {
-      const { grade, semester, user_id } = req.params;
+      const { grade, semester, student_id } = req.params;
       const evaluations =
         await evaluationService.getEvaluationsBySemesterAndUser(
           grade,
           semester,
-          user_id
+          student_id
         );
 
       return res.status(200).send(evaluations);

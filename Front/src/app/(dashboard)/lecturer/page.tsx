@@ -10,7 +10,6 @@ import { IUserResponse } from "@/types/user";
 import { tableHeaders, years } from "./constants";
 import { groupOptions } from "@/components/features/form/types";
 import { EvaluationService } from "@/services/evaluations";
-import { getStats } from "@/utils/helpers/getStats";
 import { LecturerService } from "@/services/lecturers";
 
 import styles from "./styles.module.scss";
@@ -37,53 +36,6 @@ export default function Lecturer() {
 
     load();
   }, []);
-
-  useEffect(() => {
-    const load = async () => {
-      const lecturer = await lecturerServices.getLecturerByUserId(
-        user?.user_id ?? ""
-      );
-      if (!lecturer) return;
-
-      const evaluations =
-        await evaluationsServices.getEvaluationsBySubjectAndSemester(
-          lecturer.subject_id,
-          year - 2020,
-          semester
-        );
-
-      const data = evaluations
-        ? await Promise.all(
-            evaluations?.map(async (item, i) => {
-              const user = await adminServices.getUserById(item.user_id);
-              const { fin, frequencies, mij1, mij2 } = getStats(item.value);
-              const status =
-                item.value < 41
-                  ? "Անբավարար"
-                    ? item.value < 61
-                    : "Բավարար"
-                  : item.value < 81
-                  ? "Լավ"
-                  : "Գերազանց";
-              return [
-                i,
-                `${user?.firstname} ${user?.lastname}`,
-                frequencies,
-                mij1,
-                mij2,
-                fin,
-                item.value,
-                status,
-              ].map((it) => String(it));
-            })
-          )
-        : [];
-
-      setData(data);
-    };
-
-    load();
-  }, [user]);
 
   return (
     <div className={styles.container}>
