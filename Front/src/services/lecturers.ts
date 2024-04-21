@@ -8,14 +8,15 @@ export class LecturerService {
     this.BaseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
   }
 
-  async getLecturerByUserId(
-    user_id: string
-  ): Promise<ILecturerResponse | null> {
+  async getUser(): Promise<ILecturerResponse | null> {
     try {
-      const { data } = await axios.get(
-        `${this.BaseUrl}/lecturers/user/${user_id}`
+      const session = localStorage.getItem("session_id") ?? "";
+      const res = await axios.get<ILecturerResponse>(
+        `${this.BaseUrl}/lecturers/${session}`
       );
-      return data;
+
+      if (!res.data) return null;
+      return res.data;
     } catch (error) {
       return null;
     }
@@ -31,7 +32,7 @@ export class LecturerService {
         creds
       );
       if (!data) return null;
-      localStorage.setItem("session_id", data.session_id)
+      localStorage.setItem("session_id", data.session_id);
       return data;
     } catch (error) {
       return null;

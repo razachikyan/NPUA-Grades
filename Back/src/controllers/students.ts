@@ -29,10 +29,10 @@ export default {
     }
   },
 
-  async getStudentById(req: Request, res: Response) {
+  async getStudent(req: Request, res: Response) {
     try {
-      const { student_id } = req.params;
-      const student = await studentServices.getStudentById(student_id);
+      const { session_id } = req.params;
+      const student = await studentServices.getStudent(session_id);
       res.status(201).send(student);
     } catch (error) {
       console.log(error);

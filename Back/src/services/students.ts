@@ -52,14 +52,15 @@ export class StudentServices {
     return student;
   }
 
-  public async getStudentById(student_id: string): Promise<IStudentResponse> {
+  public async getStudent(session_id: string): Promise<IStudentResponse> {
     const student = await DB<IStudentResponse>("students")
-      .where({ student_id })
+      .where({ session_id })
       .first();
-    if (!student) throw Error("student id is not valid");
+    if (!student) throw Error("session id is not valid");
 
     return student;
   }
+
   public async getStudents(
     group: string,
     grade: string,

@@ -29,14 +29,11 @@ export class LecturerService {
     return newUser;
   }
 
-  public async getLecturerById(
-    lecturer_id: string
-  ): Promise<ILecturerResponse> {
+  public async getLecturer(session_id: string): Promise<ILecturerResponse> {
     const lecturer = await DB<ILecturerResponse>("lecturers")
-      .where({ lecturer_id })
+      .where({ session_id })
       .first();
-    if (!lecturer) throw Error("Lecturer id is not valid");
-
+    if (!lecturer) throw Error("session id is not valid");
     return lecturer;
   }
 

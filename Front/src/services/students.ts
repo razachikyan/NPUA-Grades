@@ -1,4 +1,4 @@
-import { ILecturerResponse, IStudentResponse } from "@/types/user";
+import { IStudentResponse } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
 
@@ -6,6 +6,20 @@ export class StudentServives {
   private BaseUrl;
   constructor() {
     this.BaseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+  }
+
+  async getUser(): Promise<IStudentResponse | null> {
+    try {
+      const session = localStorage.getItem("session_id") ?? "";
+      const res = await axios.get<IStudentResponse>(
+        `${this.BaseUrl}/students/${session}`
+      );
+
+      if (!res.data) return null;
+      return res.data;
+    } catch (error) {
+      return null;
+    }
   }
 
   async login(

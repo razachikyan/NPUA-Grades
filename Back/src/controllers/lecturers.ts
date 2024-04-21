@@ -48,10 +48,10 @@ export default {
     }
   },
 
-  async getLecturerById(req: Request, res: Response) {
+  async getLecturer(req: Request, res: Response) {
     try {
-      const { lecturer_id } = req.params;
-      const lecturer = await lecturerService.getLecturerById(lecturer_id);
+      const { session_id } = req.params;
+      const lecturer = await lecturerService.getLecturer(session_id);
       return res.status(200).send(lecturer);
     } catch (error) {
       res.status(500).json(error);
