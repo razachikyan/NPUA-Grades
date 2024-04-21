@@ -48,5 +48,17 @@
       width: 100%;
       margin-bottom: 8px;
     }
+
+    .modeContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    }
   }
 }

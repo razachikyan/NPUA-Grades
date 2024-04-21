@@ -31,6 +31,7 @@ export class LecturerService {
         creds
       );
       if (!data) return null;
+      localStorage.setItem("session_id", data.session_id)
       return data;
     } catch (error) {
       return null;

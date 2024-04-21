@@ -4,6 +4,16 @@ import { StudentServices } from "../services/students";
 const studentServices = new StudentServices();
 
 export default {
+  async login(req: Request, res: Response) {
+    try {
+      const user = await studentServices.login(req.body);
+      res.status(200).send(user);
+    } catch (error) {
+      console.log("Error updating student:", error);
+      res.status(500).json(error);
+    }
+  },
+
   async getStudents(req: Request, res: Response) {
     try {
       const { group, grade, semester } = req.params;

@@ -17,7 +17,16 @@ export class LecturerService {
     if (!user) throw Error("User with this nickname doesn't exist");
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) throw Error("Wrong password");
-    return user;
+    const updatedCount = await DB<ILecturerResponse>("lecturers")
+      .where({ nickname })
+      .update({ session_id: nanoid() });
+    if (updatedCount !== 1) throw new Error("Can't update user");
+
+    const newUser = await DB<ILecturerResponse>("lecturers")
+      .where({ nickname })
+      .first();
+    if (!newUser) throw Error("Database error");
+    return newUser;
   }
 
   public async getLecturerById(

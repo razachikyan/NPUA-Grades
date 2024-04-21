@@ -24,6 +24,7 @@ export interface ILecturerResponse {
   lecturer_id: string;
   lecturer_name: string;
   nickname: string;
+  session_id: string;
   password: string;
   middlename: string;
   subject_id: string;
@@ -40,6 +41,9 @@ export interface IStudentResponse {
   lastname: string;
   middlename: string;
   number: number;
+  session_id: string;
+  nickname: string;
+  password: string;
   group: string;
   id: number;
 }

@@ -5,6 +5,31 @@ import { IStudent, IStudentResponse } from "../types";
 import "dotenv/config";
 
 export class StudentServices {
+  public async login({
+    nickname,
+    password,
+  }: Pick<IStudentResponse, "nickname" | "password">) {
+    const user = await DB<IStudentResponse>("students")
+      .where({
+        nickname,
+      })
+      .first();
+    if (!user) throw Error("User with this nickname doesn't exist");
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) throw Error("Wrong password");
+    const updatedCount = await DB<IStudentResponse>("students")
+      .where({ nickname })
+      .update({ session_id: nanoid() });
+
+    if (updatedCount !== 1) throw new Error("Can't update user");
+
+    const newUser = await DB<IStudentResponse>("students")
+      .where({ nickname })
+      .first();
+    if (!newUser) throw Error("Database error");
+    return newUser;
+  }
+
   public async addStudent(data: IStudent): Promise<IStudent> {
     const student_id = nanoid();
     const nickname = `Student${data.number}`;
