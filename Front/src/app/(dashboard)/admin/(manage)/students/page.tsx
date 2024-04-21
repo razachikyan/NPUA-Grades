@@ -74,7 +74,7 @@ export default function StudentsStats() {
     const yearParam = params.get("year");
     setYear(yearParam ? parseInt(yearParam, 10) : 2024);
     const groupParam = params.get("group") as TGroups;
-    setGroup(groupParam || "920");
+    setGroup(groupParam || "020");
     const semesterParam = params.get("semester");
     setSemester(semesterParam ? parseInt(semesterParam, 10) : 2);
   }, [searchParams]);
