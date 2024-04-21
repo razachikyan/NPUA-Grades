@@ -186,6 +186,9 @@ export const Form = ({
           )}
         </p>
       )}
+      <p className={styles.redirect}>
+        Login as <Link href='/login/non-admin' className={styles.link}>Lecturer/Student</Link>
+      </p>
     </form>
   );
 };

@@ -9,7 +9,7 @@ export default {
       const user = await userServices.signup(req.body);
       res.status(201).json("hwllo");
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.log("Error creating user:", error);
       res.status(500).json(error);
     }
   },
@@ -20,7 +20,7 @@ export default {
       const user = await userServices.login(email, password);
       res.status(200).json(user);
     } catch (error) {
-      console.error("Error authenticating user:", error);
+      console.log("Error authenticating user:", error);
       res.status(500).json(error);
     }
   },
@@ -31,7 +31,7 @@ export default {
       const user = await userServices.changePass(email, password);
       res.status(200).json(user);
     } catch (error) {
-      console.error("Error authenticating user:", error);
+      console.log("Error authenticating user:", error);
       res.status(500).json(error);
     }
   },
@@ -42,7 +42,7 @@ export default {
       const user = await userServices.loginWithOnetimeCode(email, password);
       res.status(200).json(user);
     } catch (error) {
-      console.error("Error authenticating user:", error);
+      console.log("Error authenticating user:", error);
       res.status(500).json(error);
     }
   },

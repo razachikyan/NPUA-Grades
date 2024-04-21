@@ -1,9 +1,25 @@
 import { nanoid } from "nanoid";
+import bcrypt from "bcrypt";
 import DB from "../DB/index";
 import { ILecturer, ILecturerResponse, ISubjectResponse } from "../types";
 import "dotenv/config";
 
 export class LecturerService {
+  public async login({
+    nickname,
+    password,
+  }: Pick<ILecturerResponse, "nickname" | "password">) {
+    const user = await DB<ILecturerResponse>("lecturers")
+      .where({
+        nickname,
+      })
+      .first();
+    if (!user) throw Error("User with this nickname doesn't exist");
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) throw Error("Wrong password");
+    return user;
+  }
+
   public async getLecturerById(
     lecturer_id: string
   ): Promise<ILecturerResponse> {
@@ -54,9 +70,12 @@ export class LecturerService {
   ): Promise<ILecturerResponse> {
     const lecturer_id = nanoid();
 
+    const hashedPassword = await bcrypt.hash("aaa111", 10);
     await DB<ILecturerResponse>("lecturers").insert({
       lecturer_id,
       lecturer_name: data.lecturer_name,
+      nickname: "aaa111",
+      password: hashedPassword,
     });
 
     const lecturer = await DB<ILecturerResponse>("lecturers")

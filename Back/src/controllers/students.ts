@@ -14,7 +14,7 @@ export default {
       );
       res.status(201).send(students);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(500).json(error);
     }
   },
@@ -25,7 +25,7 @@ export default {
       const student = await studentServices.getStudentById(student_id);
       res.status(201).send(student);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(500).json(error);
     }
   },
@@ -35,7 +35,7 @@ export default {
       const student = await studentServices.addStudent(req.body);
       res.status(201).send(student);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(500).json(error);
     }
   },
@@ -46,7 +46,7 @@ export default {
       const student = await studentServices.updateStudent(student_id, req.body);
       res.status(201).send(student);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(500).json(error);
     }
   },
@@ -57,7 +57,7 @@ export default {
       await studentServices.deleteStudent(student_id);
       res.sendStatus(201);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(500).json(error);
     }
   },

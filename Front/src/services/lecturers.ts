@@ -20,4 +20,20 @@ export class LecturerService {
       return null;
     }
   }
+
+  async login(
+    creds: Pick<ILecturerResponse, "password" | "nickname">
+  ): Promise<null | ILecturerResponse> {
+    try {
+      if (!creds.nickname || !creds.password) return null;
+      const { data }: { data: ILecturerResponse } = await axios.post(
+        `${this.BaseUrl}/lecturers/login`,
+        creds
+      );
+      if (!data) return null;
+      return data;
+    } catch (error) {
+      return null;
+    }
+  }
 }
