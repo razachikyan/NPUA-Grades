@@ -32,7 +32,7 @@ export class AdminServices {
         number: data.number,
       };
     } catch (error: any) {
-      console.error(error.message);
+      console.log(error.message);
       return null;
     }
   }
@@ -53,7 +53,7 @@ export class AdminServices {
       if (!data) return [];
       return data;
     } catch (error: any) {
-      console.error(error.message);
+      console.log(error.message);
       return [];
     }
   }
@@ -90,7 +90,7 @@ export class AdminServices {
       if (!data) return [];
       return data;
     } catch (error) {
-      console.error(error);
+      console.log(error);
       return [];
     }
   }
@@ -104,7 +104,7 @@ export class AdminServices {
       if (!user) return null;
       return user;
     } catch (error: any) {
-      console.error(error.message);
+      console.log(error.message);
       return null;
     }
   }
@@ -125,7 +125,7 @@ export class AdminServices {
       if (!lecturer) return null;
       return lecturer;
     } catch (error: any) {
-      console.error(error.message);
+      console.log(error.message);
       return null;
     }
   }
@@ -182,7 +182,7 @@ export class AdminServices {
     try {
       await axios.post(`${this.BaseUrl}/users/reset`, { email });
     } catch (error) {
-      console.error("Error fetching user:", error);
+      console.log("Error fetching user:", error);
     }
   }
 

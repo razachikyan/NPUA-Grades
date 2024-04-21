@@ -1,18 +1,18 @@
-import { ILecturerResponse } from "@/types/user";
+import { IStudentResponse } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
 
-export class LecturerService {
+export class StudentServives {
   private BaseUrl;
   constructor() {
     this.BaseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
   }
 
-  async getUser(): Promise<ILecturerResponse | null> {
+  async getUser(): Promise<IStudentResponse | null> {
     try {
       const session = localStorage.getItem("session_id") ?? "";
-      const res = await axios.get<ILecturerResponse>(
-        `${this.BaseUrl}/lecturers/${session}`
+      const res = await axios.get<IStudentResponse>(
+        `${this.BaseUrl}/students/${session}`
       );
 
       if (!res.data) return null;
@@ -23,12 +23,12 @@ export class LecturerService {
   }
 
   async login(
-    creds: Pick<ILecturerResponse, "password" | "nickname">
-  ): Promise<null | ILecturerResponse> {
+    creds: Pick<IStudentResponse, "password" | "nickname">
+  ): Promise<null | IStudentResponse> {
     try {
       if (!creds.nickname || !creds.password) return null;
-      const { data }: { data: ILecturerResponse } = await axios.post(
-        `${this.BaseUrl}/lecturers/login`,
+      const { data }: { data: IStudentResponse } = await axios.post(
+        `${this.BaseUrl}/students/login`,
         creds
       );
       if (!data) return null;

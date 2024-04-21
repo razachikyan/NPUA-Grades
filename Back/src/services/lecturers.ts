@@ -1,17 +1,39 @@
 import { nanoid } from "nanoid";
+import bcrypt from "bcrypt";
 import DB from "../DB/index";
 import { ILecturer, ILecturerResponse, ISubjectResponse } from "../types";
 import "dotenv/config";
 
 export class LecturerService {
-  public async getLecturerById(
-    lecturer_id: string
-  ): Promise<ILecturerResponse> {
-    const lecturer = await DB<ILecturerResponse>("lecturers")
-      .where({ lecturer_id })
+  public async login({
+    nickname,
+    password,
+  }: Pick<ILecturerResponse, "nickname" | "password">) {
+    const user = await DB<ILecturerResponse>("lecturers")
+      .where({
+        nickname,
+      })
       .first();
-    if (!lecturer) throw Error("Lecturer id is not valid");
+    if (!user) throw Error("User with this nickname doesn't exist");
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) throw Error("Wrong password");
+    const updatedCount = await DB<ILecturerResponse>("lecturers")
+      .where({ nickname })
+      .update({ session_id: nanoid() });
+    if (updatedCount !== 1) throw new Error("Can't update user");
 
+    const newUser = await DB<ILecturerResponse>("lecturers")
+      .where({ nickname })
+      .first();
+    if (!newUser) throw Error("Database error");
+    return newUser;
+  }
+
+  public async getLecturer(session_id: string): Promise<ILecturerResponse> {
+    const lecturer = await DB<ILecturerResponse>("lecturers")
+      .where({ session_id })
+      .first();
+    if (!lecturer) throw Error("session id is not valid");
     return lecturer;
   }
 
@@ -54,9 +76,12 @@ export class LecturerService {
   ): Promise<ILecturerResponse> {
     const lecturer_id = nanoid();
 
+    const hashedPassword = await bcrypt.hash("aaa111", 10);
     await DB<ILecturerResponse>("lecturers").insert({
       lecturer_id,
       lecturer_name: data.lecturer_name,
+      nickname: "aaa111",
+      password: hashedPassword,
     });
 
     const lecturer = await DB<ILecturerResponse>("lecturers")

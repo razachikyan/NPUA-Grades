@@ -46,8 +46,11 @@ export interface ISubjectResponse {
 }
 
 export interface ILecturerResponse {
-  lecturer_id: string;
   lecturer_name: string;
+  lecturer_id: string;
+  session_id: string;
+  nickname: string;
+  password: string;
   id: number;
 }
 
@@ -57,13 +60,14 @@ export interface ILecturer {
 
 export interface IStudentResponse {
   student_id: string;
+  session_id: string;
   id: number;
   number: number;
   firstname: string;
   lastname: string;
   middlename: string;
-  nickname: string;
   group: string;
+  nickname: string;
   password: string;
 }
 

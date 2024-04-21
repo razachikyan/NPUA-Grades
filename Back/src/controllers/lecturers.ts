@@ -4,6 +4,16 @@ import { LecturerService } from "../services/lecturers";
 const lecturerService = new LecturerService();
 
 export default {
+  async login(req: Request, res: Response) {
+    try {
+      const user = await lecturerService.login(req.body);
+      res.status(200).send(user);
+    } catch (error) {
+      console.log("Error updating lecturer:", error);
+      res.status(500).json(error);
+    }
+  },
+
   async editLecturer(req: Request, res: Response) {
     try {
       const { lecturer_id } = req.params;
@@ -14,7 +24,7 @@ export default {
       );
       res.status(201).json(newLecturer);
     } catch (error) {
-      console.error("Error updating lecturer:", error);
+      console.log("Error updating lecturer:", error);
       res.status(500).json(error);
     }
   },
@@ -24,7 +34,7 @@ export default {
       const lecturer = await lecturerService.createLecturer(req.body);
       res.status(201).json(lecturer);
     } catch (error) {
-      console.error("Error creating lecturer:", error);
+      console.log("Error creating lecturer:", error);
       res.status(500).json(error);
     }
   },
@@ -38,10 +48,10 @@ export default {
     }
   },
 
-  async getLecturerById(req: Request, res: Response) {
+  async getLecturer(req: Request, res: Response) {
     try {
-      const { lecturer_id } = req.params;
-      const lecturer = await lecturerService.getLecturerById(lecturer_id);
+      const { session_id } = req.params;
+      const lecturer = await lecturerService.getLecturer(session_id);
       return res.status(200).send(lecturer);
     } catch (error) {
       res.status(500).json(error);

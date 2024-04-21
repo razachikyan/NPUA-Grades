@@ -9,7 +9,7 @@ export default {
       const evaluation = await evaluationService.addEvaluation(req.body);
       res.status(201).json(evaluation);
     } catch (error) {
-      console.error("Error creating evaluation:", error);
+      console.log("Error creating evaluation:", error);
       res.status(500).json(error);
     }
   },

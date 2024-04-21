@@ -5,6 +5,31 @@ import { IStudent, IStudentResponse } from "../types";
 import "dotenv/config";
 
 export class StudentServices {
+  public async login({
+    nickname,
+    password,
+  }: Pick<IStudentResponse, "nickname" | "password">) {
+    const user = await DB<IStudentResponse>("students")
+      .where({
+        nickname,
+      })
+      .first();
+    if (!user) throw Error("User with this nickname doesn't exist");
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) throw Error("Wrong password");
+    const updatedCount = await DB<IStudentResponse>("students")
+      .where({ nickname })
+      .update({ session_id: nanoid() });
+
+    if (updatedCount !== 1) throw new Error("Can't update user");
+
+    const newUser = await DB<IStudentResponse>("students")
+      .where({ nickname })
+      .first();
+    if (!newUser) throw Error("Database error");
+    return newUser;
+  }
+
   public async addStudent(data: IStudent): Promise<IStudent> {
     const student_id = nanoid();
     const nickname = `Student${data.number}`;
@@ -27,14 +52,15 @@ export class StudentServices {
     return student;
   }
 
-  public async getStudentById(student_id: string): Promise<IStudentResponse> {
+  public async getStudent(session_id: string): Promise<IStudentResponse> {
     const student = await DB<IStudentResponse>("students")
-      .where({ student_id })
+      .where({ session_id })
       .first();
-    if (!student) throw Error("student id is not valid");
+    if (!student) throw Error("session id is not valid");
 
     return student;
   }
+
   public async getStudents(
     group: string,
     grade: string,

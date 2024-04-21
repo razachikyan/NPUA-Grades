@@ -27,7 +27,7 @@ class EmailService {
 
       await this.transporter.sendMail(mailOptions);
     } catch (error) {
-      console.error("Error sending reset password email:", error);
+      console.log("Error sending reset password email:", error);
       throw error;
     }
   }

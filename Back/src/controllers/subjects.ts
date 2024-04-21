@@ -10,7 +10,7 @@ export default {
       const subject = await subjectService.createSubject(subject_name);
       res.status(201).json(subject);
     } catch (error) {
-      console.error("Error creating subject:", error);
+      console.log("Error creating subject:", error);
       res.status(500).json(error);
     }
   },
