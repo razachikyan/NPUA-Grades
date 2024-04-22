@@ -51,10 +51,10 @@ export class EvaluationService {
 
     return evaluation;
   }
-  public async getEvaluationsBySemesterAndSubject(
+  public async getEvaluationsByLecturerAndSemester(
     grade: string,
     semester: string,
-    subject_id: string
+    lecturer_id: string
   ): Promise<IEvaluation[]> {
     const gradeNum = Number(grade);
     const semesterNum = Number(semester);
@@ -63,8 +63,9 @@ export class EvaluationService {
     const evaluation = await DB<IEvaluation>("evaluations").where({
       grade: gradeNum,
       semester: semesterNum,
-      subject_id,
+      lecturer_id,
     });
+
     if (!evaluation) throw Error("Evaluation id is not valid");
 
     return evaluation;

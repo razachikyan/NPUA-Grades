@@ -1,7 +1,14 @@
 import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
 import DB from "../DB/index";
-import { ILecturer, ILecturerResponse, ISubjectResponse } from "../types";
+import {
+  IEvaluation,
+  ILecturer,
+  ILecturerResponse,
+  IStudent,
+  IStudentResponse,
+  ISubjectResponse,
+} from "../types";
 import "dotenv/config";
 
 export class LecturerService {
@@ -35,6 +42,33 @@ export class LecturerService {
       .first();
     if (!lecturer) throw Error("session id is not valid");
     return lecturer;
+  }
+  public async getEvaluations({
+    lecturer_id,
+    grade,
+    semester,
+  }: {
+    lecturer_id: string;
+    grade: string;
+    semester: string;
+  }): Promise<any> {
+    const evaluations = await DB<IEvaluation & IStudentResponse>({
+      e: "evaluations",
+    })
+      .select({
+        evaluation: "e.*",
+        student: "s.*",
+      })
+      .leftJoin("students as s", "e.student_id", "s.student_id")
+      .where({
+        grade,
+        semester,
+        lecturer_id,
+      });
+    console.log("-----------", evaluations);
+
+    if (!evaluations) throw Error("session id is not valid");
+    return evaluations;
   }
 
   public async editLecturer(

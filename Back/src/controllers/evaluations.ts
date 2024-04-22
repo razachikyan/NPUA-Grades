@@ -61,14 +61,14 @@ export default {
       res.status(500).json(error);
     }
   },
-  async getEvaluationsBySemesterAndSubject(req: Request, res: Response) {
+  async getEvaluationsByLecturerAndSemester(req: Request, res: Response) {
     try {
-      const { grade, semester, subject_id } = req.params;
+      const { grade, semester, lecturer_id } = req.params;
       const evaluations =
-        await evaluationService.getEvaluationsBySemesterAndSubject(
+        await evaluationService.getEvaluationsByLecturerAndSemester(
           grade,
           semester,
-          subject_id
+          lecturer_id
         );
 
       return res.status(200).send(evaluations);

@@ -66,4 +66,20 @@ export default {
       res.status(500).json(error);
     }
   },
+
+  async getEvaluations(req: Request, res: Response) {
+    try {
+      const { lecturer_id, grade, semester } = req.params;
+      const evaluations = await lecturerService.getEvaluations({
+        lecturer_id,
+        grade,
+        semester,
+      });
+      return res.status(200).send(evaluations);
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).json(error);
+    }
+  },
 };

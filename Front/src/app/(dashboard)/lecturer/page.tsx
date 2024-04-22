@@ -5,12 +5,10 @@ import { useEffect, useState } from "react";
 import { Table } from "@/components/shared/table";
 import { Select } from "@/components/shared/select";
 import Arrow from "@public/icons/arrow.svg";
-import { ILecturerResponse, IStudentResponse } from "@/types/user";
+import { ILecturerResponse } from "@/types/user";
 import { getData, tableHeaders, years } from "./constants";
 import { groupOptions } from "@/components/features/form/types";
-import { EvaluationService } from "@/services/evaluations";
 import { LecturerService } from "@/services/lecturers";
-import { IEvaluationResponse } from "@/types/evaluations";
 
 import styles from "./styles.module.scss";
 
@@ -18,22 +16,19 @@ export default function Lecturer() {
   const [user, setUser] = useState<ILecturerResponse | null>(null);
   const [data, setData] = useState<string[][]>([]);
   const [group, setGroup] = useState<string>("020");
-  const [year, setYear] = useState<number>(2022);
+  const [year, setYear] = useState<number>(2023);
   const [semester, setSemester] = useState<number>(1);
-  const [evaluations, setEvaluations] = useState<IEvaluationResponse[]>([]);
-  const [students, setStudents] = useState<IStudentResponse[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const evaluationsServices = new EvaluationService();
   const lecturerServices = new LecturerService();
   const headers = tableHeaders;
 
   useEffect(() => {
     const load = async () => {
       const user = await lecturerServices.getUser();
-      if (!user) router.push("/login");
+      if (!user) router.push("/login/non-admin");
       setUser(user);
     };
 
@@ -42,28 +37,15 @@ export default function Lecturer() {
 
   useEffect(() => {
     if (user) {
-      evaluationsServices
-        .getEvaluationsByLecturerAndSemester(
-          user.lecturer_id,
-          year - 2020,
-          semester
-        )
+      lecturerServices
+        .getEvaluations(user.lecturer_id, year - 2020, semester)
         .then((res) => {
-          Promise.all(
-            res.map(async (item) => {
-              return await lecturerServices.getStudentById(item.student_id);
-            })
-          ).then((res) => {
-            const valid = res.filter((item) => item !== null);
-            setStudents(valid as IStudentResponse[]);
-          });
-          setEvaluations(res);
+          const data = getData(res);
+          setData(data);
         })
-        .catch(() => setEvaluations([]));
+        .catch(() => setData([]));
     }
   }, [user]);
-
-  useEffect(() => {}, [evaluations]);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -74,13 +56,6 @@ export default function Lecturer() {
     const groupParams = params.get("group");
     setGroup(groupParams ? groupParams : "920");
   }, [searchParams]);
-
-  useEffect(() => {
-    const data = getData(evaluations, students);
-    console.log(evaluations, students);
-
-    setData(data);
-  }, [evaluations, students]);
 
   return (
     <>
