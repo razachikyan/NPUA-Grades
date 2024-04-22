@@ -12,14 +12,14 @@ export class EvaluationService {
     user_id: string,
     grade: number,
     semester: number
-  ): Promise<IEvaluationResponse[] | null> {
+  ): Promise<IEvaluationResponse[]> {
     try {
       const { data } = await axios.get(
         `${this.BaseUrl}/evaluations/${user_id}/${grade}/${semester}`
       );
       return data;
     } catch (error) {
-      return null;
+      return [];
     }
   }
   async getEvaluationsBySubjectAndSemester(

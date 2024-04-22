@@ -1,37 +1,38 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Table } from "@/components/shared/table";
 import { Select } from "@/components/shared/select";
-import Arrow from "@public/icons/arrow.svg";
-import { AdminServices } from "@/services/admin";
-import { IUserResponse } from "@/types/user";
-import { tableHeaders, years } from "./constants";
 import { groupOptions } from "@/components/features/form/types";
-import { EvaluationService } from "@/services/evaluations";
-import { getStats } from "@/utils/helpers/getStats";
+import Arrow from "@public/icons/arrow.svg";
+import { ILecturerResponse, IStudentResponse } from "@/types/user";
+import { getData, tableHeaders, years } from "./constants";
 import { LecturerService } from "@/services/lecturers";
+import { IEvaluationResponse } from "@/types/evaluations";
 
 import styles from "./styles.module.scss";
 
 export default function Lecturer() {
-  const [user, setUser] = useState<IUserResponse | null>(null);
+  const [user, setUser] = useState<ILecturerResponse | null>(null);
+  const [data, setData] = useState<string[][]>([]);
+  const [dataObj, setDataObj] = useState<
+    (IEvaluationResponse & IStudentResponse)[]
+  >([]);
   const [group, setGroup] = useState<string>("020");
-  const [year, setYear] = useState<number>(2022);
+  const [year, setYear] = useState<number>(2023);
   const [semester, setSemester] = useState<number>(1);
-  const [data, setData] = useState<Array<string[]>>([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
-  const adminServices = new AdminServices();
-  const evaluationsServices = new EvaluationService();
   const lecturerServices = new LecturerService();
   const headers = tableHeaders;
 
   useEffect(() => {
     const load = async () => {
-      const user = await adminServices.getUser();
-      if (!user) router.push("/login");
+      const user = await lecturerServices.getUser();
+      if (!user) router.push("/login/non-admin");
       setUser(user);
     };
 
@@ -39,95 +40,113 @@ export default function Lecturer() {
   }, []);
 
   useEffect(() => {
-    const load = async () => {
-      const lecturer = await lecturerServices.getLecturerByUserId(
-        user?.user_id ?? ""
-      );
-      if (!lecturer) return;
-
-      const evaluations =
-        await evaluationsServices.getEvaluationsBySubjectAndSemester(
-          lecturer.subject_id,
-          year - 2020,
-          semester
-        );
-
-      const data = evaluations
-        ? await Promise.all(
-            evaluations?.map(async (item, i) => {
-              const user = await adminServices.getUserById(item.user_id);
-              const { fin, frequencies, mij1, mij2 } = getStats(item.value);
-              const status =
-                item.value < 41
-                  ? "Անբավարար"
-                    ? item.value < 61
-                    : "Բավարար"
-                  : item.value < 81
-                  ? "Լավ"
-                  : "Գերազանց";
-              return [
-                i,
-                `${user?.firstname} ${user?.lastname}`,
-                frequencies,
-                mij1,
-                mij2,
-                fin,
-                item.value,
-                status,
-              ].map((it) => String(it));
-            })
-          )
-        : [];
-
-      setData(data);
-    };
-
-    load();
+    if (user) {
+      lecturerServices
+        .getEvaluations(user.lecturer_id, year - 2020, semester)
+        .then((res) => {
+          setDataObj(res);
+          const data = getData(res);
+          setData(data);
+        })
+        .catch(() => setData([]));
+    }
   }, [user]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    const yearParam = params.get("year");
+    setYear(yearParam ? parseInt(yearParam, 10) : 2024);
+    const semesterParam = params.get("semester");
+    setSemester(semesterParam ? parseInt(semesterParam, 10) : 2);
+    const groupParams = params.get("group");
+    setGroup(groupParams ? groupParams : "920");
+  }, [searchParams]);
+
+  const handleSubmit = async (
+    type: "change" | "remove",
+    _: number,
+    row?: string[]
+  ) => {
+    const [num] = row ?? [-1];
+    const item = dataObj.find((ev) => ev.number === Number(num));
+    if (
+      user &&
+      row &&
+      !isNaN(Number(row.reverse()[0])) &&
+      item &&
+      type === "change"
+    ) {
+      const res = await lecturerServices.evaluate({
+        grade: year - 2020,
+        lecturer_id: user.lecturer_id,
+        semester,
+        student_id: item.student_id,
+        subject_id: item.subject_id,
+        value: Number(row[1]),
+      });
+      location.reload();
+    }
+  };
+
   return (
-    <div className={styles.container}>
-      {user && (
-        <span className={styles.username}>
-          {user.firstname} {user.lastname}
-        </span>
-      )}
-      <div className={styles.selects}>
-        <Select
-          icon={Arrow}
-          value={group}
-          className={styles.select}
-          cover="Խումբ"
-          setValue={setGroup as (value: string | number) => void}
-          optionClassName={styles.option}
-          options={groupOptions}
-        />
-        <Select
-          icon={Arrow}
-          value={year}
-          className={styles.select}
-          setValue={setYear as (value: string | number) => void}
-          cover="Տարեթիվ"
-          optionClassName={styles.option}
-          options={years}
-        />
-        <Select
-          icon={Arrow}
-          value={semester}
-          className={styles.select}
-          setValue={setSemester as (value: string | number) => void}
-          cover="Կիսամյակ"
-          optionClassName={styles.option}
-          options={[1, 2]}
-        />
-      </div>
-      <Table
-        bodyClassName={styles.body}
-        headClassName={styles.head}
-        className={styles.table}
-        headers={headers}
-        initialData={data}
-      />
-    </div>
+    <>
+      <main className={styles.lecturer}>
+        <div className={styles.container}>
+          {user && (
+            <span className={styles.username}>{user.lecturer_name}</span>
+          )}
+          <div className={styles.selects}>
+            <Select
+              icon={Arrow}
+              value={group}
+              className={styles.select}
+              cover="Խումբ"
+              setValue={(val) => {
+                const newParams = new URLSearchParams(searchParams);
+                newParams.set("group", val);
+                router.replace(`${pathname}?${newParams.toString()}`);
+              }}
+              optionClassName={styles.option}
+              options={groupOptions}
+            />
+            <Select
+              value={year}
+              cover="Տարեթիվ"
+              options={years}
+              setValue={(val) => {
+                const newParams = new URLSearchParams(searchParams);
+                newParams.set("year", val);
+                router.replace(`${pathname}?${newParams.toString()}`);
+              }}
+              className={styles.select}
+              optionClassName={styles.option}
+            />
+            <Select
+              value={semester}
+              cover="Կիսամյակ"
+              options={[1, 2]}
+              setValue={(val) => {
+                const newParams = new URLSearchParams(searchParams);
+                newParams.set("semester", val);
+                router.replace(`${pathname}?${newParams.toString()}`);
+              }}
+              className={styles.select}
+              optionClassName={styles.option}
+            />
+          </div>
+          <Table
+            ableEdit
+            onSubmit={handleSubmit}
+            btnClassname={styles.tableBtn}
+            bodyClassName={styles.body}
+            headClassName={styles.head}
+            className={styles.tableBox}
+            tableClassName={styles.table}
+            headers={headers}
+            initialData={data}
+          />
+        </div>
+      </main>
+    </>
   );
 }

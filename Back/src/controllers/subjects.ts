@@ -23,6 +23,17 @@ export default {
       res.status(500).json(error);
     }
   },
+
+  async getSubjectsByLecturer(req: Request, res: Response) {
+    try {
+      const { lecturer_id } = req.params;
+      const subjects = await subjectService.getSubjectsByLecturer(lecturer_id);
+      return res.status(200).send(subjects);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
   async getSubjectById(req: Request, res: Response) {
     try {
       const { subject_id } = req.params;

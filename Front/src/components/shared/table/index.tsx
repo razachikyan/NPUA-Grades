@@ -9,6 +9,7 @@ import { ITableProps } from "./types";
 import { Button } from "../button";
 
 import styles from "./styles.module.scss";
+import { ISubjectResponse } from "@/types/subjects";
 
 export const Table = ({
   headers,
@@ -27,6 +28,7 @@ export const Table = ({
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [changed, setChanged] = useState<number>(-1);
   const [removed, setRemoved] = useState<number>(-1);
+  const [subjects, setSubjects] = useState<ISubjectResponse[]>([]);
 
   useEffect(() => {
     setData(initialData);
@@ -104,15 +106,17 @@ export const Table = ({
           size={Math.ceil(data.length / 7)}
         />
       )}
-      <Button
-        handleClick={() => {
-          changed !== -1 && onSubmit?.("change", changed, data[changed]);
-          removed !== -1 && onSubmit?.("remove", removed);
-        }}
-        className={btnClassname}
-      >
-        Submit
-      </Button>
+      {onSubmit && (
+        <Button
+          handleClick={() => {
+            changed !== -1 && onSubmit?.("change", changed, data[changed]);
+            removed !== -1 && onSubmit?.("remove", removed);
+          }}
+          className={btnClassname}
+        >
+          Submit
+        </Button>
+      )}
     </div>
   );
 };

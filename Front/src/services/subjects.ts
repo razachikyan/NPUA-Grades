@@ -16,4 +16,16 @@ export class SubjectSevice {
       return [];
     }
   }
+  async getSubjectsByLecturer(
+    lecturer_id: string
+  ): Promise<ISubjectResponse[] | []> {
+    try {
+      const { data } = await axios.get(
+        `${this.BaseUrl}/subjects/lect/${lecturer_id}`
+      );
+      return data;
+    } catch (error) {
+      return [];
+    }
+  }
 }

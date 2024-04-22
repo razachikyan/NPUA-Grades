@@ -1,4 +1,5 @@
-import { ILecturerResponse } from "@/types/user";
+import { IEvaluationResponse } from "@/types/evaluations";
+import { ILecturerResponse, IStudentResponse } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
 
@@ -36,6 +37,42 @@ export class LecturerService {
       return data;
     } catch (error) {
       return null;
+    }
+  }
+
+  async evaluate(
+    evaluation: Pick<
+      IEvaluationResponse,
+      "grade" | "lecturer_id" | "semester" | "subject_id" | "value" | "student_id"
+    >
+  ): Promise<IEvaluationResponse | null> {
+    try {
+      const { data }: { data: IEvaluationResponse } = await axios.put(
+        `${this.BaseUrl}/evaluations`,
+        evaluation
+      );
+      if (!data) return null;
+      return data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getEvaluations(
+    student_id: string,
+    grade: number,
+    semester: number
+  ): Promise<(IEvaluationResponse & IStudentResponse)[]> {
+    try {
+      const { data }: { data: (IEvaluationResponse & IStudentResponse)[] } =
+        await axios.get(
+          `${this.BaseUrl}/lecturers/evaluations/${student_id}/${grade}/${semester}`
+        );
+      if (!data) return [];
+      return data;
+    } catch (error) {
+      console.log(error);
+      return [];
     }
   }
 }

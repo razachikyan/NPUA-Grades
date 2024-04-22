@@ -12,6 +12,16 @@ export class SubjectService {
 
     return subject;
   }
+  public async getSubjectsByLecturer(
+    lecturer_id: string
+  ): Promise<ISubjectResponse> {
+    const subject = await DB<ISubjectResponse>("subjects")
+      .where({ lecturer_id })
+      .first();
+    if (!subject) throw Error("Secturer id is not valid");
+
+    return subject;
+  }
 
   public async createSubject(subject_name: string): Promise<ISubjectResponse> {
     const subject_id = nanoid();

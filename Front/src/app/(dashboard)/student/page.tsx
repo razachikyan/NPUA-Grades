@@ -6,7 +6,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Select } from "@/components/shared/select";
 import { StudentServives } from "@/services/students";
 import { IStudentResponse } from "@/types/user";
-import { years } from "./constants";
+import { getTableData, tableHeaders, years } from "./constants";
+import { Table } from "@/components/shared/table";
+import { EvaluationService } from "@/services/evaluations";
+import { IEvaluationResponse } from "@/types/evaluations";
+import { ISubjectResponse } from "@/types/subjects";
+import { SubjectSevice } from "@/services/subjects";
 
 import styles from "./styles.module.scss";
 
@@ -14,20 +19,37 @@ export default function Student() {
   const [user, setUser] = useState<IStudentResponse | null>(null);
   const [year, setYear] = useState<number>(2024);
   const [semester, setSemester] = useState<number>(2);
+  const [evaluations, setEvauations] = useState<IEvaluationResponse[]>([]);
+  const [subjects, setSubjects] = useState<ISubjectResponse[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const studentServices = new StudentServives();
+  const evaluationServices = new EvaluationService();
+  const subjectsServices = new SubjectSevice();
 
   useEffect(() => {
     const load = async () => {
       const user = await studentServices.getUser();
       if (!user) router.push("/login");
       setUser(user);
+      subjectsServices
+        .getSubjects()
+        .then((res) => setSubjects(res))
+        .catch(() => setSubjects([]));
     };
 
     load();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      evaluationServices
+        .getEvaluationsByUserAndSemester(user.student_id, year - 2020, semester)
+        .then((res) => setEvauations(res))
+        .catch(() => setEvauations([]));
+    }
+  }, [user, year, semester]);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -72,6 +94,14 @@ export default function Student() {
               optionClassName={styles.option}
             />
           </div>
+          <Table
+            className={styles.tableBox}
+            tableClassName={styles.table}
+            bodyClassName={styles.body}
+            headClassName={styles.head}
+            initialData={getTableData(evaluations, subjects)}
+            headers={tableHeaders}
+          />
         </div>
       </main>
       <footer className={styles.footer}>
