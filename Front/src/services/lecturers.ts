@@ -43,11 +43,11 @@ export class LecturerService {
   async evaluate(
     evaluation: Pick<
       IEvaluationResponse,
-      "grade" | "lecturer_id" | "semester" | "subject_id" | "value"
+      "grade" | "lecturer_id" | "semester" | "subject_id" | "value" | "student_id"
     >
   ): Promise<IEvaluationResponse | null> {
     try {
-      const { data }: { data: IEvaluationResponse } = await axios.post(
+      const { data }: { data: IEvaluationResponse } = await axios.put(
         `${this.BaseUrl}/evaluations`,
         evaluation
       );

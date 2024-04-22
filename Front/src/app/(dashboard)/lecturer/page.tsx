@@ -4,17 +4,21 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Table } from "@/components/shared/table";
 import { Select } from "@/components/shared/select";
-import Arrow from "@public/icons/arrow.svg";
-import { ILecturerResponse } from "@/types/user";
-import { getData, tableHeaders, years } from "./constants";
 import { groupOptions } from "@/components/features/form/types";
+import Arrow from "@public/icons/arrow.svg";
+import { ILecturerResponse, IStudentResponse } from "@/types/user";
+import { getData, tableHeaders, years } from "./constants";
 import { LecturerService } from "@/services/lecturers";
+import { IEvaluationResponse } from "@/types/evaluations";
 
 import styles from "./styles.module.scss";
 
 export default function Lecturer() {
   const [user, setUser] = useState<ILecturerResponse | null>(null);
   const [data, setData] = useState<string[][]>([]);
+  const [dataObj, setDataObj] = useState<
+    (IEvaluationResponse & IStudentResponse)[]
+  >([]);
   const [group, setGroup] = useState<string>("020");
   const [year, setYear] = useState<number>(2023);
   const [semester, setSemester] = useState<number>(1);
@@ -40,6 +44,7 @@ export default function Lecturer() {
       lecturerServices
         .getEvaluations(user.lecturer_id, year - 2020, semester)
         .then((res) => {
+          setDataObj(res);
           const data = getData(res);
           setData(data);
         })
@@ -56,6 +61,32 @@ export default function Lecturer() {
     const groupParams = params.get("group");
     setGroup(groupParams ? groupParams : "920");
   }, [searchParams]);
+
+  const handleSubmit = async (
+    type: "change" | "remove",
+    _: number,
+    row?: string[]
+  ) => {
+    const [num] = row ?? [-1];
+    const item = dataObj.find((ev) => ev.number === Number(num));
+    if (
+      user &&
+      row &&
+      !isNaN(Number(row.reverse()[0])) &&
+      item &&
+      type === "change"
+    ) {
+      const res = await lecturerServices.evaluate({
+        grade: year - 2020,
+        lecturer_id: user.lecturer_id,
+        semester,
+        student_id: item.student_id,
+        subject_id: item.subject_id,
+        value: Number(row[1]),
+      });
+      location.reload();
+    }
+  };
 
   return (
     <>
@@ -105,7 +136,7 @@ export default function Lecturer() {
           </div>
           <Table
             ableEdit
-            onSubmit={() => {}}
+            onSubmit={handleSubmit}
             btnClassname={styles.tableBtn}
             bodyClassName={styles.body}
             headClassName={styles.head}

@@ -13,6 +13,15 @@ export default {
       res.status(500).json(error);
     }
   },
+  async changeEvaluation(req: Request, res: Response) {
+    try {
+      const evaluation = await evaluationService.changeEvaluation(req.body);
+      res.status(201).json(evaluation);
+    } catch (error) {
+      console.log("Error creating evaluation:", error);
+      res.status(500).json(error);
+    }
+  },
 
   async getAllEvaluations(_: Request, res: Response) {
     try {

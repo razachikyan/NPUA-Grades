@@ -85,6 +85,30 @@ export class EvaluationService {
     return evaluation;
   }
 
+  public async changeEvaluation(
+    evaluationData: IEvaluation
+  ): Promise<IEvaluation> {
+    const { grade, lecturer_id, semester, subject_id, value, student_id } =
+      evaluationData;
+    const evaluationC = await DB<IEvaluation>("evaluations")
+      .where({ grade, semester, student_id, lecturer_id, subject_id })
+      .update({ value });
+
+    if (evaluationC !== 1) throw Error("Couldn't create evaluation");
+
+    const evaluation = await DB<IEvaluation>("evaluations")
+      .where({
+        grade,
+        semester,
+        student_id,
+        lecturer_id,
+        subject_id,
+      })
+      .first();
+    if (!evaluation) throw Error("Couldn't create evaluation");
+    return evaluation;
+  }
+
   public async getEvaluations(): Promise<IEvaluation[]> {
     const evaluations = await DB<IEvaluation>("evaluations");
     return evaluations;
