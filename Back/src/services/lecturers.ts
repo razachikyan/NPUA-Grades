@@ -65,7 +65,6 @@ export class LecturerService {
         semester,
         lecturer_id,
       });
-    console.log("-----------", evaluations);
 
     if (!evaluations) throw Error("session id is not valid");
     return evaluations;
