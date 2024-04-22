@@ -6,15 +6,14 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Select } from "@/components/shared/select";
 import { StudentServives } from "@/services/students";
 import { IStudentResponse } from "@/types/user";
-import { tableHeaders, years } from "./constants";
-
-import styles from "./styles.module.scss";
+import { getTableData, tableHeaders, years } from "./constants";
 import { Table } from "@/components/shared/table";
 import { EvaluationService } from "@/services/evaluations";
 import { IEvaluationResponse } from "@/types/evaluations";
 import { ISubjectResponse } from "@/types/subjects";
 import { SubjectSevice } from "@/services/subjects";
-import { getMog } from "@/utils/helpers/getMog";
+
+import styles from "./styles.module.scss";
 
 export default function Student() {
   const [user, setUser] = useState<IStudentResponse | null>(null);
@@ -100,21 +99,7 @@ export default function Student() {
             tableClassName={styles.table}
             bodyClassName={styles.body}
             headClassName={styles.head}
-            initialData={evaluations.map((item) => {
-              const hach = Math.ceil(item.value / 10);
-              const mij1 = Math.floor((item.value - hach) / 4);
-              const mij2 = Math.ceil((item.value - hach) / 4);
-              return [
-                subjects.find((s) => s.subject_id === item.subject_id)
-                  ?.subject_name,
-                hach,
-                mij1,
-                mij2,
-                item.value - (mij1 + mij2 + hach),
-                item.value,
-                getMog(item.value),
-              ].map((it) => String(it));
-            })}
+            initialData={getTableData(evaluations, subjects)}
             headers={tableHeaders}
           />
         </div>

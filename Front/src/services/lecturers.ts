@@ -1,5 +1,5 @@
 import { IEvaluationResponse } from "@/types/evaluations";
-import { ILecturerResponse } from "@/types/user";
+import { ILecturerResponse, IStudentResponse } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
 
@@ -54,6 +54,19 @@ export class LecturerService {
       if (!data) return null;
       return data;
     } catch (error) {
+      return null;
+    }
+  }
+
+  async getStudentById(student_id: string): Promise<IStudentResponse | null> {
+    try {
+      const { data }: { data: IStudentResponse } = await axios.get(
+        `${this.BaseUrl}/students/${student_id}`
+      );
+      if (!data) return null;
+      return data;
+    } catch (error) {
+      console.log(error);
       return null;
     }
   }

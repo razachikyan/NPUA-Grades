@@ -34,12 +34,6 @@ export default function Student() {
     setSemester(semesterParam ? parseInt(semesterParam, 10) : 2);
   }, [searchParams]);
 
-  useEffect(() => {
-    evaluationServies.getEvaluationsByAndSemester(group, year - 2020, semester).then(res => {
-      
-    });
-  }, []);
-
   return (
     <>
       <div className={styles.container}>
