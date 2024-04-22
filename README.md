@@ -40,6 +40,7 @@
 <a href="https://axios-http.com/" target="_blank" rel="noreferrer"> <img src="https://axios-http.com/assets/logo.svg" alt="axios" width="40" height="40"/> </a>
 <a href="https://sass-lang.com/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/349502/sass.svg" alt="sass" width="40" height="40"/> </a>
 <a href="https://eslint.org/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/353709/eslint.svg" alt="eslint" width="40" height="40"/> </a>
+<a href="https://www.chartjs.org" target="_blank" rel="noreferrer"> <img src="https://www.chartjs.org/img/chartjs-logo.svg" alt="chart.js" width="40" height="40"/> </a>
 
 #### BE
 <a href="https://expressjs.com/ru/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/378837/node.svg" alt="expressjs" width="40" height="40"/> </a>
