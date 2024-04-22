@@ -1,4 +1,4 @@
-export const getMog = (rating: number): number => {
+export const getCredit = (rating: number): number => {
   if (rating >= 95) return 4;
   if (rating >= 87) return 4;
   if (rating >= 81) return 3.7;
