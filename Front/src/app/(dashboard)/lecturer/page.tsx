@@ -136,6 +136,7 @@ export default function Lecturer() {
           </div>
           <Table
             ableEdit
+            editCell={5}
             onSubmit={handleSubmit}
             btnClassname={styles.tableBtn}
             bodyClassName={styles.body}

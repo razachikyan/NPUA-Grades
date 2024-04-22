@@ -13,6 +13,7 @@ export interface ITableProps {
   ) => void;
   handleSort?: (title: string) => TData;
   ableEdit?: boolean;
+  editCell?: number;
 }
 
 type TData = Array<Array<string>>;

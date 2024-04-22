@@ -14,6 +14,7 @@ import { ISubjectResponse } from "@/types/subjects";
 export const Table = ({
   headers,
   onSubmit,
+  editCell,
   className,
   handleSort,
   initialData,
@@ -28,7 +29,6 @@ export const Table = ({
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [changed, setChanged] = useState<number>(-1);
   const [removed, setRemoved] = useState<number>(-1);
-  const [subjects, setSubjects] = useState<ISubjectResponse[]>([]);
 
   useEffect(() => {
     setData(initialData);
@@ -70,7 +70,9 @@ export const Table = ({
                 {row.map((item, j) => {
                   return (
                     <Cell
-                      ableEdit={ableEdit}
+                      ableEdit={
+                        ableEdit && (editCell === undefined || editCell == j)
+                      }
                       key={nanoid()}
                       value={item}
                       handleRemove={
