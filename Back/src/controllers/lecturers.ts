@@ -78,7 +78,6 @@ export default {
       return res.status(200).send(evaluations);
     } catch (error) {
       console.log(error);
-
       res.status(500).json(error);
     }
   },

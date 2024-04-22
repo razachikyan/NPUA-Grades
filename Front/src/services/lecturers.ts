@@ -12,12 +12,12 @@ export class LecturerService {
   async getUser(): Promise<ILecturerResponse | null> {
     try {
       const session = localStorage.getItem("session_id") ?? "";
-      const res = await axios.get<ILecturerResponse>(
+      const { data } = await axios.get<ILecturerResponse>(
         `${this.BaseUrl}/lecturers/${session}`
       );
 
-      if (!res.data) return null;
-      return res.data;
+      if (!data) return null;
+      return data;
     } catch (error) {
       return null;
     }
@@ -43,7 +43,12 @@ export class LecturerService {
   async evaluate(
     evaluation: Pick<
       IEvaluationResponse,
-      "grade" | "lecturer_id" | "semester" | "subject_id" | "value" | "student_id"
+      | "grade"
+      | "lecturer_id"
+      | "semester"
+      | "subject_id"
+      | "value"
+      | "student_id"
     >
   ): Promise<IEvaluationResponse | null> {
     try {

@@ -50,7 +50,7 @@ export default function Lecturer() {
         })
         .catch(() => setData([]));
     }
-  }, [user]);
+  }, [user, semester, group, year]);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);

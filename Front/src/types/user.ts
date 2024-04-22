@@ -26,7 +26,6 @@ export interface ILecturerResponse {
   nickname: string;
   session_id: string;
   password: string;
-  middlename: string;
   subject_id: string;
   id: number;
 }
