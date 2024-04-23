@@ -33,6 +33,7 @@ ChartJS.register(
 );
 
 import styles from "./styles.module.scss";
+import { labels } from "./constants";
 
 export default function Statistics() {
   const [lecturers, setLecturers] = useState<ILecturerResponse[]>([]);
@@ -47,24 +48,36 @@ export default function Statistics() {
   const subjectServices = new SubjectSevice();
   const lecturerServices = new LecturerService();
   const data = {
-    labels: [
-      "920-2-1",
-      "920-2-2",
-      "920-3-1",
-      "920-3-2",
-      "920-4-1",
-      "920-4-2",
-      "920-2-1",
-      "020-2-2",
-      "020-3-1",
-      "020-3-2",
-      "020-4-1",
-      "020-4-2",
-    ],
+    labels: labels,
     datasets: [
+      // subjects
+      //   .filter((itm) => itm.subject_id === lecturer?.subject_id)
+      //   .map((itm) => ({
+      //     label: "Դասախոսի վիճակագրություն",
+      //     data: [...values, 0, 0, 0, 0, 0, 0],
+      //     fill: false,
+      //     backgroundColor: "rgb(0, 102, 255)",
+      //     tension: 0.1,
+      //   })),
       {
-        label: "Դասախոսի վիճակագրություն",
-        data: [...values, 0, 0, 0, 0, 0, 0],
+        label: "Subject 1",
+        data: [...values, 90, 10, 60, 30, 20, 10],
+        fill: false,
+        borderColor: "rgb(255, 102, 0)",
+        backgroundColor: "rgb(0, 102, 255)",
+        tension: 0.1,
+      },
+      {
+        label: "Subject 2",
+        data: [...values, 90, 10, 60, 30, 20, 10],
+        fill: false,
+        borderColor: "rgb(255, 102, 0)",
+        backgroundColor: "rgb(0, 102, 255)",
+        tension: 0.1,
+      },
+      {
+        label: "Subject 3",
+        data: [...values, 90, 10, 60, 30, 20, 10],
         fill: false,
         borderColor: "rgb(255, 102, 0)",
         backgroundColor: "rgb(0, 102, 255)",
@@ -145,18 +158,6 @@ export default function Statistics() {
             }}
             optionClassName={styles.option}
             options={lecturers.map((lect) => lect.lecturer_name)}
-          />
-          <Select
-            icon={Arrow}
-            value={subject?.subject_name ?? ""}
-            cover="Առարկա"
-            options={subjects.map((item) => item.subject_name)}
-            setValue={(val) => {
-              const sub = subjects.find((item) => item.subject_name === val);
-              sub && setSubject(sub);
-            }}
-            className={styles.select}
-            optionClassName={styles.option}
           />
         </div>
         <Chart data={data} type="bar" />
