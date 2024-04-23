@@ -66,7 +66,31 @@ export class LecturerService {
         lecturer_id,
       });
 
-    if (!evaluations) throw Error("session id is not valid");
+    if (!evaluations) throw Error("Cant get evaluations");
+    return evaluations;
+  }
+
+  public async getEvaluationsBySubject({
+    lecturer_id,
+    subject_id
+  }: {
+    lecturer_id: string;
+    subject_id: string;
+  }): Promise<any> {
+    const evaluations = await DB<IEvaluation & IStudentResponse>({
+      e: "evaluations",
+    })
+      .select({
+        evaluation: "e.*",
+        student: "s.*",
+      })
+      .leftJoin("students as s", "e.student_id", "s.student_id")
+      .where({
+        lecturer_id,
+        subject_id,
+      });
+
+    if (!evaluations) throw Error("Cant get evaluations");
     return evaluations;
   }
 
