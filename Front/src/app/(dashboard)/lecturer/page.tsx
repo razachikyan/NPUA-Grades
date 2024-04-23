@@ -88,9 +88,39 @@ export default function Lecturer() {
     }
   };
 
+  const store = () => {
+    const data: {
+      subject_id: string;
+      value: number;
+      grade: number;
+      semester: number;
+      lecturer_id: string;
+      student_id: string;
+    }[] = [];
+
+    data.forEach((item) => {
+      setTimeout(async () => {
+        const element = await lecturerServices.addEvaluation(item);
+        console.log(element);
+      }, 2000);
+    });
+  };
+
   return (
     <>
       <main className={styles.lecturer}>
+        <button
+          style={{
+            padding: 10,
+            backgroundColor: "red",
+            color: "#fff",
+            fontWeight: 600,
+            fontSize: 30,
+          }}
+          onClick={() => store()}
+        >
+          Store
+        </button>
         <div className={styles.container}>
           {user && (
             <span className={styles.username}>{user.lecturer_name}</span>
