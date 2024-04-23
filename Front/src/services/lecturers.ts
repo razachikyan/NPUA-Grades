@@ -63,6 +63,29 @@ export class LecturerService {
     }
   }
 
+  async addEvaluation(
+    evaluation: Pick<
+      IEvaluationResponse,
+      | "grade"
+      | "lecturer_id"
+      | "semester"
+      | "subject_id"
+      | "value"
+      | "student_id"
+    >
+  ): Promise<IEvaluationResponse | null> {
+    try {
+      const { data }: { data: IEvaluationResponse } = await axios.post(
+        `${this.BaseUrl}/evaluations`,
+        evaluation
+      );
+      if (!data) return null;
+      return data;
+    } catch (error) {
+      return null;
+    }
+  }
+
   async getEvaluations(
     lecturer_id: string,
     grade: number,
