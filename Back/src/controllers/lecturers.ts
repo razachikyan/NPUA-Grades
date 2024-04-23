@@ -78,7 +78,16 @@ export default {
       return res.status(200).send(evaluations);
     } catch (error) {
       console.log(error);
-
+      res.status(500).json(error);
+    }
+  },
+  async getAllEvaluations(req: Request, res: Response) {
+    try {
+      const { lecturer_id } = req.params;
+      const evaluations = await lecturerService.getAllEvaluations(lecturer_id);
+      return res.status(200).send(evaluations);
+    } catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   },

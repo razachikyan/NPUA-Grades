@@ -14,10 +14,10 @@ export class SubjectService {
   }
   public async getSubjectsByLecturer(
     lecturer_id: string
-  ): Promise<ISubjectResponse> {
-    const subject = await DB<ISubjectResponse>("subjects")
-      .where({ lecturer_id })
-      .first();
+  ): Promise<ISubjectResponse[]> {
+    const subject = await DB<ISubjectResponse>("subjects").where({
+      lecturer_id,
+    });
     if (!subject) throw Error("Secturer id is not valid");
 
     return subject;

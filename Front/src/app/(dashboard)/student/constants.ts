@@ -1,6 +1,6 @@
 import { IEvaluationResponse } from "@/types/evaluations";
 import { ISubjectResponse } from "@/types/subjects";
-import { getMog } from "@/utils/helpers/getMog";
+import { getCredit } from "@/utils/helpers/getCredit";
 
 export const tableHeaders = [
   "Առարկա",
@@ -9,7 +9,6 @@ export const tableHeaders = [
   "Միջ․ 2",
   "Ամփ․ քն․",
   "Կիս․ առ․ռեյտինգ",
-  "Կիս․ ՄՈԳ",
 ];
 
 export const years = [2022, 2023, 2024];
@@ -31,8 +30,7 @@ export const getTableData = (
       mij1,
       mij2,
       item.value - (mij1 + mij2 + hach),
-      item.value,
-      getMog(item.value),
+      `${item.value} (${getCredit(item.value)})`,
     ].map((it) => String(it));
   });
 };
