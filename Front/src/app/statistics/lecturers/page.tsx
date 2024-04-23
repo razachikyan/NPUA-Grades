@@ -9,18 +9,20 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartData,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
 import Arrow from "@public/icons/arrow.svg";
 import { useEffect, useState } from "react";
-import { EvaluationService } from "@/services/evaluations";
 import { Select } from "@/components/shared/select";
 import { ILecturerResponse, IStudentResponse } from "@/types/user";
 import { AdminServices } from "@/services/admin";
-import { ISubjectResponse } from "@/types/subjects";
 import { SubjectSevice } from "@/services/subjects";
 import { LecturerService } from "@/services/lecturers";
 import { IEvaluationResponse } from "@/types/evaluations";
+import { labels } from "./constants";
+
+import styles from "./styles.module.scss";
 
 ChartJS.register(
   CategoryScale,
@@ -32,59 +34,21 @@ ChartJS.register(
   Legend
 );
 
-import styles from "./styles.module.scss";
-import { labels } from "./constants";
-
 export default function Statistics() {
   const [lecturers, setLecturers] = useState<ILecturerResponse[]>([]);
   const [lecturer, setLecturer] = useState<ILecturerResponse | null>(null);
-  const [subjects, setSubjects] = useState<ISubjectResponse[]>([]);
   const [evaluations, setEvaluations] = useState<
     (IEvaluationResponse & IStudentResponse)[]
   >([]);
-  const [values, setValues] = useState<number[]>([0, 0, 0, 0, 0, 0]);
-  const [subject, setSubject] = useState<ISubjectResponse | null>(null);
+  const [data, setData] = useState<
+    ChartData<"bar", (number | [number, number] | null)[], unknown>
+  >({
+    labels,
+    datasets: [],
+  });
   const adminServices = new AdminServices();
   const subjectServices = new SubjectSevice();
   const lecturerServices = new LecturerService();
-  const data = {
-    labels: labels,
-    datasets: [
-      // subjects
-      //   .filter((itm) => itm.subject_id === lecturer?.subject_id)
-      //   .map((itm) => ({
-      //     label: "Դասախոսի վիճակագրություն",
-      //     data: [...values, 0, 0, 0, 0, 0, 0],
-      //     fill: false,
-      //     backgroundColor: "rgb(0, 102, 255)",
-      //     tension: 0.1,
-      //   })),
-      {
-        label: "Subject 1",
-        data: [...values, 90, 10, 60, 30, 20, 10],
-        fill: false,
-        borderColor: "rgb(255, 102, 0)",
-        backgroundColor: "rgb(0, 102, 255)",
-        tension: 0.1,
-      },
-      {
-        label: "Subject 2",
-        data: [...values, 90, 10, 60, 30, 20, 10],
-        fill: false,
-        borderColor: "rgb(255, 102, 0)",
-        backgroundColor: "rgb(0, 102, 255)",
-        tension: 0.1,
-      },
-      {
-        label: "Subject 3",
-        data: [...values, 90, 10, 60, 30, 20, 10],
-        fill: false,
-        borderColor: "rgb(255, 102, 0)",
-        backgroundColor: "rgb(0, 102, 255)",
-        tension: 0.1,
-      },
-    ],
-  };
 
   useEffect(() => {
     adminServices
@@ -94,54 +58,92 @@ export default function Statistics() {
   }, []);
 
   useEffect(() => {
-    if (lecturer) {
+    if (lecturer && evaluations) {
       subjectServices
         .getSubjectsByLecturer(lecturer.lecturer_id)
         .then((res) => {
-          setSubjects(res);
+          const datasets = res.map((sub) => {
+            const data920_2_1 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "920" &&
+                item.grade === 2 &&
+                item.semester === 1
+            );
+            const data920_2_2 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "920" &&
+                item.grade === 2 &&
+                item.semester === 2
+            );
+            const data920_3_1 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "920" &&
+                item.grade === 3 &&
+                item.semester === 1
+            );
+            const data920_3_2 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "920" &&
+                item.grade === 3 &&
+                item.semester === 2
+            );
+            const data920_4_1 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "920" &&
+                item.grade === 4 &&
+                item.semester === 1
+            );
+            const data920_4_2 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "920" &&
+                item.grade === 4 &&
+                item.semester === 2
+            );
+
+            const data = [
+              data920_2_1.reduce((acc, itm) => acc + itm.value, 0) /
+                data920_2_1.length,
+              data920_2_2.reduce((acc, itm) => acc + itm.value, 0) /
+                data920_2_2.length,
+              data920_3_1.reduce((acc, itm) => acc + itm.value, 0) /
+                data920_3_1.length,
+              data920_3_2.reduce((acc, itm) => acc + itm.value, 0) /
+                data920_3_2.length,
+              data920_4_1.reduce((acc, itm) => acc + itm.value, 0) /
+                data920_4_1.length,
+              data920_4_2.reduce((acc, itm) => acc + itm.value, 0) /
+                data920_4_2.length,
+            ];
+            return {
+              label: sub.subject_name,
+              data: data,
+              fill: false,
+              borderColor: "rgb(255, 102, 0)",
+              backgroundColor: "rgb(0, 102, 255)",
+              tension: 0.1,
+            };
+          });
+
+          setData((prev) => ({ ...prev, datasets }));
         })
-        .catch(() => setSubjects([]));
+        .catch(() => {});
     }
-  }, [lecturer]);
+  }, [lecturer, evaluations]);
 
   useEffect(() => {
-    if (lecturer && subject) {
+    if (lecturer) {
       lecturerServices
-        .getEvaluationsBySubject(lecturer.lecturer_id, subject.subject_id)
-        .then((res) => {
-          const G920_2_1 = res.filter(
-            (itm) =>
-              itm.group === "920" && itm.grade === 2 && itm.semester === 1
-          );
-          const G920_2_2 = res.filter(
-            (itm) =>
-              itm.group === "920" && itm.grade === 2 && itm.semester === 2
-          );
-          const G920_3_1 = res.filter(
-            (itm) =>
-              itm.group === "920" && itm.grade === 3 && itm.semester === 1
-          );
-          const G920_3_2 = res.filter(
-            (itm) =>
-              itm.group === "920" && itm.grade === 3 && itm.semester === 2
-          );
-          const G920_4_1 = res.filter(
-            (itm) =>
-              itm.group === "920" && itm.grade === 4 && itm.semester === 1
-          );
-          const G920_4_2 = res.filter(
-            (itm) =>
-              itm.group === "920" && itm.grade === 4 && itm.semester === 2
-          );
-          setValues(
-            [G920_2_1, G920_2_2, G920_3_1, G920_3_2, G920_4_1, G920_4_2].map(
-              (gr) => gr.reduce((acc, val) => acc + val.value, 0) / gr.length
-            )
-          );
-        })
+        .getAllEvaluations(lecturer?.lecturer_id)
+        .then((res) => setEvaluations(res))
         .catch(() => setEvaluations([]));
     }
-  }, [lecturer, subject]);
+  }, [lecturer]);
 
   return (
     <main className={styles.main}>
@@ -160,7 +162,18 @@ export default function Statistics() {
             options={lecturers.map((lect) => lect.lecturer_name)}
           />
         </div>
-        <Chart data={data} type="bar" />
+        <Chart
+          options={{
+            scales: {
+              y: {
+                min: 0,
+                max: 100,
+              },
+            },
+          }}
+          data={data}
+          type="bar"
+        />
       </div>
     </main>
   );

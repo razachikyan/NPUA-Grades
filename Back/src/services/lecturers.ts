@@ -70,13 +70,7 @@ export class LecturerService {
     return evaluations;
   }
 
-  public async getEvaluationsBySubject({
-    lecturer_id,
-    subject_id
-  }: {
-    lecturer_id: string;
-    subject_id: string;
-  }): Promise<any> {
+  public async getAllEvaluations(lecturer_id: string): Promise<any> {
     const evaluations = await DB<IEvaluation & IStudentResponse>({
       e: "evaluations",
     })
@@ -87,7 +81,6 @@ export class LecturerService {
       .leftJoin("students as s", "e.student_id", "s.student_id")
       .where({
         lecturer_id,
-        subject_id,
       });
 
     if (!evaluations) throw Error("Cant get evaluations");

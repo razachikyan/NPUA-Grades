@@ -81,15 +81,12 @@ export class LecturerService {
     }
   }
 
-  async getEvaluationsBySubject(
-    lecturer_id: string,
-    subject_id: string
+  async getAllEvaluations(
+    lecturer_id: string
   ): Promise<(IEvaluationResponse & IStudentResponse)[]> {
     try {
       const { data }: { data: (IEvaluationResponse & IStudentResponse)[] } =
-        await axios.get(
-          `${this.BaseUrl}/lecturers/evaluations/${lecturer_id}/${subject_id}`
-        );
+        await axios.get(`${this.BaseUrl}/lecturers/evaluations/${lecturer_id}`);
       if (!data) return [];
       return data;
     } catch (error) {

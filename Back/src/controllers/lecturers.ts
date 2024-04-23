@@ -81,13 +81,10 @@ export default {
       res.status(500).json(error);
     }
   },
-  async getEvaluationsBySubject(req: Request, res: Response) {
+  async getAllEvaluations(req: Request, res: Response) {
     try {
-      const { lecturer_id, subject_id } = req.params;
-      const evaluations = await lecturerService.getEvaluationsBySubject({
-        lecturer_id,
-        subject_id,
-      });
+      const { lecturer_id } = req.params;
+      const evaluations = await lecturerService.getAllEvaluations(lecturer_id);
       return res.status(200).send(evaluations);
     } catch (error) {
       console.log(error);

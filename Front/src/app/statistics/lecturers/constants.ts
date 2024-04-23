@@ -12,3 +12,5 @@ export const labels = [
   "020-4-1",
   "020-4-2",
 ];
+
+export const initialDataset: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];

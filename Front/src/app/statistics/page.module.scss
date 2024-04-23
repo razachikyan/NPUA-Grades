@@ -1,59 +1,59 @@
 .main {
-    width: 100%;
+  width: 100%;
 
-    .container {
-        max-width: 1700px;
-        width: 100%;
-        margin: 0 auto;
+  .container {
+    max-width: 1700px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+
+    .block {
+      max-width: 600px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      border-radius: 100px;
+
+      .link {
+        width: 50%;
+        height: 650px;
+        padding: 30px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 50px 20px;
+        gap: 40px;
+        transition: all 0.3s ease;
+        background-color: var(--blue_600);
 
-        .block {
-            max-width: 600px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            border-radius: 100px;
-
-            .link {
-                width: 50%;
-                height: 650px;
-                padding: 30px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 40px;
-                transition: all .3 ease;
-                background-color: var(--blue_600);
-
-                &:first-child {
-                    border-radius: 90px 0 0 90px;
-                }
-
-                &:last-child {
-                    border-radius: 0 90px 90px 0;
-                }
-
-                &:hover {
-                    background-color: var(--blue_400);
-                }
-
-                .image {
-                    width: 200px;
-                    height: 200px;
-                }
-
-                .text {
-                    font-size: 30px;
-                    font-weight: 600;
-                    font-family: Arial, Helvetica, sans-serif;
-                    text-align: center;
-                    color: #ffffff;
-                }
-            }
+        &:first-child {
+          border-radius: 90px 0 0 90px;
         }
+
+        &:last-child {
+          border-radius: 0 90px 90px 0;
+        }
+
+        &:hover {
+          background-color: var(--blue_400);
+        }
+
+        .image {
+          width: 200px;
+          height: 200px;
+        }
+
+        .text {
+          font-size: 30px;
+          font-weight: 600;
+          font-family: Arial, Helvetica, sans-serif;
+          text-align: center;
+          color: #ffffff;
+        }
+      }
     }
+  }
 }
