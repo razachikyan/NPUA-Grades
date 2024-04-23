@@ -1,5 +1,5 @@
 import DB from "../DB/index";
-import { IEvaluation, IStudentResponse } from "../types";
+import { IEvaluation, IStudentResponse, ISubjectResponse } from "../types";
 import "dotenv/config";
 
 export class EvaluationService {
@@ -117,7 +117,7 @@ export class EvaluationService {
     group: string;
     grade: string;
     semester: string;
-  }): Promise<IEvaluation[]> {
+  }): Promise<(IEvaluation & IStudentResponse & ISubjectResponse)[]> {
     const semesterNum = Number(semester);
     const gradeNum = Number(grade);
     if (isNaN(gradeNum) || isNaN(semesterNum)) throw Error("Invalid semester");
@@ -129,14 +129,16 @@ export class EvaluationService {
 
     const studentIds = students.map((student) => student.student_id);
 
-    const evaluations = await DB<IEvaluation & IStudentResponse>(
-      "evaluations as e"
-    )
+    const evaluations = await DB<
+      IEvaluation & IStudentResponse & ISubjectResponse
+    >("evaluations as e")
       .select({
         evaluation: "e.*",
         student: "s.*",
+        subject: "sub.*",
       })
       .leftJoin("students as s", "e.student_id", "s.student_id")
+      .leftJoin("subjects as sub", "e.subject_id", "sub.subject_id")
       .whereIn("e.student_id", studentIds)
       .andWhere({
         grade,

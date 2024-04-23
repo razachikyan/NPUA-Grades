@@ -1,4 +1,5 @@
 import { IEvaluationResponse } from "@/types/evaluations";
+import { ISubjectResponse } from "@/types/subjects";
 import { IStudentResponse, TGroups } from "@/types/user";
 import axios from "axios";
 import "dotenv/config";
@@ -41,7 +42,7 @@ export class EvaluationService {
     group: TGroups,
     grade: number,
     semester: number
-  ): Promise<(IEvaluationResponse & IStudentResponse)[]> {
+  ): Promise<(IEvaluationResponse & IStudentResponse & ISubjectResponse)[]> {
     try {
       const { data } = await axios.get(
         `${this.BaseUrl}/evaluations/stats/${group}/${grade}/${semester}`

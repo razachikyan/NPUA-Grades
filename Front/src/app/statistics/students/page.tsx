@@ -21,6 +21,7 @@ import styles from "./styles.module.scss";
 import { EvaluationService } from "@/services/evaluations";
 import { getUniq } from "@/utils/helpers/getUniq";
 import { getMog } from "@/utils/helpers/getMog";
+import { getChartData } from "./constants";
 
 ChartJS.register(
   CategoryScale,
@@ -54,17 +55,7 @@ export default function Statistics() {
     evaluationService
       .getEvaluations(group, year - 2020, semester)
       .then((res) => {
-        const students = getUniq(res.map((item) => item.student_id));
-        const mogs = students.map((std) => {
-          const stdEvals = res.filter((evl) => evl.student_id === std);
-          const mog = getMog(std, stdEvals);
-          return mog;
-        });
-        const labels = students
-          .map((std) => res.find((item) => item.student_id === std))
-          .map(
-            (item) => `${item?.firstname} ${item?.lastname} ${item?.middlename}`
-          );
+        const { data, labels } = getChartData(res);
 
         setData((prev) => ({
           ...prev,
@@ -72,7 +63,7 @@ export default function Statistics() {
           datasets: [
             {
               ...prev.datasets[0],
-              data: mogs,
+              data,
             },
           ],
         }));
