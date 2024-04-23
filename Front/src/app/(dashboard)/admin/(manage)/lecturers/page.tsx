@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { ILecturer, ILecturerResponse } from "@/types/user";
-import { Select } from "@/components/shared/select";
 import { Table } from "@/components/shared/table";
 import { Input } from "@/components/shared/input";
 import { Button } from "@/components/shared/button";

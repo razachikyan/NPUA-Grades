@@ -1,13 +1,13 @@
 .main {
+  width: 100%;
+
+  .container {
+    padding-top: 50px;
+    max-width: 1700px;
     width: 100%;
+    margin: 0 auto;
 
-    .container {
-        padding-top: 50px;
-        max-width: 1700px;
-        width: 100%;
-        margin: 0 auto;
-
-        .selects {
+    .selects {
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -33,5 +33,5 @@
         color: #ffffff;
       }
     }
-    }
+  }
 }

@@ -5,7 +5,6 @@ import {
   IEvaluation,
   ILecturer,
   ILecturerResponse,
-  IStudent,
   IStudentResponse,
   ISubjectResponse,
 } from "../types";
@@ -67,6 +66,12 @@ export class LecturerService {
       });
 
     if (!evaluations) throw Error("Cant get evaluations");
+    console.log({
+      grade,
+      semester,
+      lecturer_id,
+    });
+
     return evaluations;
   }
 

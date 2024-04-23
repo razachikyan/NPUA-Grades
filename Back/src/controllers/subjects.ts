@@ -6,8 +6,8 @@ const subjectService = new SubjectService();
 export default {
   async createSubject(req: Request, res: Response) {
     try {
-      const { subject_name } = req.body;
-      const subject = await subjectService.createSubject(subject_name);
+      const { subject_name, credit } = req.body;
+      const subject = await subjectService.createSubject(subject_name, credit);
       res.status(201).json(subject);
     } catch (error) {
       console.log("Error creating subject:", error);

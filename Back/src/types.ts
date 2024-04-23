@@ -36,6 +36,7 @@ export interface IGroup {
 export interface ISubject {
   subject_name: string;
   lecturer: string;
+  credit: number
 }
 
 export interface ISubjectResponse {
@@ -43,6 +44,7 @@ export interface ISubjectResponse {
   subject_name: string;
   id: number;
   lecturer_id: string;
+  credit: number;
 }
 
 export interface ILecturerResponse {
