@@ -9,7 +9,6 @@ import { ITableProps } from "./types";
 import { Button } from "../button";
 
 import styles from "./styles.module.scss";
-import { ISubjectResponse } from "@/types/subjects";
 
 export const Table = ({
   headers,

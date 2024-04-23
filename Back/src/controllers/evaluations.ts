@@ -23,14 +23,21 @@ export default {
     }
   },
 
-  async getAllEvaluations(_: Request, res: Response) {
+  async getEvaluations(req: Request, res: Response) {
     try {
-      const evaluations = await evaluationService.getEvaluations();
+      const { group, grade, semester } = req.params;
+      const evaluations = await evaluationService.getEvaluations({
+        group,
+        grade,
+        semester,
+      });
       return res.status(200).send(evaluations);
     } catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   },
+
   async getEvaluationsByUser(req: Request, res: Response) {
     try {
       const { user_id, semester } = req.params;

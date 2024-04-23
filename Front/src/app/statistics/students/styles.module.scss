@@ -1,10 +1,37 @@
 .main {
-    width: 100%;
+  width: 100%;
 
-    .container {
-        padding-top: 50px;
-        max-width: 1700px;
-        width: 100%;
-        margin: 0 auto;
+  .container {
+    padding-top: 50px;
+    max-width: 1700px;
+    width: 100%;
+    margin: 0 auto;
+
+    .selects {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      margin-bottom: 40px;
+
+      .select {
+        background-color: #002c83;
+        color: #ffffff;
+        padding: 13px 72px 13px 48px;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .option {
+        padding: 13px;
+        font-size: 24px;
+        border: 2px solid #002c83;
+      }
+
+      .option:hover {
+        background-color: rgba(#002c83, 0.78);
+        color: #ffffff;
+      }
     }
+  }
 }

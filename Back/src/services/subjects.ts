@@ -23,11 +23,15 @@ export class SubjectService {
     return subject;
   }
 
-  public async createSubject(subject_name: string): Promise<ISubjectResponse> {
+  public async createSubject(
+    subject_name: string,
+    credit: number
+  ): Promise<ISubjectResponse> {
     const subject_id = nanoid();
     await DB<ISubjectResponse>("subjects").insert({
       subject_id,
       subject_name,
+      credit,
     });
 
     const subject = await DB<ISubjectResponse>("subjects")
