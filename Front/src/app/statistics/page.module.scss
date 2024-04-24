@@ -2,35 +2,57 @@
   width: 100%;
 
   .container {
-    padding-top: 50px;
     max-width: 1700px;
     width: 100%;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
 
-    .selects {
+    .block {
+      max-width: 1200px;
+      width: 100%;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      gap: 4px;
-      margin-bottom: 40px;
+      border-radius: 100px;
 
-      .select {
-        background-color: #002c83;
-        color: #ffffff;
-        padding: 13px 72px 13px 48px;
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
+      .link {
+        width: 50%;
+        height: 650px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        transition: all 0.3s ease;
+        background-color: var(--blue_600);
 
-      .option {
-        padding: 13px;
-        font-size: 24px;
-        border: 2px solid #002c83;
-      }
+        &:first-child {
+          border-radius: 90px 0 0 90px;
+        }
 
-      .option:hover {
-        background-color: rgba(#002c83, 0.78);
-        color: #ffffff;
+        &:last-child {
+          border-radius: 0 90px 90px 0;
+        }
+
+        &:hover {
+          background-color: var(--blue_400);
+        }
+
+        .image {
+          width: 200px;
+          height: 200px;
+        }
+
+        .text {
+          font-size: 30px;
+          font-weight: 600;
+          font-family: Arial, Helvetica, sans-serif;
+          text-align: center;
+          color: #ffffff;
+        }
       }
     }
   }
