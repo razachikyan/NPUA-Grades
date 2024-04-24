@@ -1,7 +1,8 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Table } from "@/components/shared/table";
 import { Select } from "@/components/shared/select";
 import { groupOptions } from "@/components/features/form/types";
@@ -148,6 +149,16 @@ export default function Lecturer() {
           />
         </div>
       </main>
+      <footer className={styles.footer}>
+        <nav className={styles.nav}>
+          <Link className={styles.link} href="/lecturer">
+            Lecturer page
+          </Link>
+          <Link className={styles.link} href="/login/non-admin">
+            Log in page
+          </Link>
+        </nav>
+      </footer>
     </>
   );
 }

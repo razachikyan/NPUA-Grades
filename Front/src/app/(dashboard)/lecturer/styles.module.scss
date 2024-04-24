@@ -87,3 +87,25 @@
     }
   }
 }
+
+.footer {
+  background-color: var(--blue_600);
+  padding: 20px;
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1700px;
+    width: 100%;
+    margin: 0 auto;
+
+    .link {
+      font-family: "Abel";
+      letter-spacing: 1px;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 20px;
+    }
+  }
+}

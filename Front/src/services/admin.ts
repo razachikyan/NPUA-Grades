@@ -188,7 +188,7 @@ export class AdminServices {
 
   async getUser(): Promise<IUserResponse | null> {
     try {
-      const session = localStorage.getItem("session_id") ?? "";
+      const session = localStorage.getItem("session_id") ?? "wrong session";
       const res = await axios.get<IUserResponse>(
         `${this.BaseUrl}/users/${session}`
       );

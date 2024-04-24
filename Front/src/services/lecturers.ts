@@ -11,7 +11,7 @@ export class LecturerService {
 
   async getUser(): Promise<ILecturerResponse | null> {
     try {
-      const session = localStorage.getItem("session_id") ?? "";
+      const session = localStorage.getItem("session_id") ?? "wrong session";
       const { data } = await axios.get<ILecturerResponse>(
         `${this.BaseUrl}/lecturers/${session}`
       );

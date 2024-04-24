@@ -31,7 +31,7 @@ export default function Student() {
   useEffect(() => {
     const load = async () => {
       const user = await studentServices.getUser();
-      if (!user) router.push("/login");
+      if (!user) router.push("/login/non-admin");
       setUser(user);
       subjectsServices
         .getSubjects()

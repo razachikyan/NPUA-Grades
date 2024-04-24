@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import classNames from "classnames";
 import { Button } from "@/components/shared/button";
@@ -22,6 +23,7 @@ export const Form = ({
 }: IFormProps): JSX.Element => {
   const [formData, setFormData] = useState<IFormData>(initialData);
   const [errors, setErrors] = useState<IFormData>(initialData);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
   const params = useSearchParams();
   const router = useRouter();
   const reset: boolean = params.get("type") === "reset" && type === "login";
@@ -30,6 +32,7 @@ export const Form = ({
 
   const handleSubmit = async (ev: React.MouseEvent) => {
     ev.preventDefault();
+    setIsFetching(true);
     switch (type) {
       case "signup": {
         const errors = validator.validateForSignUp(formData).errors;
@@ -94,7 +97,7 @@ export const Form = ({
     }
     onSubmit?.();
     console.log(errors);
-
+    setIsFetching(false);
     // setFormData(initialData);
   };
 
@@ -123,7 +126,7 @@ export const Form = ({
             handleChange={(middlename) =>
               setFormData((prev) => ({ ...prev, middlename }))
             }
-            type={INPUT_TYPES.LASTNAME}
+            type={INPUT_TYPES.MIDDLENAME}
             error={errors.middlename}
           />
         </>
@@ -157,12 +160,16 @@ export const Form = ({
         />
       )}
       <Button
-        text={submitText}
         btnType="submit"
+        text={submitText}
         className={styles.button}
-        disabled={disabledSubmit}
+        disabled={disabledSubmit || isFetching}
         handleClick={handleSubmit}
-      />
+      >
+        {isFetching && (
+          <Skeleton baseColor="#1261ff" width={20} height={20} circle />
+        )}
+      </Button>
       {type === "forgot" ? (
         <Link className={classNames(styles.button, styles.back)} href="/login">
           Back to login
@@ -187,7 +194,10 @@ export const Form = ({
         </p>
       )}
       <p className={styles.redirect}>
-        Login as <Link href='/login/non-admin' className={styles.link}>Lecturer/Student</Link>
+        Login as{" "}
+        <Link href="/login/non-admin" className={styles.link}>
+          Lecturer/Student
+        </Link>
       </p>
     </form>
   );

@@ -10,7 +10,7 @@ export class StudentServives {
 
   async getUser(): Promise<IStudentResponse | null> {
     try {
-      const session = localStorage.getItem("session_id") ?? "";
+      const session = localStorage.getItem("session_id") ?? "wrong session";
       const res = await axios.get<IStudentResponse>(
         `${this.BaseUrl}/students/${session}`
       );

@@ -84,7 +84,7 @@ export const Table = ({
                       setValue={(val) => {
                         setChanged(i);
                         setData((prev) => {
-                          prev[i][j] = val;
+                          prev[i + 7 * currentPage][j] = val;
                           return prev;
                         });
                       }}

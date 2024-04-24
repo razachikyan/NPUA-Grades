@@ -15,6 +15,9 @@
     font-family: "Alata";
     width: 100%;
     margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 
     &:disabled {
       cursor: not-allowed;

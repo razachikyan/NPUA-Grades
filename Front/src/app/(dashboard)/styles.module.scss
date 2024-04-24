@@ -1,4 +1,5 @@
 .header {
+  position: relative;
   background-color: #002c83;
   color: #ffffff;
   text-align: center;
@@ -7,4 +8,21 @@
   font-size: 40px;
   line-height: 60%;
   padding: 22px;
+
+  .button {
+    position: absolute;
+    right: 22px;
+    top: 10px;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-weight: 600;
+    background-color: #002c83;
+    border: 3px solid #ffffff;
+    border-radius: 10px;
+    transition: all .3s ease;
+
+    :hover {
+      background-color: var(--blue_500);
+    }
+  }
 }
