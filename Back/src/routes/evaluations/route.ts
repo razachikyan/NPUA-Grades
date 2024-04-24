@@ -6,6 +6,7 @@ const router = Router();
 router.post("/", EvaluationController.addEvaluation);
 router.put("/", EvaluationController.changeEvaluation);
 router.get("/:user_id", EvaluationController.getEvaluationsByUser);
+router.get("/group/:group", EvaluationController.getEvaluationsByGroup);
 router.get("/:grade/:semester", EvaluationController.getEvaluationsBySemester); //
 router.get(
   "/:student_id/:grade/:semester",

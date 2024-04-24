@@ -50,6 +50,17 @@ export default {
       res.status(500).json(error);
     }
   },
+
+  async getEvaluationsByGroup(req: Request, res: Response) {
+    try {
+      const { group } = req.params;
+      const evaluations = await evaluationService.getEvaluationsByGroup(group);
+      return res.status(200).send(evaluations);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
   async getEvaluationsBySemester(req: Request, res: Response) {
     try {
       const { grade, semester } = req.params;

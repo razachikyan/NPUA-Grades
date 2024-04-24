@@ -85,6 +85,24 @@ export class EvaluationService {
     return evaluation;
   }
 
+  public async getEvaluationsByGroup(
+    group: string
+  ): Promise<(IEvaluation & IStudentResponse & ISubjectResponse)[]> {
+    const evaluations = await DB<IEvaluation>("evaluations as e")
+      .select({
+        evaluation: "e.*",
+        student: "s.*",
+        subject: "sub.*",
+      })
+      .leftJoin("students as s", "e.student_id", "s.student_id")
+      .leftJoin("subjects as sub", "e.subject_id", "sub.subject_id")
+      .where("s.group", "=", group);
+
+    if (!evaluations) throw Error("Couldn't retrieve evaluations");
+
+    return evaluations;
+  }
+
   public async changeEvaluation(
     evaluationData: IEvaluation
   ): Promise<IEvaluation> {

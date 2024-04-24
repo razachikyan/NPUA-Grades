@@ -38,6 +38,7 @@ export class EvaluationService {
       return null;
     }
   }
+
   async getEvaluations(
     group: TGroups,
     grade: number,
@@ -50,6 +51,21 @@ export class EvaluationService {
       if (!data) return [];
       return data;
     } catch (error) {
+      return [];
+    }
+  }
+
+  async getEvaluationsByGroup(
+    group: TGroups
+  ): Promise<(IEvaluationResponse & ISubjectResponse)[]> {
+    try {
+      const { data } = await axios.get<
+        (IEvaluationResponse & ISubjectResponse)[]
+      >(`${this.BaseUrl}/evaluations/group/${group}`);
+      if (!data) return [];
+      return data;
+    } catch (error) {
+      console.log(error);
       return [];
     }
   }

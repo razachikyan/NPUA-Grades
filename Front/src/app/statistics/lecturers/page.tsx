@@ -121,8 +121,8 @@ export default function Statistics() {
                 data920_4_2.length,
             ];
             return {
-              label: sub.subject_name,
               data: data,
+              label: sub.subject_name,
               fill: false,
               borderColor: "rgb(255, 102, 0)",
               backgroundColor: "rgb(0, 102, 255)",
