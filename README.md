@@ -31,6 +31,9 @@
 - Build the project `npm run build`
 - Run in production mode `npm start` (after build)
 
+<h1 align="center">Figma Template</h1>
+<a href="https://www.figma.com/file/vGOP0ne2AezZBReroXWNK7/Untitled?type=design&mode=design" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/303210/figma-1-logo.svg" alt="figma" width="70" height="70"/></a>
+
 <h1 align="center">🪛Used Tools and Frameworks🪛</h1>
 
 #### FE
@@ -51,5 +54,4 @@
 <a href="https://knexjs.org/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/353972/knex.svg" alt="knex" width="40" height="40"/> </a>
 <a href="https://www.postgresql.org/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/303301/postgresql-logo.svg" alt="postgresql" width="40" height="40"/> </a>
 
-<a href="https://www.figma.com/file/vGOP0ne2AezZBReroXWNK7/Untitled?type=design&mode=design" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/303210/figma-1-logo.svg" alt="figma" width="70" height="70"/> </a>
 
