@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
+import { ClockLoader } from "react-spinners";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -32,6 +33,7 @@ ChartJS.register(
 
 export default function Statistics() {
   const [group, setGroup] = useState<TGroups>("920");
+  const [pending, setPending] = useState<boolean>(false);
   const [data, setData] = useState<
     ChartData<"bar", (number | [number, number] | null)[], unknown>
   >({
@@ -41,32 +43,36 @@ export default function Statistics() {
   const evaluationsServices = new EvaluationService();
 
   useEffect(() => {
-    evaluationsServices.getEvaluationsByGroup(group).then((res) => {
-      const labels = ["2021-2022", "2022-2023", "2023-2024"];
-      const data_2 = res.filter((item) => item.grade === 2);
-      const data_3 = res.filter((item) => item.grade === 3);
-      const data_4 = res.filter((item) => item.grade === 4);
-      const val1 =
-        data_2.reduce((acc, itm) => acc + itm.value, 0) / data_2.length;
-      const val2 =
-        data_3.reduce((acc, itm) => acc + itm.value, 0) / data_3.length;
-      const val3 =
-        data_4.reduce((acc, itm) => acc + itm.value, 0) / data_4.length;
-      setData((_) => ({
-        labels,
-        datasets: [
-          {
-            label: "Statistics by years",
-            fill: false,
-            borderColor: "rgb(255,0 , 0)",
-            backgroundColor: "rgb(255, 0, 0)",
-            tension: 0.1,
-            data: [val1, val2, val3],
-          },
-        ],
-      }));
-    });
-  }, []);
+    setPending(true);
+    evaluationsServices
+      .getEvaluationsByGroup(group)
+      .then((res) => {
+        const labels = ["2021-2022", "2022-2023", "2023-2024"];
+        const data_2 = res.filter((item) => item.grade === 2);
+        const data_3 = res.filter((item) => item.grade === 3);
+        const data_4 = res.filter((item) => item.grade === 4);
+        const val1 =
+          data_2.reduce((acc, itm) => acc + itm.value, 0) / data_2.length;
+        const val2 =
+          data_3.reduce((acc, itm) => acc + itm.value, 0) / data_3.length;
+        const val3 =
+          data_4.reduce((acc, itm) => acc + itm.value, 0) / data_4.length;
+        setData((_) => ({
+          labels,
+          datasets: [
+            {
+              label: "Statistics by years",
+              fill: false,
+              borderColor: "rgb(255,0 , 0)",
+              backgroundColor: "rgb(255, 0, 0)",
+              tension: 0.1,
+              data: [val1, val2, val3],
+            },
+          ],
+        }));
+      })
+      .finally(() => setPending(false));
+  }, [group]);
 
   return (
     <main className={styles.main}>
@@ -81,6 +87,7 @@ export default function Statistics() {
             optionClassName={styles.option}
             options={["020", "920"]}
           />
+          {pending && <ClockLoader color="#002c83" speedMultiplier={3} />}
         </div>
         <Chart
           options={{

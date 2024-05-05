@@ -106,6 +106,49 @@ export default function Statistics() {
                 item.semester === 2
             );
 
+            const data020_2_1 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "020" &&
+                item.grade === 2 &&
+                item.semester === 1
+            );
+            const data020_2_2 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "020" &&
+                item.grade === 2 &&
+                item.semester === 2
+            );
+            const data020_3_1 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "020" &&
+                item.grade === 3 &&
+                item.semester === 1
+            );
+            const data020_3_2 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "020" &&
+                item.grade === 3 &&
+                item.semester === 2
+            );
+            const data020_4_1 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "020" &&
+                item.grade === 4 &&
+                item.semester === 1
+            );
+            const data020_4_2 = evaluations.filter(
+              (item) =>
+                item.subject_id === sub.subject_id &&
+                item.group === "020" &&
+                item.grade === 4 &&
+                item.semester === 2
+            );
+
             const data = [
               data920_2_1.reduce((acc, itm) => acc + itm.value, 0) /
                 data920_2_1.length,
@@ -119,6 +162,19 @@ export default function Statistics() {
                 data920_4_1.length,
               data920_4_2.reduce((acc, itm) => acc + itm.value, 0) /
                 data920_4_2.length,
+
+              data020_2_1.reduce((acc, itm) => acc + itm.value, 0) /
+                data020_2_1.length,
+              data020_2_2.reduce((acc, itm) => acc + itm.value, 0) /
+                data020_2_2.length,
+              data020_3_1.reduce((acc, itm) => acc + itm.value, 0) /
+                data020_3_1.length,
+              data020_3_2.reduce((acc, itm) => acc + itm.value, 0) /
+                data020_3_2.length,
+              data020_4_1.reduce((acc, itm) => acc + itm.value, 0) /
+                data020_4_1.length,
+              data020_4_2.reduce((acc, itm) => acc + itm.value, 0) /
+                data020_4_2.length,
             ];
             return {
               data: data,
