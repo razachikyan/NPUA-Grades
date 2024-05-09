@@ -10,6 +10,6 @@ router.get("/:session_id", LecturerController.getLecturer);
 router.put("/:lecturer_id", LecturerController.editLecturer);
 router.delete("/:lecturer_id", LecturerController.deleteLecturer);
 router.get("/evaluations/:lecturer_id", LecturerController.getAllEvaluations);
-router.get("/evaluations/:lecturer_id/:grade/:semester", LecturerController.getEvaluations);
+router.get("/evaluations/:lecturer_id/:grade/:semester/:group", LecturerController.getEvaluations);
 
 export default router;

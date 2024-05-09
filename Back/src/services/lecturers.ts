@@ -46,10 +46,12 @@ export class LecturerService {
     lecturer_id,
     grade,
     semester,
+    group,
   }: {
     lecturer_id: string;
     grade: string;
     semester: string;
+    group: string;
   }): Promise<any> {
     const evaluations = await DB<IEvaluation & IStudentResponse>({
       e: "evaluations",
@@ -63,15 +65,10 @@ export class LecturerService {
         grade,
         semester,
         lecturer_id,
+        group,
       });
 
     if (!evaluations) throw Error("Cant get evaluations");
-    console.log({
-      grade,
-      semester,
-      lecturer_id,
-    });
-
     return evaluations;
   }
 

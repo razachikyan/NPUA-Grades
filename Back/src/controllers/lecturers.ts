@@ -69,11 +69,12 @@ export default {
 
   async getEvaluations(req: Request, res: Response) {
     try {
-      const { lecturer_id, grade, semester } = req.params;
+      const { lecturer_id, grade, semester, group } = req.params;
       const evaluations = await lecturerService.getEvaluations({
         lecturer_id,
         grade,
         semester,
+        group,
       });
       return res.status(200).send(evaluations);
     } catch (error) {
