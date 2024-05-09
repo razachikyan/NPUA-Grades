@@ -7,7 +7,7 @@ import { Table } from "@/components/shared/table";
 import { Select } from "@/components/shared/select";
 import { groupOptions } from "@/components/features/form/types";
 import Arrow from "@public/icons/arrow.svg";
-import { ILecturerResponse, IStudentResponse } from "@/types/user";
+import { ILecturerResponse, IStudentResponse, TGroups } from "@/types/user";
 import { getData, tableHeaders, years } from "./constants";
 import { LecturerService } from "@/services/lecturers";
 import { IEvaluationResponse } from "@/types/evaluations";
@@ -20,7 +20,7 @@ export default function Lecturer() {
   const [dataObj, setDataObj] = useState<
     (IEvaluationResponse & IStudentResponse)[]
   >([]);
-  const [group, setGroup] = useState<string>("020");
+  const [group, setGroup] = useState<TGroups>("020");
   const [year, setYear] = useState<number>(2023);
   const [semester, setSemester] = useState<number>(1);
   const router = useRouter();
@@ -43,7 +43,7 @@ export default function Lecturer() {
   useEffect(() => {
     if (user) {
       lecturerServices
-        .getEvaluations(user.lecturer_id, year - 2020, semester)
+        .getEvaluations(user.lecturer_id, year - 2020, semester, group)
         .then((res) => {
           setDataObj(res);
           const data = getData(res);
@@ -60,7 +60,7 @@ export default function Lecturer() {
     const semesterParam = params.get("semester");
     setSemester(semesterParam ? parseInt(semesterParam, 10) : 2);
     const groupParams = params.get("group");
-    setGroup(groupParams ? groupParams : "920");
+    setGroup((groupParams ? groupParams : "920") as TGroups);
   }, [searchParams]);
 
   const handleSubmit = async (
